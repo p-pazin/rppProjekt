@@ -25,5 +25,17 @@ namespace CarchiveAPI.Controllers
             }
             return Ok(companies);
         }
+
+        [HttpPost]
+        [ProducesResponseType(204)]
+        public IActionResult AddCompany([FromBody] User user)
+        {
+            _companyRepository.AddCompany(user);
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+            return NoContent();
+        }
     }
 }

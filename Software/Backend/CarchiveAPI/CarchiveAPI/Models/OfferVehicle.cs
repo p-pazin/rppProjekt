@@ -2,8 +2,8 @@
 {
     public class OfferVehicle
     {
-        public int IdOffer { get; set; }
-        public int IdVehicle { get; set; }
+        public int OfferId { get; set; }
+        public int VehicleId { get; set; }
         public Offer Offer { get; set; }
         public Vehicle Vehicle { get; set; }
     }

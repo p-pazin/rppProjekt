@@ -2,8 +2,9 @@
   "ExpandedNodes": [
     "",
     "\\Software",
-    "\\Software\\Backend"
+    "\\Software\\Backend",
+    "\\Software\\Backend\\CarchiveAPI"
   ],
-  "SelectedNode": "\\Software\\Backend",
+  "SelectedNode": "\\Software\\Backend\\CarchiveAPI\\CarchiveAPI.sln",
   "PreviewInSolutionExplorer": false
 }

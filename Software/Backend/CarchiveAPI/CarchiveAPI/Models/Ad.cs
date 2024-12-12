@@ -8,7 +8,7 @@
         public string PaymentMethod { get; set; }
         public DateOnly DateOfPublishment { get; set; }
         public User User { get; set; }
-        public int IdVehicle { get; set; }
+        public int VehicleId { get; set; }
         public Vehicle Vehicle { get; set; }
     }
 }

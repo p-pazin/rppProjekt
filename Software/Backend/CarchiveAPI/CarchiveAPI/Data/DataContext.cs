@@ -25,32 +25,28 @@ namespace CarchiveAPI.Data
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<OfferVehicle>()
-                .HasKey(ov => new {ov.IdOffer, ov.IdVehicle});
+                .HasKey(ov => new { ov.OfferId, ov.VehicleId });
             modelBuilder.Entity<OfferVehicle>()
                 .HasOne(o => o.Offer)
                 .WithMany(ov => ov.OfferVehicles)
-                .HasForeignKey(v => v.IdVehicle);
+                .HasForeignKey(v => v.VehicleId);
             modelBuilder.Entity<OfferVehicle>()
                 .HasOne(v => v.Vehicle)
                 .WithMany(ov => ov.OfferVehicles)
-                .HasForeignKey(o => o.IdOffer);
+                .HasForeignKey(o => o.OfferId);
 
             modelBuilder.Entity<Vehicle>()
             .HasOne(v => v.Ad)
             .WithOne(a => a.Vehicle)
-            .HasForeignKey<Ad>(a => a.IdVehicle);
+            .HasForeignKey<Ad>(a => a.VehicleId);
             modelBuilder.Entity<Vehicle>()
             .HasOne(v => v.Location)
             .WithOne(l => l.Vehicle)
-            .HasForeignKey<Location>(l => l.IdVehicle);
+            .HasForeignKey<Location>(l => l.VehicleId);
             modelBuilder.Entity<Contract>()
             .HasOne(c => c.Invoice)
             .WithOne(i => i.Contract)
-            .HasForeignKey<Invoice>(i => i.IdContract);
-            modelBuilder.Entity<User>()
-            .HasOne(u => u.Company)
-            .WithOne(c => c.Director)
-            .HasForeignKey<Company>(c => c.IdDirector);
+            .HasForeignKey<Invoice>(i => i.ContractId);
         }
     }
 }
