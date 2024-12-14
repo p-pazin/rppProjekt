@@ -1,6 +1,8 @@
 ﻿using System.Diagnostics;
+using CarchiveAPI.Dto;
 using CarchiveAPI.Models;
 using CarchiveAPI.Repositories;
+using CarchiveAPI.Services;
 using Microsoft.AspNetCore.Mvc;
 
 namespace CarchiveAPI.Controllers
@@ -9,17 +11,17 @@ namespace CarchiveAPI.Controllers
     [ApiController]
     public class CompanyController : Controller
     {
-        private readonly CompanyRepository _companyRepository;
-        public CompanyController(CompanyRepository companyRepository)
+        private readonly CompanyServices _companyServices;
+        public CompanyController(CompanyServices companyServices)
         {
-            this._companyRepository = companyRepository;
+            this._companyServices = companyServices;
         }
 
         [HttpGet]
-        [ProducesResponseType(200, Type = typeof(ICollection<Company>))]
+        [ProducesResponseType(200, Type = typeof(ICollection<CompanyDto>))]
         public IActionResult GetCompanies()
         {
-            var companies = _companyRepository.GetCompanies();
+            var companies = _companyServices.GetCompanies();
 
             if (!ModelState.IsValid) {
                 return BadRequest(ModelState);
@@ -29,9 +31,9 @@ namespace CarchiveAPI.Controllers
 
         [HttpPost]
         [ProducesResponseType(204)]
-        public IActionResult AddCompany([FromBody] User user)
+        public IActionResult AddCompany([FromBody] NewCompanyDto newComapany)
         {
-            if (user == null)
+            if (newComapany == null)
             {
                 return BadRequest("User object is null.");
             }
@@ -43,7 +45,7 @@ namespace CarchiveAPI.Controllers
 
             try
             {
-                var result = _companyRepository.AddCompany(user);
+                var result = _companyServices.AddCompany(newComapany);
                 if (!result)
                 {
                     return BadRequest("Company could not be added. It may already exist.");
