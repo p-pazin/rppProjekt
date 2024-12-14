@@ -13,6 +13,8 @@ builder.Services.AddControllers();
 builder.Services.AddScoped<CompanyRepository>();
 builder.Services.AddScoped<UserRepository>();
 builder.Services.AddScoped<ContactRepository>();
+builder.Services.AddScoped<VehicleRepository>();
+builder.Services.AddScoped<VehicleServices>();
 builder.Services.AddScoped<ContactService>();
 builder.Services.AddControllers().AddJsonOptions(x =>
                 x.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles);
