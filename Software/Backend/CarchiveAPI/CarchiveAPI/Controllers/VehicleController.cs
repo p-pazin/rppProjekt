@@ -210,5 +210,48 @@ namespace CarchiveAPI.Controllers
             }
             return Ok(vehicles);
         }
+
+        [HttpPost]
+        [ProducesResponseType(201, Type = typeof(VehicleDto))]
+        [ProducesResponseType(400)]
+
+        public IActionResult AddVehicle([FromBody] VehicleDto vehicle, int companyId)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            var newVehicle = _vehicleServices.AddVehicle(vehicle, companyId);
+            return CreatedAtAction("AddVehicle", newVehicle);
+        }
+
+        [HttpPut]
+        [ProducesResponseType(204)]
+        [ProducesResponseType(400)]
+
+        public IActionResult UpdateVehicle([FromBody] VehicleDto vehicle, int companyId)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+            _vehicleServices.UpdateVehicle(vehicle, companyId);
+            return NoContent();
+        }
+
+        [HttpDelete("{id}")]
+        [ProducesResponseType(204)]
+        [ProducesResponseType(400)]
+
+        public IActionResult DeleteVehicle(int id)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+            _vehicleServices.DeleteVehicle(id);
+            return NoContent();
+        }
     }
 }

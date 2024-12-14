@@ -82,6 +82,33 @@ namespace CarchiveAPI.Repositories
             return _context.Vehicles.Where(v => v.Engine == engine).ToList();
         }
 
+        public bool AddVehicle(Vehicle vehicle)
+        {
+            if (VehicleExists(vehicle.Registration))
+            {
+                return false;
+            }
+            _context.Vehicles.Add(vehicle);
+            return Save();
+        }
+
+        public bool UpdateVehicle(Vehicle vehicle)
+        {
+            _context.Vehicles.Update(vehicle);
+            return Save();
+        }
+
+        public bool DeleteVehicle(Vehicle vehicle)
+        {
+            var foundVehicle = _context.Vehicles.FirstOrDefault(v => v.Id == vehicle.Id);
+            if(foundVehicle != null)
+            {
+                _context.Vehicles.Remove(foundVehicle);
+                return Save();
+            }
+            return false;
+        }
+
         bool Save()
         {
             return _context.SaveChanges() > 0;

@@ -1,18 +1,22 @@
 ﻿using AutoMapper;
 using CarchiveAPI.Dto;
+using CarchiveAPI.Models;
 using CarchiveAPI.Repositories;
+using System.ComponentModel.Design;
 
 namespace CarchiveAPI.Services
 {
     public class VehicleServices
     {
         private readonly VehicleRepository _vehicleRepository;
+        private readonly CompanyRepository _companyRepository;
         private readonly IMapper _mapper;
 
-        public VehicleServices(VehicleRepository vehicleRepository, IMapper mapper)
+        public VehicleServices(VehicleRepository vehicleRepository, IMapper mapper, CompanyRepository companyRepository)
         {
             _vehicleRepository = vehicleRepository;
             _mapper = mapper;
+            _companyRepository = companyRepository;
         }
 
         public ICollection<VehicleDto> GetAll()
@@ -97,6 +101,27 @@ namespace CarchiveAPI.Services
         {
             var vehicles = _vehicleRepository.GetVehiclesByEngine(engine);
             return _mapper.Map<ICollection<VehicleDto>>(vehicles);
+        }
+
+        public bool AddVehicle(VehicleDto vehicleDto, int companyId)
+        {
+            var vehicle = _mapper.Map<Vehicle>(vehicleDto);
+            vehicle.Company = _companyRepository.GetCompanies().Where(c => c.Id == companyId).FirstOrDefault();
+            return _vehicleRepository.AddVehicle(vehicle);
+        }
+
+        public bool UpdateVehicle(VehicleDto vehicleDto, int companyId)
+        {
+            var vehicle = _mapper.Map<Vehicle>(vehicleDto);
+            vehicle.Company = _companyRepository.GetCompanies().Where(c => c.Id == companyId).FirstOrDefault();
+            return _vehicleRepository.UpdateVehicle(vehicle);
+        }
+
+        public bool DeleteVehicle(int id)
+        {
+            var vehicleDto = GetVehicleById(id).FirstOrDefault();
+            var vehicle = _mapper.Map<Vehicle>(vehicleDto);
+            return _vehicleRepository.DeleteVehicle(vehicle);
         }
     }
 }
