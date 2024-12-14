@@ -2,6 +2,7 @@
 using CarchiveAPI.Dto;
 using CarchiveAPI.Models;
 using CarchiveAPI.Repositories;
+using CarchiveAPI.Services;
 using Microsoft.AspNetCore.Mvc;
 
 namespace CarchiveAPI.Controllers
@@ -10,22 +11,18 @@ namespace CarchiveAPI.Controllers
     [ApiController]
     public class ContactController : Controller
     {
-        private readonly ContactRepository _contactRepository;
-        private readonly CompanyRepository _companyRepository;
-        private readonly IMapper _mapper;
+        private readonly ContactService _contactService;
 
-        public ContactController(ContactRepository contactRepository, CompanyRepository companyRepository, IMapper mapper)
+        public ContactController(ContactService contactService)
         {
-            this._contactRepository = contactRepository;
-            this._companyRepository = companyRepository;
-            this._mapper = mapper;
+            this._contactService = contactService;
         }
 
         [HttpGet]
         [ProducesResponseType(200, Type = typeof(List<ContactDto>))]
 
         public IActionResult GetContacts() {
-            var contacts = _mapper.Map<List<ContactDto>>(_contactRepository.GetContacts());
+            var contacts = _contactService.GetContacts();
 
             if (!ModelState.IsValid) { 
                 return BadRequest(ModelState);
@@ -38,17 +35,18 @@ namespace CarchiveAPI.Controllers
         [ProducesResponseType(400)]
 
         public IActionResult GetContact(int contactId) {
-            if (!_contactRepository.ContactExists(contactId)) { 
+            if(!_contactService.CheckIfContactExists(contactId))
+            {
                 return NotFound();
             }
 
-            var contact = _mapper.Map<ContactDto>(_contactRepository.GetContact(contactId));
+            var contact = _contactService.GetContact(contactId);
 
             if(!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
-            return Ok(contact);
+            return Ok(_contactService.MapContact(contact));
         }
 
         [HttpGet("company/{contactId}")]
@@ -57,12 +55,11 @@ namespace CarchiveAPI.Controllers
 
         public IActionResult GetCompanyByContactId(int contactId)
         {
-            if (!_contactRepository.ContactExists(contactId))
+            if(!_contactService.CheckIfContactExists(contactId))
             {
                 return NotFound();
             }
-
-            var company = _mapper.Map<CompanyDto>(_contactRepository.GetCompanyByContact(contactId));
+            var company = _contactService.GetCompanyByContact(contactId);
 
             if (!ModelState.IsValid)
             {
@@ -77,12 +74,12 @@ namespace CarchiveAPI.Controllers
 
         public IActionResult GetOffersByContactId(int contactId)
         {
-            if (!_contactRepository.ContactExists(contactId))
+            if (!_contactService.CheckIfContactExists(contactId))
             {
                 return NotFound();
             }
 
-            var offers = _mapper.Map<List<OfferDto>>(_contactRepository.GetOffersByContact(contactId));
+            var offers = _contactService.GetOffersByContact(contactId);
 
             if (!ModelState.IsValid)
             {
@@ -97,12 +94,12 @@ namespace CarchiveAPI.Controllers
 
         public IActionResult GetContractsByContactId(int contactId)
         {
-            if (!_contactRepository.ContactExists(contactId))
+            if (!_contactService.CheckIfContactExists(contactId))
             {
                 return NotFound();
             }
 
-            var contracts = _mapper.Map<List<ContractDto>>(_contactRepository.GetContractsByContact(contactId));
+            var contracts = _contactService.GetContractsByContact(contactId);
 
             if (!ModelState.IsValid)
             {
@@ -121,24 +118,19 @@ namespace CarchiveAPI.Controllers
             {
                 return BadRequest(ModelState);
             }
-            
-            var contact = _contactRepository.GetContacts().Where(c => c.Pin == contactCreate.Pin).FirstOrDefault();
+
+            var contact = _contactService.GetContactByPin(contactCreate.Pin);
 
             if(contact != null)
             {
                 ModelState.AddModelError("", "Contact already exists");
                 return StatusCode(422, ModelState);
             }
-
             if(!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
-
-            var contactMap = _mapper.Map<Contact>(contactCreate);
-            contactMap.Company = _companyRepository.GetCompanies().Where(c => c.Id == companyId).FirstOrDefault();
-
-            if(!_contactRepository.CreateContact(contactMap))
+            if(!_contactService.CreateContact(contactCreate, companyId))
             {
                 ModelState.AddModelError("", "Something went wrong when saving contact.");
                 return StatusCode(500, ModelState);
@@ -161,20 +153,16 @@ namespace CarchiveAPI.Controllers
             {
                 return BadRequest(ModelState);
             }
-
-            if (!_contactRepository.ContactExists(contactId))
+            if (!_contactService.CheckIfContactExists(contactId))
             {
                 return NotFound();
             }
-
-            if(!ModelState.IsValid)
+            if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
 
-            var contactMap = _mapper.Map<Contact>(contactUpdate);
-
-            if(!_contactRepository.UpdateContact(contactMap))
+            if(!_contactService.UpdateContact(contactUpdate))
             {
                 ModelState.AddModelError("", "Something went wrong when updating contact.");
                 return StatusCode(500, ModelState);
@@ -189,19 +177,18 @@ namespace CarchiveAPI.Controllers
 
         public IActionResult DeleteContact(int contactId)
         {
-            if(!_contactRepository.ContactExists(contactId))
+            if (!_contactService.CheckIfContactExists(contactId))
             {
                 return NotFound();
             }
-
-            var contactDelete = _contactRepository.GetContact(contactId);
-
-            if(!ModelState.IsValid)
+            if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
 
-            if (!_contactRepository.DeleteContact(contactDelete))
+            var contactToDelete = _contactService.GetContact(contactId);
+
+            if (!_contactService.DeleteContact(contactToDelete))
             {
                 ModelState.AddModelError("", "Something went wrong when deleting contact.");
                 return StatusCode(500, ModelState);

@@ -1,6 +1,7 @@
 using System.Text.Json.Serialization;
 using CarchiveAPI.Data;
 using CarchiveAPI.Repositories;
+using CarchiveAPI.Services;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -12,6 +13,7 @@ builder.Services.AddControllers();
 builder.Services.AddScoped<CompanyRepository>();
 builder.Services.AddScoped<UserRepository>();
 builder.Services.AddScoped<ContactRepository>();
+builder.Services.AddScoped<ContactService>();
 builder.Services.AddControllers().AddJsonOptions(x =>
                 x.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles);
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
