@@ -143,7 +143,7 @@ namespace CarchiveAPI.Controllers
         [ProducesResponseType(400)]
         [ProducesResponseType(404)]
 
-        public IActionResult UpdateContact(int contactId, [FromBody] ContactDto contactUpdate)
+        public IActionResult UpdateContact(int contactId, [FromQuery] int companyId, [FromBody] ContactDto contactUpdate)
         {
             if (contactUpdate == null)
             {
@@ -162,7 +162,7 @@ namespace CarchiveAPI.Controllers
                 return BadRequest(ModelState);
             }
 
-            if(!_contactService.UpdateContact(contactUpdate))
+            if(!_contactService.UpdateContact(contactUpdate, companyId))
             {
                 ModelState.AddModelError("", "Something went wrong when updating contact.");
                 return StatusCode(500, ModelState);

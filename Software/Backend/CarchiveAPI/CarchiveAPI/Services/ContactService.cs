@@ -61,9 +61,10 @@ namespace CarchiveAPI.Services
 
             return _contactRepository.CreateContact(contactMap);
         }
-        public bool UpdateContact(ContactDto contactDto)
+        public bool UpdateContact(ContactDto contactDto, int companyId)
         {
             var contactMap = _mapper.Map<Contact>(contactDto);
+            contactMap.Company = _companyRepository.GetCompanies().Where(c => c.Id == companyId).FirstOrDefault();
 
             return _contactRepository.UpdateContact(contactMap);
         }
