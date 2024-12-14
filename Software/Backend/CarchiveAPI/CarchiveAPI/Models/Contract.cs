@@ -11,7 +11,7 @@
         public Company Company { get; set; }
         public Contact Contact { get; set; }
         public Vehicle Vehicle { get; set; }
-        public Offer Offer { get; set; }
+        public Offer? Offer { get; set; }
         public User User { get; set; }
         public Invoice Invoice { get; set; }
     }
