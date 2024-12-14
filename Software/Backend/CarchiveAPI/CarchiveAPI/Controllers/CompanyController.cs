@@ -1,4 +1,5 @@
-﻿using CarchiveAPI.Models;
+﻿using System.Diagnostics;
+using CarchiveAPI.Models;
 using CarchiveAPI.Repositories;
 using Microsoft.AspNetCore.Mvc;
 
@@ -30,11 +31,29 @@ namespace CarchiveAPI.Controllers
         [ProducesResponseType(204)]
         public IActionResult AddCompany([FromBody] User user)
         {
-            _companyRepository.AddCompany(user);
+            if (user == null)
+            {
+                return BadRequest("User object is null.");
+            }
+
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
+
+            try
+            {
+                var result = _companyRepository.AddCompany(user);
+                if (!result)
+                {
+                    return BadRequest("Company could not be added. It may already exist.");
+                }
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, $"Internal server error: {ex.Message}");
+            }
+
             return NoContent();
         }
     }
