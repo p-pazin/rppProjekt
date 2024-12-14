@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using CarchiveAPI.Dto;
+using CarchiveAPI.Models;
 using CarchiveAPI.Repositories;
 using Microsoft.AspNetCore.Mvc;
 
@@ -10,11 +11,13 @@ namespace CarchiveAPI.Controllers
     public class ContactController : Controller
     {
         private readonly ContactRepository _contactRepository;
+        private readonly CompanyRepository _companyRepository;
         private readonly IMapper _mapper;
 
-        public ContactController(ContactRepository contactRepository, IMapper mapper)
+        public ContactController(ContactRepository contactRepository, CompanyRepository companyRepository, IMapper mapper)
         {
             this._contactRepository = contactRepository;
+            this._companyRepository = companyRepository;
             this._mapper = mapper;
         }
 
@@ -106,6 +109,41 @@ namespace CarchiveAPI.Controllers
                 return BadRequest(ModelState);
             }
             return Ok(contracts);
+        }
+
+        [HttpPost]
+        [ProducesResponseType(204)]
+        [ProducesResponseType(400)]
+
+        public IActionResult CreateContact([FromQuery] int companyId, [FromBody] ContactDto contactCreate)
+        {
+            if (contactCreate == null)
+            {
+                return BadRequest(ModelState);
+            }
+            
+            var contact = _contactRepository.GetContacts().Where(c => c.Pin == contactCreate.Pin).FirstOrDefault();
+
+            if(contact != null)
+            {
+                ModelState.AddModelError("", "Contact already exists");
+                return StatusCode(422, ModelState);
+            }
+
+            if(!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            var contactMap = _mapper.Map<Contact>(contactCreate);
+            contactMap.Company = _companyRepository.GetCompanies().Where(c => c.Id == companyId).FirstOrDefault();
+
+            if(!_contactRepository.CreateContact(contactMap))
+            {
+                ModelState.AddModelError("", "Something went wrong when saving contact.");
+                return StatusCode(500, ModelState);
+            }
+            return Ok("Successfully created contact!");
         }
     }
 }

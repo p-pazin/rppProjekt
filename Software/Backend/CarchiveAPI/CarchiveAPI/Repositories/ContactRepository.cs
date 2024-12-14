@@ -31,5 +31,14 @@ namespace CarchiveAPI.Repositories
         {
             return _context.Contracts.Where(c => c.Contact.Id == contactId).ToList();
         }
+        public bool CreateContact(Contact contact)
+        {
+            _context.Contacts.Add(contact);
+            return Save();
+        }
+        public bool Save() {
+            var saved = _context.SaveChanges();
+            return saved > 0 ? true : false;
+        }
     }
 }
