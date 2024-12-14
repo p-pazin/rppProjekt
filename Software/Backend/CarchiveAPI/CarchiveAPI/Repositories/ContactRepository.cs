@@ -36,6 +36,16 @@ namespace CarchiveAPI.Repositories
             _context.Contacts.Add(contact);
             return Save();
         }
+        public bool UpdateContact(Contact contact)
+        {
+            _context.Contacts.Update(contact);
+            return Save();
+        }
+        public bool DeleteContact(Contact contact)
+        {
+            _context.Contacts.Remove(contact);
+            return Save();
+        }
         public bool Save() {
             var saved = _context.SaveChanges();
             return saved > 0 ? true : false;

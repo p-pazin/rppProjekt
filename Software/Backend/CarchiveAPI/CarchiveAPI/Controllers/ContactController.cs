@@ -145,5 +145,68 @@ namespace CarchiveAPI.Controllers
             }
             return Ok("Successfully created contact!");
         }
+
+        [HttpPut("{contactId}")]
+        [ProducesResponseType(204)]
+        [ProducesResponseType(400)]
+        [ProducesResponseType(404)]
+
+        public IActionResult UpdateContact(int contactId, [FromBody] ContactDto contactUpdate)
+        {
+            if (contactUpdate == null)
+            {
+                return BadRequest(ModelState);
+            }
+            if(contactId != contactUpdate.Id)
+            {
+                return BadRequest(ModelState);
+            }
+
+            if (!_contactRepository.ContactExists(contactId))
+            {
+                return NotFound();
+            }
+
+            if(!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            var contactMap = _mapper.Map<Contact>(contactUpdate);
+
+            if(!_contactRepository.UpdateContact(contactMap))
+            {
+                ModelState.AddModelError("", "Something went wrong when updating contact.");
+                return StatusCode(500, ModelState);
+            }
+            return Ok("Successfully updated contact!");
+        }
+
+        [HttpDelete("{contactId}")]
+        [ProducesResponseType(204)]
+        [ProducesResponseType(400)]
+        [ProducesResponseType(404)]
+
+        public IActionResult DeleteContact(int contactId)
+        {
+            if(!_contactRepository.ContactExists(contactId))
+            {
+                return NotFound();
+            }
+
+            var contactDelete = _contactRepository.GetContact(contactId);
+
+            if(!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            if (!_contactRepository.DeleteContact(contactDelete))
+            {
+                ModelState.AddModelError("", "Something went wrong when deleting contact.");
+                return StatusCode(500, ModelState);
+            }
+            return Ok("Successfully deleted contact!");
+        }
     }
 }
