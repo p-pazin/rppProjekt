@@ -16,6 +16,9 @@ builder.Services.AddScoped<ContactRepository>();
 builder.Services.AddScoped<VehicleRepository>();
 builder.Services.AddScoped<VehicleServices>();
 builder.Services.AddScoped<ContactService>();
+builder.Services.AddScoped<OfferServices>();
+builder.Services.AddScoped<OfferRepository>();
+builder.Services.AddScoped<OfferVehicleRepository>();
 builder.Services.AddControllers().AddJsonOptions(x =>
                 x.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles);
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
