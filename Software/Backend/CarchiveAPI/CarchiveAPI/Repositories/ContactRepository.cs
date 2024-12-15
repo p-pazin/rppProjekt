@@ -24,5 +24,31 @@ namespace CarchiveAPI.Repositories
         public Company GetCompanyByContact(int contactId) {
             return _context.Contacts.Where(c => c.Id == contactId).Select(c => c.Company).FirstOrDefault();
         }
+        public ICollection<Offer> GetOffersByContact(int contactId) { 
+            return _context.Offers.Where(o => o.Contact.Id == contactId).ToList();
+        }
+        public ICollection<Contract> GetContractsByContact(int contactId)
+        {
+            return _context.Contracts.Where(c => c.Contact.Id == contactId).ToList();
+        }
+        public bool CreateContact(Contact contact)
+        {
+            _context.Contacts.Add(contact);
+            return Save();
+        }
+        public bool UpdateContact(Contact contact)
+        {
+            _context.Contacts.Update(contact);
+            return Save();
+        }
+        public bool DeleteContact(Contact contact)
+        {
+            _context.Contacts.Remove(contact);
+            return Save();
+        }
+        public bool Save() {
+            var saved = _context.SaveChanges();
+            return saved > 0 ? true : false;
+        }
     }
 }

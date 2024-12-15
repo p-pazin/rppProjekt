@@ -16,6 +16,12 @@ builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddScoped<UserRepository>();
 builder.Services.AddScoped<ContactRepository>();
+builder.Services.AddScoped<VehicleRepository>();
+builder.Services.AddScoped<VehicleServices>();
+builder.Services.AddScoped<ContactService>();
+builder.Services.AddScoped<OfferServices>();
+builder.Services.AddScoped<OfferRepository>();
+builder.Services.AddScoped<OfferVehicleRepository>();
 builder.Services.AddScoped<CompanyServices>();
 builder.Services.AddScoped<UserServices>();
 
