@@ -1,8 +1,7 @@
-﻿using System.Diagnostics;
+﻿using System.Security.Claims;
 using CarchiveAPI.Dto;
-using CarchiveAPI.Models;
-using CarchiveAPI.Repositories;
 using CarchiveAPI.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace CarchiveAPI.Controllers
@@ -11,6 +10,7 @@ namespace CarchiveAPI.Controllers
     [ApiController]
     public class CompanyController : Controller
     {
+
         private readonly CompanyServices _companyServices;
         public CompanyController(CompanyServices companyServices)
         {
@@ -18,12 +18,29 @@ namespace CarchiveAPI.Controllers
         }
 
         [HttpGet]
+        [Authorize(Roles = "Admin, User")]
+        [ProducesResponseType(200, Type = typeof(CompanyDto))]
+        public IActionResult GetCompany()
+        {
+            var email = User.FindFirst(ClaimTypes.Name)?.Value;
+            var company = _companyServices.GetCompany(email);
+
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+            return Ok(company);
+        }
+
+        [HttpGet("companies")]
+        [Authorize(Roles = "Admin")]
         [ProducesResponseType(200, Type = typeof(ICollection<CompanyDto>))]
         public IActionResult GetCompanies()
         {
             var companies = _companyServices.GetCompanies();
 
-            if (!ModelState.IsValid) {
+            if (!ModelState.IsValid)
+            {
                 return BadRequest(ModelState);
             }
             return Ok(companies);

@@ -10,13 +10,15 @@ namespace CarchiveAPI.Services
     {
         private DataContext _context;
         private CompanyRepository _companyRepository;
+        private UserRepository _userRepository;
         private readonly IMapper _mapper;
 
-        public CompanyServices(DataContext context, IMapper mapper)
+        public CompanyServices(DataContext context, IMapper mapper, UserRepository userRepository)
         {
             this._context = context;
             this._companyRepository = new CompanyRepository(context);
             this._mapper = mapper;
+            _userRepository = userRepository;
         }
 
         public ICollection<CompanyDto> GetCompanies()
@@ -25,21 +27,12 @@ namespace CarchiveAPI.Services
             return companiesDto;
         }
 
-        public CompanyDto GetCompany(int companyId)
+        public CompanyDto GetCompany(string email)
         {
-            var company = _companyRepository.GetCompanyById(companyId);
-            if (company == null)
-            {
-                return null;
-            }
-            return new CompanyDto
-            {
-                Id = company.Id,
-                Name = company.Name,
-                City = company.City,
-                Address = company.Address,
-                Pin = company.Pin
-            };
+            var user = _userRepository.GetUserAndCompanyByEmail(email);
+            var contacts = user.Company.Contacts;
+            var companyDto = _mapper.Map<CompanyDto>(user.Company);
+            return companyDto;
         }
 
         public bool CompanyExists(string companyPin)
@@ -68,7 +61,7 @@ namespace CarchiveAPI.Services
                 FirstName = newCompanyDto.FirstName,
                 LastName = newCompanyDto.LastName,
                 Email = newCompanyDto.Email,
-                Password = newCompanyDto.Password,
+                Password = BCrypt.Net.BCrypt.HashPassword(newCompanyDto.Password),
                 Role = admin,
                 Company = company
             };
@@ -77,14 +70,13 @@ namespace CarchiveAPI.Services
             {
                 return false;
             }
-            bool added = _companyRepository.AddCompany(company);
-            if (added)
+            bool addedCompany = _companyRepository.AddCompany(company);
+            bool addedUser = _userRepository.AddUser(user);
+            if (addedCompany && addedUser)
             {
                 return true;
             }
-            return false;
-
-
+            return true;
         }
     }
 }
