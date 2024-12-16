@@ -1,6 +1,9 @@
 ﻿using CarchiveAPI.Dto;
+using CarchiveAPI.Models;
 using CarchiveAPI.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System.Security.Claims;
 
 namespace CarchiveAPI.Controllers
 {
@@ -16,11 +19,13 @@ namespace CarchiveAPI.Controllers
         }
 
         [HttpGet]
+        [Authorize(Roles = "Admin, User")]
         [ProducesResponseType(200, Type = typeof(List<VehicleDto>))]
 
         public IActionResult GetVehicles()
         {
-            var vehicles = _vehicleServices.GetAll();
+            var email = User.FindFirst(ClaimTypes.Name)?.Value;
+            var vehicles = _vehicleServices.GetAll(email);
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
@@ -29,13 +34,15 @@ namespace CarchiveAPI.Controllers
         }
 
         [HttpGet("{vehicleId}")]
+        [Authorize(Roles = "Admin, User")]
         [ProducesResponseType(200, Type = typeof(VehicleDto))]
         [ProducesResponseType(400)]
 
         public IActionResult GetVehicleById(string vehicleId)
         {
             int Id = int.Parse(vehicleId);
-            var vehicle = _vehicleServices.GetVehicleById(Id);
+            var email = User.FindFirst(ClaimTypes.Name)?.Value;
+            var vehicle = _vehicleServices.GetVehicleById(Id, email);
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
@@ -44,12 +51,14 @@ namespace CarchiveAPI.Controllers
         }
 
         [HttpGet("model/{model}")]
+        [Authorize(Roles = "Admin, User")]
         [ProducesResponseType(200, Type = typeof(List<VehicleDto>))]
         [ProducesResponseType(400)]
 
         public IActionResult GetVehiclesByModel(string model)
         {
-            var vehicles = _vehicleServices.GetVehiclesByModel(model);
+            var email = User.FindFirst(ClaimTypes.Name)?.Value;
+            var vehicles = _vehicleServices.GetVehiclesByModel(model, email);
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
@@ -58,12 +67,14 @@ namespace CarchiveAPI.Controllers
         }
 
         [HttpGet("registration/{reg}")]
+        [Authorize(Roles = "Admin, User")]
         [ProducesResponseType(200, Type = typeof(List<VehicleDto>))]
         [ProducesResponseType(400)]
 
         public IActionResult GetVehiclesByRegistration(string reg)
         {
-            var vehicles = _vehicleServices.GetVehiclesByRegistration(reg);
+            var email = User.FindFirst(ClaimTypes.Name)?.Value;
+            var vehicles = _vehicleServices.GetVehiclesByRegistration(reg, email);
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
@@ -72,12 +83,14 @@ namespace CarchiveAPI.Controllers
         }
 
         [HttpGet("type/{type}")]
+        [Authorize(Roles = "Admin, User")]
         [ProducesResponseType(200, Type = typeof(List<VehicleDto>))]
         [ProducesResponseType(400)]
 
         public IActionResult GetVehiclesByType(string type)
         {
-            var vehicles = _vehicleServices.GetVehiclesByType(type);
+            var email = User.FindFirst(ClaimTypes.Name)?.Value;
+            var vehicles = _vehicleServices.GetVehiclesByType(type, email);
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
@@ -86,12 +99,14 @@ namespace CarchiveAPI.Controllers
         }
 
         [HttpGet("color/{color}")]
+        [Authorize(Roles = "Admin, User")]
         [ProducesResponseType(200, Type = typeof(List<VehicleDto>))]
         [ProducesResponseType(400)]
 
         public IActionResult GetVehiclesByColor(string color)
         {
-            var vehicles = _vehicleServices.GetVehiclesByColor(color);
+            var email = User.FindFirst(ClaimTypes.Name)?.Value;
+            var vehicles = _vehicleServices.GetVehiclesByColor(color, email);
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
@@ -101,12 +116,14 @@ namespace CarchiveAPI.Controllers
 
 
         [HttpGet("mileage/{minMileage}/{maxMileage}")]
+        [Authorize(Roles = "Admin, User")]
         [ProducesResponseType(200, Type = typeof(List<VehicleDto>))]
         [ProducesResponseType(400)]
 
         public IActionResult GetVehiclesByMileage(int minMileage, int maxMileage)
         {
-            var vehicles = _vehicleServices.GetVehiclesByMileage(minMileage, maxMileage);
+            var email = User.FindFirst(ClaimTypes.Name)?.Value;
+            var vehicles = _vehicleServices.GetVehiclesByMileage(minMileage, maxMileage, email);
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
@@ -115,12 +132,14 @@ namespace CarchiveAPI.Controllers
         }
 
         [HttpGet("transmissiontype/{transmissionType}")]
+        [Authorize(Roles = "Admin, User")]
         [ProducesResponseType(200, Type = typeof(List<VehicleDto>))]
         [ProducesResponseType(400)]
 
         public IActionResult GetVehiclesByTransType(string transmissionType)
         {
-            var vehicles = _vehicleServices.GetVehiclesByTransType(transmissionType);
+            var email = User.FindFirst(ClaimTypes.Name)?.Value;
+            var vehicles = _vehicleServices.GetVehiclesByTransType(transmissionType, email);
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
@@ -129,12 +148,14 @@ namespace CarchiveAPI.Controllers
         }
 
         [HttpGet("price/{minPrice}/{maxPrice}")]
+        [Authorize(Roles = "Admin, User")]
         [ProducesResponseType(200, Type = typeof(List<VehicleDto>))]
         [ProducesResponseType(400)]
 
         public IActionResult GetVehiclesByPrice(double minPrice, double maxPrice)
         {
-            var vehicles = _vehicleServices.GetVehiclesByPrice(minPrice, maxPrice);
+            var email = User.FindFirst(ClaimTypes.Name)?.Value;
+            var vehicles = _vehicleServices.GetVehiclesByPrice(minPrice, maxPrice, email);
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
@@ -143,12 +164,14 @@ namespace CarchiveAPI.Controllers
         }
 
         [HttpGet("condition/{condition}")]
+        [Authorize(Roles = "Admin, User")]
         [ProducesResponseType(200, Type = typeof(List<VehicleDto>))]
         [ProducesResponseType(400)]
 
         public IActionResult GetVehiclesByCondition(string condition)
         {
-            var vehicles = _vehicleServices.GetVehiclesByCondition(condition);
+            var email = User.FindFirst(ClaimTypes.Name)?.Value;
+            var vehicles = _vehicleServices.GetVehiclesByCondition(condition, email);
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
@@ -157,12 +180,14 @@ namespace CarchiveAPI.Controllers
         }
 
         [HttpGet("productionYear/{minYear}/{maxYear}")]
+        [Authorize(Roles = "Admin, User")]
         [ProducesResponseType(200, Type = typeof(List<VehicleDto>))]
         [ProducesResponseType(400)]
 
         public IActionResult GetVehiclesByProdYear(int minYear, int maxYear)
         {
-            var vehicles = _vehicleServices.GetVehiclesByProdYear(minYear, maxYear);
+            var email = User.FindFirst(ClaimTypes.Name)?.Value;
+            var vehicles = _vehicleServices.GetVehiclesByProdYear(minYear, maxYear, email);
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
@@ -171,12 +196,14 @@ namespace CarchiveAPI.Controllers
         }
 
         [HttpGet("enginePower/{minPower}/{maxPower}")]
+        [Authorize(Roles = "Admin, User")]
         [ProducesResponseType(200, Type = typeof(List<VehicleDto>))]
         [ProducesResponseType(400)]
 
         public IActionResult GetVehiclesByEngPower(int minPower, int maxPower)
         {
-            var vehicles = _vehicleServices.GetVehiclesByEngPower(minPower, maxPower);
+            var email = User.FindFirst(ClaimTypes.Name)?.Value;
+            var vehicles = _vehicleServices.GetVehiclesByEngPower(minPower, maxPower, email);
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
@@ -185,12 +212,14 @@ namespace CarchiveAPI.Controllers
         }
 
         [HttpGet("cubicCapacity/{minCapacity}/{maxCapacity}")]
+        [Authorize(Roles = "Admin, User")]
         [ProducesResponseType(200, Type = typeof(List<VehicleDto>))]
         [ProducesResponseType(400)]
 
         public IActionResult GetVehiclesByCubicCapacity(double minCapacity, double maxCapacity)
         {
-            var vehicles = _vehicleServices.GetVehiclesByCubicCapacity(minCapacity, maxCapacity);
+            var email = User.FindFirst(ClaimTypes.Name)?.Value;
+            var vehicles = _vehicleServices.GetVehiclesByCubicCapacity(minCapacity, maxCapacity, email);
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
@@ -199,12 +228,14 @@ namespace CarchiveAPI.Controllers
         }
 
         [HttpGet("engine/{engine}")]
+        [Authorize(Roles = "Admin, User")]
         [ProducesResponseType(200, Type = typeof(List<VehicleDto>))]
         [ProducesResponseType(400)]
 
         public IActionResult GetVehiclesByEngine(string engine)
         {
-            var vehicles = _vehicleServices.GetVehiclesByEngine(engine);
+            var email = User.FindFirst(ClaimTypes.Name)?.Value;
+            var vehicles = _vehicleServices.GetVehiclesByEngine(engine, email);
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
@@ -213,46 +244,100 @@ namespace CarchiveAPI.Controllers
         }
 
         [HttpPost]
+        [Authorize(Roles = "Admin, User")]
         [ProducesResponseType(201, Type = typeof(VehicleDto))]
         [ProducesResponseType(400)]
 
-        public IActionResult AddVehicle([FromBody] VehicleDto vehicle, int companyId)
+        public IActionResult AddVehicle([FromBody] VehicleDto vehicle)
         {
+            if(vehicle == null)
+            {
+                return BadRequest(ModelState);
+            }
+
+            var email = User.FindFirst(ClaimTypes.Name)?.Value;
+            var findVehicle = _vehicleServices.GetVehiclesByRegistration(vehicle.Registration, email);
+
+            if (findVehicle != null)
+            {
+                ModelState.AddModelError("", "Vehicle already exists");
+                return StatusCode(422, ModelState);
+            }
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
 
-            var newVehicle = _vehicleServices.AddVehicle(vehicle, companyId);
-            return CreatedAtAction("AddVehicle", newVehicle);
+            if (!_vehicleServices.AddVehicle(vehicle, email))
+            {
+                ModelState.AddModelError("", "Something went wrong when saving the vehicle.");
+                return StatusCode(500, ModelState);
+            }
+            return Ok("Successfully created vehicle!");
         }
 
-        [HttpPut]
+        [HttpPut("{vehicleId}")]
+        [Authorize(Roles = "Admin, User")]
         [ProducesResponseType(204)]
         [ProducesResponseType(400)]
 
-        public IActionResult UpdateVehicle([FromBody] VehicleDto vehicle, int companyId)
+        public IActionResult UpdateVehicle(int vehicleId, [FromBody] VehicleDto vehicle)
         {
+            if (vehicle == null)
+            {
+                return BadRequest(ModelState);
+            }
+
+            if (vehicleId != vehicle.Id)
+            {
+                return BadRequest(ModelState);
+            }
+
+            if (!_vehicleServices.CheckIfVehicleExists(vehicleId))
+            {
+                return NotFound();
+            }
+
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
-            _vehicleServices.UpdateVehicle(vehicle, companyId);
-            return NoContent();
+
+            var email = User.FindFirst(ClaimTypes.Name)?.Value;
+            if (!_vehicleServices.UpdateVehicle(vehicle, email))
+            {
+                ModelState.AddModelError("", "Something went wrong when updating the vehicle.");
+                return StatusCode(500, ModelState);
+            }
+
+            return Ok("Successfully updated vehicle!");
         }
 
         [HttpDelete("{id}")]
+        [Authorize(Roles = "Admin, User")]
         [ProducesResponseType(204)]
         [ProducesResponseType(400)]
 
         public IActionResult DeleteVehicle(int id)
         {
+            if (!_vehicleServices.CheckIfVehicleExists(id))
+            {
+                return NotFound();
+            }
+
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
-            _vehicleServices.DeleteVehicle(id);
-            return NoContent();
+
+            var email = User.FindFirst(ClaimTypes.Name)?.Value;
+            if (_vehicleServices.DeleteVehicle(id, email))
+            {
+                ModelState.AddModelError("", "Something went wrong when deleting contact.");
+                return StatusCode(500, ModelState);
+            }
+
+            return Ok("Successfully deleted vehicle!");
         }
     }
 }

@@ -1,6 +1,7 @@
 ﻿using System.Security.Claims;
 using CarchiveAPI.Dto;
 using CarchiveAPI.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace CarchiveAPI.Controllers
@@ -17,11 +18,13 @@ namespace CarchiveAPI.Controllers
         }
 
         [HttpGet]
+        [Authorize(Roles = "Admin, User")]
         [ProducesResponseType(200, Type = typeof(List<OfferDto>))]
 
         public IActionResult GetOffers()
         {
-            var offers = _offerServices.GetOffers();
+            var email = User.FindFirst(ClaimTypes.Name)?.Value;
+            var offers = _offerServices.GetOffers(email);
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
@@ -30,13 +33,15 @@ namespace CarchiveAPI.Controllers
         }
 
         [HttpGet("{offerId}")]
+        [Authorize(Roles = "Admin, User")]
         [ProducesResponseType(200, Type = typeof(OfferDto))]
         [ProducesResponseType(400)]
 
         public IActionResult GetOfferById(string offerId)
         {
             int id = int.Parse(offerId);
-            var offer = _offerServices.GetOfferById(id);
+            var email = User.FindFirst(ClaimTypes.Name)?.Value;
+            var offer = _offerServices.GetOfferById(id, email);
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
@@ -45,6 +50,7 @@ namespace CarchiveAPI.Controllers
         }
 
         [HttpGet("contact/{contactId}")]
+        [Authorize(Roles = "Admin, User")]
         [ProducesResponseType(200, Type = typeof(List<OfferDto>))]
         [ProducesResponseType(400)]
 
@@ -60,6 +66,7 @@ namespace CarchiveAPI.Controllers
         }
 
         [HttpPost]
+        [Authorize(Roles = "Admin, User")]
         [ProducesResponseType(200)]
         [ProducesResponseType(400)]
 
@@ -75,6 +82,7 @@ namespace CarchiveAPI.Controllers
         }
 
         [HttpPut]
+        [Authorize(Roles = "Admin, User")]
         [ProducesResponseType(204)]
         [ProducesResponseType(400)]
 
@@ -90,12 +98,14 @@ namespace CarchiveAPI.Controllers
         }
 
         [HttpDelete("{id}")]
+        [Authorize(Roles = "Admin, User")]
         [ProducesResponseType(204)]
         [ProducesResponseType(400)]
 
         public IActionResult DeleteOffer(int id)
         {
-            _offerServices.DeleteOffer(id);
+            var email = User.FindFirst(ClaimTypes.Name)?.Value;
+            _offerServices.DeleteOffer(id, email);
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);

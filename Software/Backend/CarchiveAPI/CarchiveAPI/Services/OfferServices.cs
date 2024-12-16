@@ -30,7 +30,7 @@ namespace CarchiveAPI.Services
             var companyId = user.Company.Id;
             return companyId;
         }
-        public ICollection<OfferDto> GetOffers()
+        public ICollection<OfferDto> GetOffers(string email)
         {
             var offers = _offerRepository.GetAll();
             return _mapper.Map<ICollection<OfferDto>>(offers);
@@ -43,7 +43,7 @@ namespace CarchiveAPI.Services
             return _mapper.Map<ICollection<OfferDto>>(offers);
         }
 
-        public OfferDto GetOfferById(int id)
+        public OfferDto GetOfferById(int id, string email)
         {
             var offer = _offerRepository.GetOfferById(id);
             return _mapper.Map<OfferDto>(offer);
@@ -61,7 +61,7 @@ namespace CarchiveAPI.Services
             
             foreach (var vehicleId in vehiclesId)
             {
-                var vehicle = _vehicleRepository.GetVehicleById(vehicleId).ToList();
+                var vehicle = _vehicleRepository.GetVehicleById(vehicleId, companyId).ToList();
                 OfferVehicle offerVehicle = new OfferVehicle
                 {
                     OfferId = offer.Id,
@@ -86,7 +86,7 @@ namespace CarchiveAPI.Services
             foreach (var vehicleId in vehiclesId)
             {
                 _offerVehicleRepository.Delete(offer.Id);
-                var vehicle = _vehicleRepository.GetVehicleById(vehicleId).ToList();
+                var vehicle = _vehicleRepository.GetVehicleById(vehicleId, companyId).ToList();
                 OfferVehicle offerVehicle = new OfferVehicle
                 {
                     OfferId = offer.Id,
@@ -98,8 +98,9 @@ namespace CarchiveAPI.Services
             return result;
         }
 
-        public bool DeleteOffer(int id)
+        public bool DeleteOffer(int id, string email)
         {
+            int companyId = GetCompanyId(email);
             var offer = _offerRepository.GetOfferById(id);
             return _offerRepository.Delete(offer);
         }

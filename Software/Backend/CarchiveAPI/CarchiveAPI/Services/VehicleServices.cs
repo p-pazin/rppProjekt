@@ -10,124 +10,148 @@ namespace CarchiveAPI.Services
     {
         private readonly VehicleRepository _vehicleRepository;
         private readonly CompanyRepository _companyRepository;
+        private readonly UserServices _userServices;
         private readonly IMapper _mapper;
 
-        public VehicleServices(VehicleRepository vehicleRepository, IMapper mapper, CompanyRepository companyRepository)
+        public VehicleServices(VehicleRepository vehicleRepository, IMapper mapper, CompanyRepository companyRepository, UserServices userServices)
         {
             _vehicleRepository = vehicleRepository;
             _mapper = mapper;
             _companyRepository = companyRepository;
+            _userServices = userServices;
         }
 
-        public ICollection<VehicleDto> GetAll()
+        public ICollection<VehicleDto> GetAll(string email)
         {
-            var vehicles = _vehicleRepository.GetAll();
+            int companyId = _userServices.GetCompanyId(email);
+            var vehicles = _vehicleRepository.GetAll(companyId);
             return _mapper.Map<ICollection<VehicleDto>>(vehicles);
         }
 
-        public ICollection<VehicleDto> GetVehicleById(int id)
+        public ICollection<VehicleDto> GetVehicleById(int id, string email)
         {
-            var vehicle = _vehicleRepository.GetVehicleById(id);
+            int companyId = _userServices.GetCompanyId(email);
+            var vehicle = _vehicleRepository.GetVehicleById(id, companyId);
             return _mapper.Map<ICollection<VehicleDto>>(vehicle);
         }
 
-        public ICollection<VehicleDto> GetVehiclesByModel(string model)
+        public ICollection<VehicleDto> GetVehiclesByModel(string model, string email)
         {
-            var vehicles = _vehicleRepository.GetVehiclesByModel(model);
+            int companyId = _userServices.GetCompanyId(email);
+            var vehicles = _vehicleRepository.GetVehiclesByModel(model, companyId);
             return _mapper.Map<ICollection<VehicleDto>>(vehicles);
         }
 
-        public ICollection<VehicleDto> GetVehiclesByRegistration(string reg)
+        public ICollection<VehicleDto> GetVehiclesByRegistration(string reg, string email)
         {
-            var vehicles = _vehicleRepository.GetVehiclesByRegistration(reg);
+            int companyId = _userServices.GetCompanyId(email);
+            var vehicles = _vehicleRepository.GetVehiclesByRegistration(reg, companyId);
             return _mapper.Map<ICollection<VehicleDto>>(vehicles);
         }
 
-        public ICollection<VehicleDto> GetVehiclesByType(string type)
+        public ICollection<VehicleDto> GetVehiclesByType(string type, string email)
         {
-            var vehicles = _vehicleRepository.GetVehiclesByType(type);
+            int companyId = _userServices.GetCompanyId(email);
+            var vehicles = _vehicleRepository.GetVehiclesByType(type, companyId);
             return _mapper.Map<ICollection<VehicleDto>>(vehicles);
         }
 
-        public ICollection<VehicleDto> GetVehiclesByColor(string color)
+        public ICollection<VehicleDto> GetVehiclesByColor(string color, string email)
         {
-            var vehicles = _vehicleRepository.GetVehiclesByColor(color);
+            int companyId = _userServices.GetCompanyId(email);
+            var vehicles = _vehicleRepository.GetVehiclesByColor(color, companyId);
             return _mapper.Map<ICollection<VehicleDto>>(vehicles);
         }
 
-        public ICollection<VehicleDto> GetVehiclesByMileage(int minMileage, int maxMileage)
+        public ICollection<VehicleDto> GetVehiclesByMileage(int minMileage, int maxMileage, string email)
         {
-            var vehicles = _vehicleRepository.GetVehiclesByMileage(minMileage, maxMileage);
+            int companyId = _userServices.GetCompanyId(email);
+            var vehicles = _vehicleRepository.GetVehiclesByMileage(minMileage, maxMileage, companyId);
             return _mapper.Map<ICollection<VehicleDto>>(vehicles);
         }
 
-        public ICollection<VehicleDto> GetVehiclesByTransType(string transmissionType)
+        public ICollection<VehicleDto> GetVehiclesByTransType(string transmissionType, string email)
         {
-            var vehicles = _vehicleRepository.GetVehiclesByTransType(transmissionType);
+            int companyId = _userServices.GetCompanyId(email);
+            var vehicles = _vehicleRepository.GetVehiclesByTransType(transmissionType, companyId);
             return _mapper.Map<ICollection<VehicleDto>>(vehicles);
         }
 
-        public ICollection<VehicleDto> GetVehiclesByPrice(double minPrice, double maxPrice)
+        public ICollection<VehicleDto> GetVehiclesByPrice(double minPrice, double maxPrice, string email)
         {
-            var vehicles = _vehicleRepository.GetVehiclesByPrice(minPrice, maxPrice);
+            int companyId = _userServices.GetCompanyId(email);
+            var vehicles = _vehicleRepository.GetVehiclesByPrice(minPrice, maxPrice, companyId);
             return _mapper.Map<ICollection<VehicleDto>>(vehicles);
         }
 
-        public ICollection<VehicleDto> GetVehiclesByCondition(string condition)
+        public ICollection<VehicleDto> GetVehiclesByCondition(string condition, string email)
         {
-            var vehicles = _vehicleRepository.GetVehiclesByCondition(condition);
+            int companyId = _userServices.GetCompanyId(email);
+            var vehicles = _vehicleRepository.GetVehiclesByCondition(condition, companyId);
             return _mapper.Map<ICollection<VehicleDto>>(vehicles);
         }
         
-        public ICollection<VehicleDto> GetVehiclesByProdYear(int minYear, int maxYear)
+        public ICollection<VehicleDto> GetVehiclesByProdYear(int minYear, int maxYear, string email)
         {
-            var vehicles = _vehicleRepository.GetVehiclesByProdYear(minYear, maxYear);
+            int companyId = _userServices.GetCompanyId(email);
+            var vehicles = _vehicleRepository.GetVehiclesByProdYear(minYear, maxYear, companyId);
             return _mapper.Map<ICollection<VehicleDto>>(vehicles);
         }
 
-        public ICollection<VehicleDto> GetVehiclesByEngPower(int minPower, int maxPower)
+        public ICollection<VehicleDto> GetVehiclesByEngPower(int minPower, int maxPower, string email)
         {
-            var vehicles = _vehicleRepository.GetVehiclesByEngPower(minPower, maxPower);
+            int companyId = _userServices.GetCompanyId(email);
+            var vehicles = _vehicleRepository.GetVehiclesByEngPower(minPower, maxPower, companyId);
             return _mapper.Map<ICollection<VehicleDto>>(vehicles);
         }
 
-        public ICollection<VehicleDto> GetVehiclesByCubicCapacity(double minCapacity, double maxCapacity)
+        public ICollection<VehicleDto> GetVehiclesByCubicCapacity(double minCapacity, double maxCapacity, string email)
         {
-            var vehicles = _vehicleRepository.GetVehiclesByCubCapacity(minCapacity, maxCapacity);
+            int companyId = _userServices.GetCompanyId(email);
+            var vehicles = _vehicleRepository.GetVehiclesByCubCapacity(minCapacity, maxCapacity, companyId);
             return _mapper.Map<ICollection<VehicleDto>>(vehicles);
         }
 
-        public ICollection<VehicleDto> GetVehiclesByEngine(string engine)
+        public ICollection<VehicleDto> GetVehiclesByEngine(string engine, string email)
         {
-            var vehicles = _vehicleRepository.GetVehiclesByEngine(engine);
+            int companyId = _userServices.GetCompanyId(email);
+            var vehicles = _vehicleRepository.GetVehiclesByEngine(engine, companyId);
             return _mapper.Map<ICollection<VehicleDto>>(vehicles);
         }
 
-        public ICollection<VehicleDto> GetVehicleByState(int state)
+        public ICollection<VehicleDto> GetVehicleByState(int state, string email)
         {
-            var vehicles = _vehicleRepository.GetVehiclesByState(state);
+            int companyId = _userServices.GetCompanyId(email);
+            var vehicles = _vehicleRepository.GetVehiclesByState(state, companyId);
             return _mapper.Map<ICollection<VehicleDto>>(vehicles);
         }
 
-        public bool AddVehicle(VehicleDto vehicleDto, int companyId)
+        public bool AddVehicle(VehicleDto vehicleDto, string email)
         {
+            int companyId = _userServices.GetCompanyId(email);
             var vehicle = _mapper.Map<Vehicle>(vehicleDto);
             vehicle.Company = _companyRepository.GetCompanies().Where(c => c.Id == companyId).FirstOrDefault();
             return _vehicleRepository.AddVehicle(vehicle);
         }
 
-        public bool UpdateVehicle(VehicleDto vehicleDto, int companyId)
+        public bool UpdateVehicle(VehicleDto vehicleDto, string email)
         {
+            int companyId = _userServices.GetCompanyId(email);
             var vehicle = _mapper.Map<Vehicle>(vehicleDto);
             vehicle.Company = _companyRepository.GetCompanies().Where(c => c.Id == companyId).FirstOrDefault();
             return _vehicleRepository.UpdateVehicle(vehicle);
         }
 
-        public bool DeleteVehicle(int id)
+        public bool DeleteVehicle(int id, string email)
         {
-            var vehicleDto = GetVehicleById(id).FirstOrDefault();
+            var vehicleDto = GetVehicleById(id, email).FirstOrDefault();
             var vehicle = _mapper.Map<Vehicle>(vehicleDto);
             return _vehicleRepository.DeleteVehicle(vehicle);
+        }
+
+        public bool CheckIfVehicleExists(int id)
+        {
+            return _vehicleRepository.CheckIfVehicleExists(id);
         }
     }
 }

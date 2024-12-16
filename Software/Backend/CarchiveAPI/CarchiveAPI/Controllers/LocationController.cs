@@ -1,7 +1,9 @@
 ﻿using AutoMapper;
 using CarchiveAPI.Dto;
 using CarchiveAPI.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System.Security.Claims;
 
 namespace CarchiveAPI.Controllers
 {
@@ -20,11 +22,13 @@ namespace CarchiveAPI.Controllers
         }
 
         [HttpGet("{vehicleId}")]
+        [Authorize(Roles = "Admin, User")]
         [ProducesResponseType(200, Type = typeof(LocationDto))]
         [ProducesResponseType(400)]
 
         public IActionResult GetLocationForVehicle(int vehicleId)
         {
+            var email = User.FindFirst(ClaimTypes.Name)?.Value;
             var location = _locationServices.GetLocationForVehicle(vehicleId);
             if (!ModelState.IsValid)
             {
@@ -34,10 +38,12 @@ namespace CarchiveAPI.Controllers
         }
 
         [HttpGet]
+        [Authorize(Roles = "Admin, User")]
         [ProducesResponseType(200, Type = typeof(List<LocationDto>))]
         public IActionResult GetAll()
         {
-            var locations = _locationServices.GetAll();
+            var email = User.FindFirst(ClaimTypes.Name)?.Value;
+            var locations = _locationServices.GetAll(email);
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
