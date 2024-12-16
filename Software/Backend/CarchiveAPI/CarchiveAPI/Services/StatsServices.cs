@@ -28,5 +28,12 @@ namespace CarchiveAPI.Services
             int activeYear = DateTime.Now.Year;
             return _statsRepository.GetContactCreationStats(companyId, activeYear);
         }
+
+        public YearlyInfoDto GetInvoiceCreationStats(string email)
+        {
+            int companyId = _userServices.GetCompanyId(email);
+            int activeYear = DateTime.Now.Year;
+            return _statsRepository.GetInvoiceCreationStats(companyId, activeYear);
+        }
     }
 }

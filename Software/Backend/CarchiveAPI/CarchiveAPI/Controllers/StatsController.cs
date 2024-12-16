@@ -48,5 +48,21 @@ namespace CarchiveAPI.Controllers
             }
             return Ok(contactCreationStats);
         }
+
+        [HttpGet("/InvoiceCreation")]
+        [Authorize(Roles = "Admin, User")]
+        [ProducesResponseType(200, Type = typeof(YearlyInfoDto))]
+
+        public IActionResult GetInvoiceCreationStats()
+        {
+            var email = User.FindFirst(ClaimTypes.Name)?.Value;
+            var invoiceCreationStats = _statsServices.GetInvoiceCreationStats(email);
+
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+            return Ok(invoiceCreationStats);
+        }
     }
 }

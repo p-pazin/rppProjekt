@@ -21,7 +21,7 @@ namespace CarchiveAPI.Repositories
             return stats;
         }
 
-        internal YearlyInfoDto GetContactCreationStats(int companyId, int activeYear)
+        public YearlyInfoDto GetContactCreationStats(int companyId, int activeYear)
         {
             var yearlyInfo = new YearlyInfoDto();
             yearlyInfo.Year = activeYear;
@@ -49,6 +49,36 @@ namespace CarchiveAPI.Repositories
             c.DateOfCreation.Year == activeYear).Count();
             yearlyInfo.Dec = _context.Contacts.Where(c => c.Company.Id == companyId && c.DateOfCreation.Month == 12 &&
             c.DateOfCreation.Year == activeYear).Count();
+            return yearlyInfo;
+        }
+        public YearlyInfoDto GetInvoiceCreationStats(int companyId, int activeYear)
+        {
+            var yearlyInfo = new YearlyInfoDto();
+            yearlyInfo.Year = activeYear;
+            yearlyInfo.Jan = _context.Invoices.Where(i => i.Contract.Company.Id == companyId && i.DateOfCreation.Month == 1 
+            && i.DateOfCreation.Year == activeYear).Count();
+            yearlyInfo.Feb = _context.Invoices.Where(i => i.Contract.Company.Id == companyId && i.DateOfCreation.Month == 2
+            && i.DateOfCreation.Year == activeYear).Count();
+            yearlyInfo.Mar = _context.Invoices.Where(i => i.Contract.Company.Id == companyId && i.DateOfCreation.Month == 3
+            && i.DateOfCreation.Year == activeYear).Count();
+            yearlyInfo.Apr = _context.Invoices.Where(i => i.Contract.Company.Id == companyId && i.DateOfCreation.Month == 4
+            && i.DateOfCreation.Year == activeYear).Count();
+            yearlyInfo.May = _context.Invoices.Where(i => i.Contract.Company.Id == companyId && i.DateOfCreation.Month == 5
+            && i.DateOfCreation.Year == activeYear).Count();
+            yearlyInfo.Jun = _context.Invoices.Where(i => i.Contract.Company.Id == companyId && i.DateOfCreation.Month == 6
+            && i.DateOfCreation.Year == activeYear).Count();
+            yearlyInfo.Jul = _context.Invoices.Where(i => i.Contract.Company.Id == companyId && i.DateOfCreation.Month == 7
+            && i.DateOfCreation.Year == activeYear).Count();
+            yearlyInfo.Aug = _context.Invoices.Where(i => i.Contract.Company.Id == companyId && i.DateOfCreation.Month == 8
+            && i.DateOfCreation.Year == activeYear).Count();
+            yearlyInfo.Sep = _context.Invoices.Where(i => i.Contract.Company.Id == companyId && i.DateOfCreation.Month == 9
+            && i.DateOfCreation.Year == activeYear).Count();
+            yearlyInfo.Oct = _context.Invoices.Where(i => i.Contract.Company.Id == companyId && i.DateOfCreation.Month == 10
+            && i.DateOfCreation.Year == activeYear).Count();
+            yearlyInfo.Nov = _context.Invoices.Where(i => i.Contract.Company.Id == companyId && i.DateOfCreation.Month == 11
+            && i.DateOfCreation.Year == activeYear).Count();
+            yearlyInfo.Dec = _context.Invoices.Where(i => i.Contract.Company.Id == companyId && i.DateOfCreation.Month == 12
+            && i.DateOfCreation.Year == activeYear).Count();
             return yearlyInfo;
         }
     }
