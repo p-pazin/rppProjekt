@@ -17,7 +17,12 @@ namespace CarchiveAPI.Services
         private UserRepository _userRepository;
         private readonly IMapper _mapper;
 
-
+        public int GetCompanyId(string email)
+        {
+            var user = _userRepository.GetUserAndCompanyByEmail(email);
+            var companyId = user.Company.Id;
+            return companyId;
+        }
         public UserServices(DataContext context, IMapper mapper)
         {
             this._context = context;

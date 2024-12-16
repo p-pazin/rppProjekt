@@ -135,7 +135,6 @@ namespace CarchiveAPI.Controllers
 
             var email = User.FindFirst(ClaimTypes.Name)?.Value;
             var contact = _contactService.GetContactByPin(contactCreate.Pin, email);
-            int companyId = _contactService.GetCompanyId(email);
 
             if (contact != null)
             {
@@ -146,7 +145,7 @@ namespace CarchiveAPI.Controllers
             {
                 return BadRequest(ModelState);
             }
-            if(!_contactService.CreateContact(contactCreate, companyId))
+            if(!_contactService.CreateContact(contactCreate, email))
             {
                 ModelState.AddModelError("", "Something went wrong when saving contact.");
                 return StatusCode(500, ModelState);
@@ -180,9 +179,8 @@ namespace CarchiveAPI.Controllers
             }
 
             var email = User.FindFirst(ClaimTypes.Name)?.Value;
-            int companyId = _contactService.GetCompanyId(email);
 
-            if (!_contactService.UpdateContact(contactUpdate, companyId))
+            if (!_contactService.UpdateContact(contactUpdate, email))
             {
                 ModelState.AddModelError("", "Something went wrong when updating contact.");
                 return StatusCode(500, ModelState);
