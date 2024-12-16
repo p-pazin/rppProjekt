@@ -15,19 +15,22 @@ namespace CarchiveAPI.Services
     {
         private DataContext _context;
         private UserRepository _userRepository;
+        private CompanyServices _companyServices;
         private readonly IMapper _mapper;
 
 
-        public UserServices(DataContext context, IMapper mapper)
+        public UserServices(DataContext context, CompanyServices companyServices, IMapper mapper)
         {
             this._context = context;
             this._userRepository = new UserRepository(context);
+            this._companyServices = companyServices;
             this._mapper = mapper;
         }
 
-        public ICollection<UserDto> GetUsers()
+        public ICollection<UserDto> GetUserInfo(string email)
         {
-            var usersDto = _mapper.Map<List<UserDto>>(_userRepository.GetAll());
+            var user = _userRepository.GetUserAndCompanyByEmail(email);
+            var usersDto = _mapper.Map<List<UserDto>>(user.Company.Users);
             return usersDto;
         }
 
@@ -74,6 +77,10 @@ namespace CarchiveAPI.Services
         public string Login(string email, string password)
         {
             var user = _context.Users.Include(u => u.Role).FirstOrDefault(u => u.Email == email);
+            if(user.Role.Name == "Inactive")
+            {
+                return null;
+            }
             if (user == null || !BCrypt.Net.BCrypt.Verify(password, user.Password))
             {
                 return null;
@@ -100,6 +107,32 @@ namespace CarchiveAPI.Services
 
             var token = tokenHandler.CreateToken(tokenDescriptor);
             return tokenHandler.WriteToken(token);
+        }
+
+        public bool ChangeUserInfo(UserDto UserInfo, string adminEmail)
+        {
+            var admin = _userRepository.GetUserAndCompanyByEmail(adminEmail);
+            var user = _userRepository.GetUserById(UserInfo.Id);
+            if (admin == null || admin.Company == null || user == null)
+            {
+                return false;
+            }
+            user.FirstName = UserInfo.FirstName;
+            user.LastName = UserInfo.LastName;
+            user.Email = UserInfo.Email;
+            return _userRepository.UpdateUser(user);
+        }
+
+        public bool DeleteUser(UserDto userDto, string adminEmail)
+        {
+            var admin = _userRepository.GetUserAndCompanyByEmail(adminEmail);
+            var user = _userRepository.GetUserByIdAndCheckCompany(userDto.Id, admin.Company.Id);
+            if (admin == null || admin.Company == null || user == null)
+            {
+                return false;
+            }
+            user.Role = _userRepository.getInactiveRole();
+            return _userRepository.UpdateUser(user); ;
         }
     }
 }

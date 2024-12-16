@@ -46,6 +46,21 @@ namespace CarchiveAPI.Controllers
             return Ok(companies);
         }
 
+        [HttpGet("users")]
+        [Authorize(Roles = "Admin")]
+        [ProducesResponseType(200, Type = typeof(ICollection<UserDto>))]
+        public IActionResult GetWorkers()
+        {
+            var email = User.FindFirst(ClaimTypes.Name)?.Value;
+            var users = _companyServices.GetCompanyWorkers(email);
+
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+            return Ok(users);
+        }
+
         [HttpPost]
         [ProducesResponseType(204)]
         public IActionResult AddCompany([FromBody] NewCompanyDto newComapany)

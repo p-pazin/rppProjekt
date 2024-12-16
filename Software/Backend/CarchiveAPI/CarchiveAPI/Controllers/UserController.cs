@@ -17,11 +17,12 @@ namespace CarchiveAPI.Controllers
         }
 
         [HttpGet]
-        [Authorize(Roles = "Admin")]
+        [Authorize(Roles = "Admin, User")]
         [ProducesResponseType(200, Type = typeof(ICollection<UserDto>))]
-        public IActionResult GetUsers()
+        public IActionResult GetUserInfo()
         {
-            var users = _userServices.GetUsers();
+            var email = User.FindFirst(ClaimTypes.Name)?.Value;
+            var users = _userServices.GetUserInfo(email);
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
@@ -47,6 +48,46 @@ namespace CarchiveAPI.Controllers
         {
             var adminEmail = User.FindFirst(ClaimTypes.Name)?.Value;
             bool success = _userServices.AddNewUser(newUserDto, adminEmail);
+
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            if (!success)
+            {
+                return BadRequest("Failed to add user. Ensure the email is unique and the admin has a valid company.");
+            }
+
+            return Ok();
+        }
+
+        [HttpPut("update")]
+        [Authorize(Roles = "Admin")]
+        public IActionResult ChangeUserInfo([FromBody] UserDto UserDto)
+        {
+            var adminEmail = User.FindFirst(ClaimTypes.Name)?.Value;
+            bool success = _userServices.ChangeUserInfo(UserDto, adminEmail);
+
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            if (!success)
+            {
+                return BadRequest("Failed to edit user.");
+            }
+
+            return Ok();
+        }
+
+        [HttpDelete("delete")]
+        [Authorize(Roles = "Admin")]
+        public IActionResult DeleteUser([FromBody] UserDto userDto)
+        {
+            var adminEmail = User.FindFirst(ClaimTypes.Name)?.Value;
+            bool success = _userServices.DeleteUser(userDto, adminEmail);
 
             if (!ModelState.IsValid)
             {

@@ -30,7 +30,6 @@ namespace CarchiveAPI.Services
         public CompanyDto GetCompany(string email)
         {
             var user = _userRepository.GetUserAndCompanyByEmail(email);
-            var contacts = user.Company.Contacts;
             var companyDto = _mapper.Map<CompanyDto>(user.Company);
             return companyDto;
         }
@@ -38,6 +37,22 @@ namespace CarchiveAPI.Services
         public bool CompanyExists(string companyPin)
         {
             return _companyRepository.CompanyExists(companyPin);
+        }
+
+        public int GetCompanyId(string email)
+        {
+            var user = _userRepository.GetUserAndCompanyByEmail(email);
+            var companyId = user.Company.Id;
+            return companyId;
+        }
+
+        public ICollection<UserDto> GetCompanyWorkers(string email)
+        {
+            var admin = _userRepository.GetUserAndCompanyByEmail(email);
+            Company company = admin.Company;
+            admin.Company.Users = _companyRepository.GetCompanyWorkers(company);
+            var usersDto = _mapper.Map<ICollection<UserDto>>(admin.Company.Users);
+            return usersDto;
         }
 
         public bool AddCompany(NewCompanyDto newCompanyDto)

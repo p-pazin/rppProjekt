@@ -19,6 +19,10 @@ namespace CarchiveAPI.Repositories
         {
             return _context.Users.Find(id);
         }
+        public User GetUserByIdAndCheckCompany(int userId, int companyId)
+        {
+            return _context.Users.Where(u => u.Id == userId && u.Company.Id == companyId).FirstOrDefault();
+        }       
         public User GetByEmail(string email)
         {
             return _context.Users.FirstOrDefault(u => u.Email == email);
@@ -28,7 +32,6 @@ namespace CarchiveAPI.Repositories
         {
             return _context.Users.Include(u => u.Role).FirstOrDefault(u => u.Email == email);
         }
-
 
         public User GetUserAndCompanyByEmail(string email)
         {
@@ -41,6 +44,10 @@ namespace CarchiveAPI.Repositories
         public Role getUserRole() { 
             return _context.Roles.FirstOrDefault(r => r.Name == "User"); 
         }
+        public Role getInactiveRole()
+        {
+            return _context.Roles.FirstOrDefault(r => r.Name == "Inactive");
+        }
         public bool AddUser(User user)
         {
             if (UserExists(user.Email))
@@ -48,6 +55,16 @@ namespace CarchiveAPI.Repositories
                 return false;
             }
             _context.Users.Add(user);
+            return Save();
+        }
+        public bool UpdateUser(User user)
+        {
+            _context.Users.Update(user);
+            return Save();
+        }
+        public bool DeleteUser(User user)
+        {
+            _context.Users.Remove(user);
             return Save();
         }
         public bool Save()

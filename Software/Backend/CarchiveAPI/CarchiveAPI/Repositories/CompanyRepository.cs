@@ -1,6 +1,7 @@
 ﻿using System.Diagnostics;
 using CarchiveAPI.Data;
 using CarchiveAPI.Models;
+using Microsoft.EntityFrameworkCore;
 using static Microsoft.EntityFrameworkCore.DbLoggerCategory.Database;
 
 namespace CarchiveAPI.Repositories
@@ -25,6 +26,11 @@ namespace CarchiveAPI.Repositories
         public Company GetCompanyById(int id)
         {
             return _context.Companies.Find(id);
+        }
+
+        public ICollection<User> GetCompanyWorkers(Company company)
+        {
+            return _context.Users.Where(u => u.Company == company).ToList();
         }
 
         public bool CompanyExists(string name)
