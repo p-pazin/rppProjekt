@@ -12,24 +12,24 @@ namespace CarchiveAPI.Repositories
             this._context = context;
         }
 
-        public ICollection<Contact> GetContacts() { 
-            return _context.Contacts.ToList();
+        public ICollection<Contact> GetContacts(int companyId) { 
+            return _context.Contacts.Where(c => c.Company.Id == companyId).ToList();
         }
-        public Contact GetContact(int contactId) {
-            return _context.Contacts.Where(c => c.Id == contactId).FirstOrDefault();
+        public Contact GetContact(int contactId, int companyId) {
+            return _context.Contacts.Where(c => c.Id == contactId && c.Company.Id == companyId).FirstOrDefault();
         }
         public bool ContactExists(int contactId) { 
             return _context.Contacts.Any(c => c.Id == contactId);
         }
-        public Company GetCompanyByContact(int contactId) {
-            return _context.Contacts.Where(c => c.Id == contactId).Select(c => c.Company).FirstOrDefault();
+        public Company GetCompanyByContact(int contactId, int companyId) {
+            return _context.Contacts.Where(c => c.Id == contactId && c.Company.Id == companyId).Select(c => c.Company).FirstOrDefault();
         }
-        public ICollection<Offer> GetOffersByContact(int contactId) { 
-            return _context.Offers.Where(o => o.Contact.Id == contactId).ToList();
+        public ICollection<Offer> GetOffersByContact(int contactId, int companyId) { 
+            return _context.Offers.Where(o => o.Contact.Id == contactId && o.User.Company.Id == companyId).ToList();
         }
-        public ICollection<Contract> GetContractsByContact(int contactId)
+        public ICollection<Contract> GetContractsByContact(int contactId, int companyId)
         {
-            return _context.Contracts.Where(c => c.Contact.Id == contactId).ToList();
+            return _context.Contracts.Where(c => c.Contact.Id == contactId && c.Company.Id == companyId).ToList();
         }
         public bool CreateContact(Contact contact)
         {

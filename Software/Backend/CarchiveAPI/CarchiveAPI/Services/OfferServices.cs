@@ -24,14 +24,21 @@ namespace CarchiveAPI.Services
             _offerVehicleRepository = offerVehicleRepository;
             _mapper = mapper;
         }
+        public int GetCompanyId(string email)
+        {
+            var user = _userRepository.GetUserAndCompanyByEmail(email);
+            var companyId = user.Company.Id;
+            return companyId;
+        }
         public ICollection<OfferDto> GetOffers()
         {
             var offers = _offerRepository.GetAll();
             return _mapper.Map<ICollection<OfferDto>>(offers);
         }
-        public ICollection<OfferDto> GetOffersByContact(int contactId)
+        public ICollection<OfferDto> GetOffersByContact(int contactId, string email)
         {
-            var contact = _contactRepository.GetContact(contactId);
+            int companyId = GetCompanyId(email);
+            var contact = _contactRepository.GetContact(contactId, companyId);
             var offers = _offerRepository.GetOffersByContact(contact);
             return _mapper.Map<ICollection<OfferDto>>(offers);
         }
@@ -42,11 +49,12 @@ namespace CarchiveAPI.Services
             return _mapper.Map<OfferDto>(offer);
         }
 
-        public bool AddOffer(OfferDto offerDto, int userId, int contactId, List<int> vehiclesId)
+        public bool AddOffer(OfferDto offerDto, int userId, int contactId, List<int> vehiclesId, string email)
         {
             var offer = _mapper.Map<Offer>(offerDto);
+            int companyId = GetCompanyId(email);
             offer.User = _userRepository.GetAll().Where(s => s.Id == userId).FirstOrDefault();
-            offer.Contact = _contactRepository.GetContact(contactId);
+            offer.Contact = _contactRepository.GetContact(contactId, companyId);
             _offerRepository.Add(offer);
             _offerRepository.Save();
             bool result = false;
@@ -65,11 +73,12 @@ namespace CarchiveAPI.Services
             return result;
         }
 
-        public bool UpdateOffer(OfferDto offerDto, int userId, int contactId, List<int> vehiclesId)
+        public bool UpdateOffer(OfferDto offerDto, int userId, int contactId, List<int> vehiclesId, string email)
         {
             var offer = _mapper.Map<Offer>(offerDto);
+            int companyId = GetCompanyId(email);
             offer.User = _userRepository.GetAll().Where(s => s.Id == userId).FirstOrDefault();
-            offer.Contact = _contactRepository.GetContact(contactId);
+            offer.Contact = _contactRepository.GetContact(contactId, companyId);
             
             _offerRepository.Update(offer);
             bool result = false;
