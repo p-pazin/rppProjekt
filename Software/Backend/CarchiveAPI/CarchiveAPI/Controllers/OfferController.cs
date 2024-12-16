@@ -32,8 +32,9 @@ namespace CarchiveAPI.Controllers
         [ProducesResponseType(200, Type = typeof(OfferDto))]
         [ProducesResponseType(400)]
 
-        public IActionResult GetOfferById(int id)
+        public IActionResult GetOfferById(string offerId)
         {
+            int id = int.Parse(offerId);
             var offer = _offerServices.GetOfferById(id);
             if (!ModelState.IsValid)
             {

@@ -32,9 +32,10 @@ namespace CarchiveAPI.Controllers
         [ProducesResponseType(200, Type = typeof(VehicleDto))]
         [ProducesResponseType(400)]
 
-        public IActionResult GetVehicleById(int id)
+        public IActionResult GetVehicleById(string vehicleId)
         {
-            var vehicle = _vehicleServices.GetVehicleById(id);
+            int Id = int.Parse(vehicleId);
+            var vehicle = _vehicleServices.GetVehicleById(Id);
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
