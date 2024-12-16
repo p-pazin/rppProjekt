@@ -7,21 +7,21 @@ namespace CarchiveAPI.Services
     public class LocationServices
     {
         private readonly LocationRepository _locationRepository;
-        private readonly UserServices _userServices;
+        private readonly CompanyServices _companyServices;
         private readonly VehicleRepository _vehicleRepository;
         private readonly IMapper _mapper;
 
-        public LocationServices(LocationRepository locationRepository, IMapper mapper, UserServices userServices, VehicleRepository vehicleRepository)
+        public LocationServices(LocationRepository locationRepository, IMapper mapper, CompanyServices companyServices, VehicleRepository vehicleRepository)
         {
             _locationRepository = locationRepository;
             _vehicleRepository = vehicleRepository;
-            _userServices = userServices;
+            _companyServices = companyServices;
             _mapper = mapper;
         }
 
         public List<LocationDto> GetAll(string email)
         {
-            var companyId = _userServices.GetCompanyId(email);
+            var companyId = _companyServices.GetCompanyId(email);
             var locations = _locationRepository.GetAll();
             foreach(var location in locations)
             {

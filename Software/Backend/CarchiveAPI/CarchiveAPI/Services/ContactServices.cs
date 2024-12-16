@@ -11,21 +11,21 @@ namespace CarchiveAPI.Services
         private readonly ContactRepository _contactRepository;
         private readonly CompanyRepository _companyRepository;
         private readonly UserRepository _userRepository;
-        private readonly UserServices _userServices;
+        private readonly CompanyServices _companyServices;
         private readonly IMapper _mapper;
         public ContactServices(ContactRepository contactRepository, CompanyRepository companyRepository, 
-            UserRepository userRepository, UserServices userServices, IMapper mapper)
+            UserRepository userRepository, CompanyServices companyServices, IMapper mapper)
         {
             this._contactRepository = contactRepository;
             this._companyRepository = companyRepository;
             this._userRepository = userRepository;
-            this._userServices = userServices;
+            this._companyServices = companyServices;
             this._mapper = mapper;
         }
 
         public ICollection<ContactDto> GetContacts(string email)
         {
-            int companyId = _userServices.GetCompanyId(email);
+            int companyId = _companyServices.GetCompanyId(email);
             var contacts = _contactRepository.GetContacts(companyId);
             return _mapper.Map<List<ContactDto>>(contacts);
         }
@@ -35,7 +35,7 @@ namespace CarchiveAPI.Services
         }
         public Contact GetContact(int contactId, string email)
         {
-            int companyId = _userServices.GetCompanyId(email);
+            int companyId = _companyServices.GetCompanyId(email);
             return _contactRepository.GetContact(contactId, companyId);
         }
         public ContactDto MapContact(Contact contact)
@@ -44,30 +44,30 @@ namespace CarchiveAPI.Services
         }
         public CompanyDto GetCompanyByContact(int contactId, string email)
         {
-            int companyId = _userServices.GetCompanyId(email);
+            int companyId = _companyServices.GetCompanyId(email);
             var company = _contactRepository.GetCompanyByContact(contactId, companyId);
             return _mapper.Map<CompanyDto>(company);
         }
         public ICollection<OfferDto> GetOffersByContact(int contactId, string email)
         {
-            int companyId = _userServices.GetCompanyId(email);
+            int companyId = _companyServices.GetCompanyId(email);
             var offers = _contactRepository.GetOffersByContact(contactId, companyId);
             return _mapper.Map<List<OfferDto>>(offers);
         }
         public ICollection<ContractDto> GetContractsByContact(int contactId, string email)
         {
-            int companyId = _userServices.GetCompanyId(email);
+            int companyId = _companyServices.GetCompanyId(email);
             var contracts = _contactRepository.GetContractsByContact(contactId, companyId);
             return _mapper.Map<List<ContractDto>>(contracts);
         }
         public Contact GetContactByPin(string contactPin, string email)
         {
-            int companyId = _userServices.GetCompanyId(email);
+            int companyId = _companyServices.GetCompanyId(email);
             return _contactRepository.GetContacts(companyId).Where(c => c.Pin == contactPin).FirstOrDefault();
         }
         public bool CreateContact(ContactDto contactDto, string email)
         {
-            int companyId = _userServices.GetCompanyId(email);
+            int companyId = _companyServices.GetCompanyId(email);
             var contactMap = _mapper.Map<Contact>(contactDto);
             contactMap.Company = _companyRepository.GetCompanies().Where(c => c.Id == companyId).FirstOrDefault();
 
@@ -75,7 +75,7 @@ namespace CarchiveAPI.Services
         }
         public bool UpdateContact(ContactDto contactDto, string email)
         {
-            int companyId = _userServices.GetCompanyId(email);
+            int companyId = _companyServices.GetCompanyId(email);
             var contact = _contactRepository.GetContact(contactDto.Id, companyId);
             if(contact == null)
             {
