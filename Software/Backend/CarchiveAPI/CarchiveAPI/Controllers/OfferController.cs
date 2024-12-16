@@ -1,4 +1,5 @@
-﻿using CarchiveAPI.Dto;
+﻿using System.Security.Claims;
+using CarchiveAPI.Dto;
 using CarchiveAPI.Services;
 using Microsoft.AspNetCore.Mvc;
 
@@ -48,7 +49,8 @@ namespace CarchiveAPI.Controllers
 
         public IActionResult GetOffersByContact(int contactId)
         {
-            var offers = _offerServices.GetOffersByContact(contactId);
+            var email = User.FindFirst(ClaimTypes.Name)?.Value;
+            var offers = _offerServices.GetOffersByContact(contactId, email);
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
@@ -62,7 +64,8 @@ namespace CarchiveAPI.Controllers
 
         public IActionResult AddOffer([FromBody] OfferDto offerDto, int userId, int contactId, [FromQuery] List<int> vehiclesId)
         {
-            var result = _offerServices.AddOffer(offerDto, userId, contactId, vehiclesId);
+            var email = User.FindFirst(ClaimTypes.Name)?.Value;
+            var result = _offerServices.AddOffer(offerDto, userId, contactId, vehiclesId, email);
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
@@ -76,7 +79,8 @@ namespace CarchiveAPI.Controllers
 
         public IActionResult UpdateOffer([FromBody] OfferDto offerDto, int userId, int contactId, [FromQuery] List<int> vehiclesId)
         {
-           _offerServices.UpdateOffer(offerDto, userId, contactId, vehiclesId);
+            var email = User.FindFirst(ClaimTypes.Name)?.Value;
+            _offerServices.UpdateOffer(offerDto, userId, contactId, vehiclesId, email);
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
