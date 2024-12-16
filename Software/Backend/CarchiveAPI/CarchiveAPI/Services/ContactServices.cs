@@ -6,14 +6,14 @@ using CarchiveAPI.Repositories;
 
 namespace CarchiveAPI.Services
 {
-    public class ContactService
+    public class ContactServices
     {
         private readonly ContactRepository _contactRepository;
         private readonly CompanyRepository _companyRepository;
         private readonly UserRepository _userRepository;
         private readonly UserServices _userServices;
         private readonly IMapper _mapper;
-        public ContactService(ContactRepository contactRepository, CompanyRepository companyRepository, 
+        public ContactServices(ContactRepository contactRepository, CompanyRepository companyRepository, 
             UserRepository userRepository, UserServices userServices, IMapper mapper)
         {
             this._contactRepository = contactRepository;

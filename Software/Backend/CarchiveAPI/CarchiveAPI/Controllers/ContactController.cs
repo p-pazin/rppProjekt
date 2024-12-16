@@ -13,9 +13,9 @@ namespace CarchiveAPI.Controllers
     [ApiController]
     public class ContactController : Controller
     {
-        private readonly ContactService _contactService;
+        private readonly ContactServices _contactService;
 
-        public ContactController(ContactService contactService)
+        public ContactController(ContactServices contactService)
         {
             this._contactService = contactService;
         }
