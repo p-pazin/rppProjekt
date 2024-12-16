@@ -25,6 +25,8 @@ builder.Services.AddScoped<OfferVehicleRepository>();
 builder.Services.AddScoped<CompanyServices>();
 builder.Services.AddScoped<UserServices>();
 builder.Services.AddScoped<CompanyRepository>();
+builder.Services.AddScoped<LocationRepository>();
+builder.Services.AddScoped<LocationServices>();
 
 builder.Services.AddControllers().AddJsonOptions(x =>
     x.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles);
