@@ -1,8 +1,10 @@
-﻿using AutoMapper;
+﻿using System.Security.Claims;
+using AutoMapper;
 using CarchiveAPI.Dto;
 using CarchiveAPI.Models;
 using CarchiveAPI.Repositories;
 using CarchiveAPI.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace CarchiveAPI.Controllers
@@ -11,18 +13,20 @@ namespace CarchiveAPI.Controllers
     [ApiController]
     public class ContactController : Controller
     {
-        private readonly ContactService _contactService;
+        private readonly ContactServices _contactService;
 
-        public ContactController(ContactService contactService)
+        public ContactController(ContactServices contactService)
         {
             this._contactService = contactService;
         }
 
         [HttpGet]
+        [Authorize(Roles = "Admin, User")]
         [ProducesResponseType(200, Type = typeof(List<ContactDto>))]
 
         public IActionResult GetContacts() {
-            var contacts = _contactService.GetContacts();
+            var email = User.FindFirst(ClaimTypes.Name)?.Value;
+            var contacts = _contactService.GetContacts(email);
 
             if (!ModelState.IsValid) { 
                 return BadRequest(ModelState);
@@ -31,6 +35,7 @@ namespace CarchiveAPI.Controllers
         }
 
         [HttpGet("{contactId}")]
+        [Authorize(Roles = "Admin, User")]
         [ProducesResponseType(200, Type = typeof(ContactDto))]
         [ProducesResponseType(400)]
 
@@ -40,7 +45,8 @@ namespace CarchiveAPI.Controllers
                 return NotFound();
             }
 
-            var contact = _contactService.GetContact(contactId);
+            var email = User.FindFirst(ClaimTypes.Name)?.Value;
+            var contact = _contactService.GetContact(contactId, email);
 
             if(!ModelState.IsValid)
             {
@@ -50,6 +56,7 @@ namespace CarchiveAPI.Controllers
         }
 
         [HttpGet("company/{contactId}")]
+        [Authorize(Roles = "Admin, User")]
         [ProducesResponseType(200, Type = typeof(CompanyDto))]
         [ProducesResponseType(400)]
 
@@ -59,7 +66,9 @@ namespace CarchiveAPI.Controllers
             {
                 return NotFound();
             }
-            var company = _contactService.GetCompanyByContact(contactId);
+
+            var email = User.FindFirst(ClaimTypes.Name)?.Value;
+            var company = _contactService.GetCompanyByContact(contactId, email);
 
             if (!ModelState.IsValid)
             {
@@ -69,6 +78,7 @@ namespace CarchiveAPI.Controllers
         }
 
         [HttpGet("offers/{contactId}")]
+        [Authorize(Roles = "Admin, User")]
         [ProducesResponseType(200, Type = typeof(List<OfferDto>))]
         [ProducesResponseType(400)]
 
@@ -79,7 +89,8 @@ namespace CarchiveAPI.Controllers
                 return NotFound();
             }
 
-            var offers = _contactService.GetOffersByContact(contactId);
+            var email = User.FindFirst(ClaimTypes.Name)?.Value;
+            var offers = _contactService.GetOffersByContact(contactId, email);
 
             if (!ModelState.IsValid)
             {
@@ -89,6 +100,7 @@ namespace CarchiveAPI.Controllers
         }
 
         [HttpGet("contracts/{contactId}")]
+        [Authorize(Roles = "Admin, User")]
         [ProducesResponseType(200, Type = typeof(List<ContractDto>))]
         [ProducesResponseType(400)]
 
@@ -99,7 +111,8 @@ namespace CarchiveAPI.Controllers
                 return NotFound();
             }
 
-            var contracts = _contactService.GetContractsByContact(contactId);
+            var email = User.FindFirst(ClaimTypes.Name)?.Value;
+            var contracts = _contactService.GetContractsByContact(contactId, email);
 
             if (!ModelState.IsValid)
             {
@@ -109,19 +122,21 @@ namespace CarchiveAPI.Controllers
         }
 
         [HttpPost]
+        [Authorize(Roles = "Admin, User")]
         [ProducesResponseType(204)]
         [ProducesResponseType(400)]
 
-        public IActionResult CreateContact([FromQuery] int companyId, [FromBody] ContactDto contactCreate)
+        public IActionResult CreateContact([FromBody] ContactDto contactCreate)
         {
             if (contactCreate == null)
             {
                 return BadRequest(ModelState);
             }
 
-            var contact = _contactService.GetContactByPin(contactCreate.Pin);
+            var email = User.FindFirst(ClaimTypes.Name)?.Value;
+            var contact = _contactService.GetContactByPin(contactCreate.Pin, email);
 
-            if(contact != null)
+            if (contact != null)
             {
                 ModelState.AddModelError("", "Contact already exists");
                 return StatusCode(422, ModelState);
@@ -130,7 +145,7 @@ namespace CarchiveAPI.Controllers
             {
                 return BadRequest(ModelState);
             }
-            if(!_contactService.CreateContact(contactCreate, companyId))
+            if(!_contactService.CreateContact(contactCreate, email))
             {
                 ModelState.AddModelError("", "Something went wrong when saving contact.");
                 return StatusCode(500, ModelState);
@@ -139,11 +154,12 @@ namespace CarchiveAPI.Controllers
         }
 
         [HttpPut("{contactId}")]
+        [Authorize(Roles = "Admin, User")]
         [ProducesResponseType(204)]
         [ProducesResponseType(400)]
         [ProducesResponseType(404)]
 
-        public IActionResult UpdateContact(int contactId, [FromQuery] int companyId, [FromBody] ContactDto contactUpdate)
+        public IActionResult UpdateContact(int contactId, [FromBody] ContactDto contactUpdate)
         {
             if (contactUpdate == null)
             {
@@ -162,7 +178,9 @@ namespace CarchiveAPI.Controllers
                 return BadRequest(ModelState);
             }
 
-            if(!_contactService.UpdateContact(contactUpdate, companyId))
+            var email = User.FindFirst(ClaimTypes.Name)?.Value;
+
+            if (!_contactService.UpdateContact(contactUpdate, email))
             {
                 ModelState.AddModelError("", "Something went wrong when updating contact.");
                 return StatusCode(500, ModelState);
@@ -171,6 +189,7 @@ namespace CarchiveAPI.Controllers
         }
 
         [HttpDelete("{contactId}")]
+        [Authorize(Roles = "Admin, User")]
         [ProducesResponseType(204)]
         [ProducesResponseType(400)]
         [ProducesResponseType(404)]
@@ -186,7 +205,8 @@ namespace CarchiveAPI.Controllers
                 return BadRequest(ModelState);
             }
 
-            var contactToDelete = _contactService.GetContact(contactId);
+            var email = User.FindFirst(ClaimTypes.Name)?.Value;
+            var contactToDelete = _contactService.GetContact(contactId, email);
 
             if (!_contactService.DeleteContact(contactToDelete))
             {

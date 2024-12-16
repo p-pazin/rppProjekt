@@ -24,36 +24,44 @@ namespace CarchiveAPI.Services
             _offerVehicleRepository = offerVehicleRepository;
             _mapper = mapper;
         }
-        public ICollection<OfferDto> GetOffers()
+        public int GetCompanyId(string email)
+        {
+            var user = _userRepository.GetUserAndCompanyByEmail(email);
+            var companyId = user.Company.Id;
+            return companyId;
+        }
+        public ICollection<OfferDto> GetOffers(string email)
         {
             var offers = _offerRepository.GetAll();
             return _mapper.Map<ICollection<OfferDto>>(offers);
         }
-        public ICollection<OfferDto> GetOffersByContact(int contactId)
+        public ICollection<OfferDto> GetOffersByContact(int contactId, string email)
         {
-            var contact = _contactRepository.GetContact(contactId);
+            int companyId = GetCompanyId(email);
+            var contact = _contactRepository.GetContact(contactId, companyId);
             var offers = _offerRepository.GetOffersByContact(contact);
             return _mapper.Map<ICollection<OfferDto>>(offers);
         }
 
-        public OfferDto GetOfferById(int id)
+        public OfferDto GetOfferById(int id, string email)
         {
             var offer = _offerRepository.GetOfferById(id);
             return _mapper.Map<OfferDto>(offer);
         }
 
-        public bool AddOffer(OfferDto offerDto, int userId, int contactId, List<int> vehiclesId)
+        public bool AddOffer(OfferDto offerDto, int userId, int contactId, List<int> vehiclesId, string email)
         {
             var offer = _mapper.Map<Offer>(offerDto);
+            int companyId = GetCompanyId(email);
             offer.User = _userRepository.GetAll().Where(s => s.Id == userId).FirstOrDefault();
-            offer.Contact = _contactRepository.GetContact(contactId);
+            offer.Contact = _contactRepository.GetContact(contactId, companyId);
             _offerRepository.Add(offer);
             _offerRepository.Save();
             bool result = false;
             
             foreach (var vehicleId in vehiclesId)
             {
-                var vehicle = _vehicleRepository.GetVehicleById(vehicleId).ToList();
+                var vehicle = _vehicleRepository.GetVehicleById(vehicleId, companyId).ToList();
                 OfferVehicle offerVehicle = new OfferVehicle
                 {
                     OfferId = offer.Id,
@@ -65,11 +73,12 @@ namespace CarchiveAPI.Services
             return result;
         }
 
-        public bool UpdateOffer(OfferDto offerDto, int userId, int contactId, List<int> vehiclesId)
+        public bool UpdateOffer(OfferDto offerDto, int userId, int contactId, List<int> vehiclesId, string email)
         {
             var offer = _mapper.Map<Offer>(offerDto);
+            int companyId = GetCompanyId(email);
             offer.User = _userRepository.GetAll().Where(s => s.Id == userId).FirstOrDefault();
-            offer.Contact = _contactRepository.GetContact(contactId);
+            offer.Contact = _contactRepository.GetContact(contactId, companyId);
             
             _offerRepository.Update(offer);
             bool result = false;
@@ -77,7 +86,7 @@ namespace CarchiveAPI.Services
             foreach (var vehicleId in vehiclesId)
             {
                 _offerVehicleRepository.Delete(offer.Id);
-                var vehicle = _vehicleRepository.GetVehicleById(vehicleId).ToList();
+                var vehicle = _vehicleRepository.GetVehicleById(vehicleId, companyId).ToList();
                 OfferVehicle offerVehicle = new OfferVehicle
                 {
                     OfferId = offer.Id,
@@ -89,8 +98,9 @@ namespace CarchiveAPI.Services
             return result;
         }
 
-        public bool DeleteOffer(int id)
+        public bool DeleteOffer(int id, string email)
         {
+            int companyId = GetCompanyId(email);
             var offer = _offerRepository.GetOfferById(id);
             return _offerRepository.Delete(offer);
         }

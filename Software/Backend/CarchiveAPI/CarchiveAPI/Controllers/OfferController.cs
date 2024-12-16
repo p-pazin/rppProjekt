@@ -1,5 +1,7 @@
-﻿using CarchiveAPI.Dto;
+﻿using System.Security.Claims;
+using CarchiveAPI.Dto;
 using CarchiveAPI.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace CarchiveAPI.Controllers
@@ -16,11 +18,13 @@ namespace CarchiveAPI.Controllers
         }
 
         [HttpGet]
+        [Authorize(Roles = "Admin, User")]
         [ProducesResponseType(200, Type = typeof(List<OfferDto>))]
 
         public IActionResult GetOffers()
         {
-            var offers = _offerServices.GetOffers();
+            var email = User.FindFirst(ClaimTypes.Name)?.Value;
+            var offers = _offerServices.GetOffers(email);
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
@@ -29,12 +33,15 @@ namespace CarchiveAPI.Controllers
         }
 
         [HttpGet("{offerId}")]
+        [Authorize(Roles = "Admin, User")]
         [ProducesResponseType(200, Type = typeof(OfferDto))]
         [ProducesResponseType(400)]
 
-        public IActionResult GetOfferById(int id)
+        public IActionResult GetOfferById(string offerId)
         {
-            var offer = _offerServices.GetOfferById(id);
+            int id = int.Parse(offerId);
+            var email = User.FindFirst(ClaimTypes.Name)?.Value;
+            var offer = _offerServices.GetOfferById(id, email);
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
@@ -43,12 +50,14 @@ namespace CarchiveAPI.Controllers
         }
 
         [HttpGet("contact/{contactId}")]
+        [Authorize(Roles = "Admin, User")]
         [ProducesResponseType(200, Type = typeof(List<OfferDto>))]
         [ProducesResponseType(400)]
 
         public IActionResult GetOffersByContact(int contactId)
         {
-            var offers = _offerServices.GetOffersByContact(contactId);
+            var email = User.FindFirst(ClaimTypes.Name)?.Value;
+            var offers = _offerServices.GetOffersByContact(contactId, email);
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
@@ -57,12 +66,14 @@ namespace CarchiveAPI.Controllers
         }
 
         [HttpPost]
+        [Authorize(Roles = "Admin, User")]
         [ProducesResponseType(200)]
         [ProducesResponseType(400)]
 
         public IActionResult AddOffer([FromBody] OfferDto offerDto, int userId, int contactId, [FromQuery] List<int> vehiclesId)
         {
-            var result = _offerServices.AddOffer(offerDto, userId, contactId, vehiclesId);
+            var email = User.FindFirst(ClaimTypes.Name)?.Value;
+            var result = _offerServices.AddOffer(offerDto, userId, contactId, vehiclesId, email);
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
@@ -71,12 +82,14 @@ namespace CarchiveAPI.Controllers
         }
 
         [HttpPut]
+        [Authorize(Roles = "Admin, User")]
         [ProducesResponseType(204)]
         [ProducesResponseType(400)]
 
         public IActionResult UpdateOffer([FromBody] OfferDto offerDto, int userId, int contactId, [FromQuery] List<int> vehiclesId)
         {
-           _offerServices.UpdateOffer(offerDto, userId, contactId, vehiclesId);
+            var email = User.FindFirst(ClaimTypes.Name)?.Value;
+            _offerServices.UpdateOffer(offerDto, userId, contactId, vehiclesId, email);
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
@@ -85,12 +98,14 @@ namespace CarchiveAPI.Controllers
         }
 
         [HttpDelete("{id}")]
+        [Authorize(Roles = "Admin, User")]
         [ProducesResponseType(204)]
         [ProducesResponseType(400)]
 
         public IActionResult DeleteOffer(int id)
         {
-            _offerServices.DeleteOffer(id);
+            var email = User.FindFirst(ClaimTypes.Name)?.Value;
+            _offerServices.DeleteOffer(id, email);
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
