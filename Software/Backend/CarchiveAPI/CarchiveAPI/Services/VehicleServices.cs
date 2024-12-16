@@ -103,6 +103,12 @@ namespace CarchiveAPI.Services
             return _mapper.Map<ICollection<VehicleDto>>(vehicles);
         }
 
+        public ICollection<VehicleDto> GetVehicleByState(int state)
+        {
+            var vehicles = _vehicleRepository.GetVehiclesByState(state);
+            return _mapper.Map<ICollection<VehicleDto>>(vehicles);
+        }
+
         public bool AddVehicle(VehicleDto vehicleDto, int companyId)
         {
             var vehicle = _mapper.Map<Vehicle>(vehicleDto);

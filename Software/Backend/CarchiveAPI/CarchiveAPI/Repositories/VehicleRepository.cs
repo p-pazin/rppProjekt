@@ -82,6 +82,11 @@ namespace CarchiveAPI.Repositories
             return _context.Vehicles.Where(v => v.Engine == engine).ToList();
         }
 
+        public ICollection<Vehicle> GetVehiclesByState(int state)
+        {
+            return _context.Vehicles.Where(v => v.State == state).ToList();
+        }
+
         public bool AddVehicle(Vehicle vehicle)
         {
             if (VehicleExists(vehicle.Registration))
