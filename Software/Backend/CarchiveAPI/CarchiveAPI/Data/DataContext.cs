@@ -36,10 +36,6 @@ namespace CarchiveAPI.Data
                 .HasForeignKey(o => o.OfferId);
 
             modelBuilder.Entity<Vehicle>()
-            .HasOne(v => v.Ad)
-            .WithOne(a => a.Vehicle)
-            .HasForeignKey<Ad>(a => a.VehicleId);
-            modelBuilder.Entity<Vehicle>()
             .HasOne(v => v.Location)
             .WithOne(l => l.Vehicle)
             .HasForeignKey<Location>(l => l.VehicleId);

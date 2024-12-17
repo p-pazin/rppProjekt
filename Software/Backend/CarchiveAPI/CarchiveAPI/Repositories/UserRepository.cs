@@ -23,16 +23,6 @@ namespace CarchiveAPI.Repositories
         {
             return _context.Users.Where(u => u.Id == userId && u.Company.Id == companyId).FirstOrDefault();
         }       
-        public User GetByEmail(string email)
-        {
-            return _context.Users.FirstOrDefault(u => u.Email == email);
-        }
-
-        public User GetUserRoleByEmail(string email)
-        {
-            return _context.Users.Include(u => u.Role).FirstOrDefault(u => u.Email == email);
-        }
-
         public User GetUserAndCompanyByEmail(string email)
         {
             return _context.Users.Include(u => u.Company).FirstOrDefault(u => u.Email == email);
@@ -60,11 +50,6 @@ namespace CarchiveAPI.Repositories
         public bool UpdateUser(User user)
         {
             _context.Users.Update(user);
-            return Save();
-        }
-        public bool DeleteUser(User user)
-        {
-            _context.Users.Remove(user);
             return Save();
         }
         public bool Save()

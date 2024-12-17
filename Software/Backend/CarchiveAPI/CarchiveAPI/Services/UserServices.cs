@@ -19,29 +19,18 @@ namespace CarchiveAPI.Services
         private readonly IMapper _mapper;
 
 
-        public UserServices(DataContext context, CompanyServices companyServices, IMapper mapper)
+        public UserServices(DataContext context, CompanyServices companyServices, UserRepository userRepository, IMapper mapper)
         {
             this._context = context;
-            this._userRepository = new UserRepository(context);
+            this._userRepository = userRepository;
             this._companyServices = companyServices;
             this._mapper = mapper;
         }
 
-        public ICollection<UserDto> GetUserInfo(string email)
+        public UserDto GetUserInfo(string email)
         {
             var user = _userRepository.GetUserAndCompanyByEmail(email);
-            var usersDto = _mapper.Map<List<UserDto>>(user.Company.Users);
-            return usersDto;
-        }
-
-        public UserDto GetUser(int userId)
-        {
-            var user = _userRepository.GetUserById(userId);
-            if (user == null)
-            {
-                return null;
-            }
-            var usersDto = _mapper.Map<UserDto>(user);
+            var usersDto = _mapper.Map<UserDto>(user.Company.Users);
             return usersDto;
         }
 

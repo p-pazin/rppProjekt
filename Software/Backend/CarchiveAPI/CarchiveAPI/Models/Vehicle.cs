@@ -21,7 +21,7 @@
         public string Condition { get; set; }
         public Company Company { get; set; }
         public Location Location { get; set; }
-        public Ad Ad { get; set; }
+        public ICollection<Ad> Ads { get; set; }
         public ICollection<Contract> Contracts { get; set; }
         public ICollection<VehiclePhoto> VehiclePhotos { get; set; }
         public ICollection<OfferVehicle> OfferVehicles { get; set; }

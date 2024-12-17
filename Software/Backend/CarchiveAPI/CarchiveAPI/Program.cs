@@ -27,6 +27,8 @@ builder.Services.AddScoped<UserServices>();
 builder.Services.AddScoped<CompanyRepository>();
 builder.Services.AddScoped<StatsServices>();
 builder.Services.AddScoped<StatsRepository>();
+builder.Services.AddScoped<AdServices>();
+builder.Services.AddScoped<AdRepository>();
 
 builder.Services.AddControllers().AddJsonOptions(x =>
     x.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles);

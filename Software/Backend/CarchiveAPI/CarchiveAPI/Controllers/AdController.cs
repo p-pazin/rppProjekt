@@ -1,0 +1,107 @@
+﻿using CarchiveAPI.Dto;
+using CarchiveAPI.Services;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.OpenApi.Validations;
+using System.Security.Claims;
+
+namespace CarchiveAPI.Controllers
+{
+    [Route("api/[controller]")]
+    [ApiController]
+    public class AdController : Controller
+    {
+        private readonly AdServices _adServices;
+        public AdController(AdServices adServices)
+        {
+            this._adServices = adServices;
+        }
+
+        [HttpGet]
+        [Authorize(Roles = "Admin, User")]
+        [ProducesResponseType(200, Type = typeof(ICollection<AdDto>))]
+        public IActionResult GetAds()
+        {
+            var email = User.FindFirst(ClaimTypes.Name)?.Value;
+            var ads = _adServices.GetAds(email);
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+            return Ok(ads);
+
+        }
+
+        [HttpPost]
+        [Authorize(Roles = "Admin, User")]
+        [ProducesResponseType(200, Type = typeof(bool))]
+        public IActionResult AddAd([FromBody] AdDto newAdDto, int id)
+        {
+            var email = User.FindFirst(ClaimTypes.Name)?.Value;
+            var result = _adServices.AddAd(newAdDto, email, id);
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+            if (!result)
+            {
+                return BadRequest("Failed to add ad.");
+            }
+            return Ok("Ad added!");
+        }
+
+        [HttpPut]
+        [Authorize(Roles = "Admin, User")]
+        [ProducesResponseType(200, Type = typeof(bool))]
+        public IActionResult UpdateAd([FromBody] AdDto adDto)
+        {
+            var email = User.FindFirst(ClaimTypes.Name)?.Value;
+            var result = _adServices.UpdateAd(adDto, email);
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+            if (!result)
+            {
+                return BadRequest("Failed to update ad.");
+            }
+            return Ok("Ad updated!");
+        }
+
+        [HttpDelete]
+        [Authorize(Roles = "Admin, User")]
+        [ProducesResponseType(200, Type = typeof(bool))]
+        public IActionResult DeleteAd([FromQuery] int id)
+        {
+            var email = User.FindFirst(ClaimTypes.Name)?.Value;
+            var result = _adServices.DeleteAd(id, email);
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+            if (!result)
+            {
+                return BadRequest("Failed to delete ad.");
+            }
+            return Ok("Ad deleted!");
+        }
+
+        [HttpGet("{adId}")]
+        [Authorize(Roles = "Admin, User")]
+        [ProducesResponseType(200, Type = typeof(AdDto))]
+        public IActionResult GetAd(int adId)
+        {
+            var email = User.FindFirst(ClaimTypes.Name)?.Value;
+            var ad = _adServices.GetAd(adId, email);
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+            if (ad == null)
+            {
+                return BadRequest("Ad not found.");
+            }
+            return Ok(ad);
+        }
+    }
+}
