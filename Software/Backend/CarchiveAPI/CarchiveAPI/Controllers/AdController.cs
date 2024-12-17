@@ -2,8 +2,10 @@
 using CarchiveAPI.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.OpenApi.Validations;
+using Newtonsoft.Json;
 using System.Security.Claims;
+using System.Xml;
+using Formatting = Newtonsoft.Json.Formatting;
 
 namespace CarchiveAPI.Controllers
 {
@@ -31,6 +33,26 @@ namespace CarchiveAPI.Controllers
             return Ok(ads);
 
         }
+
+        [HttpGet("/index")]
+        [Authorize(Roles = "Admin, User")]
+        [ProducesResponseType(200, Type = typeof(ICollection<IndexAdDto>))]
+        public IActionResult GetIndexAds()
+        {
+            var email = User.FindFirst(ClaimTypes.Name)?.Value;
+            var ads = _adServices.GetIndexAds(email);
+
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+            var jsonString = JsonConvert.SerializeObject(new { Ads = ads });
+            Console.WriteLine(JsonConvert.SerializeObject(ads, Formatting.Indented));
+            XmlDocument doc = JsonConvert.DeserializeXmlNode(jsonString, "Root");
+            return Ok(doc);
+        }
+
+
 
         [HttpPost]
         [Authorize(Roles = "Admin, User")]

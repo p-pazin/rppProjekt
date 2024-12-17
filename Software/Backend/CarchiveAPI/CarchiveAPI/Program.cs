@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.EntityFrameworkCore;
 using System.Security.Claims;
+using Microsoft.AspNetCore.Mvc.Formatters;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -92,6 +93,13 @@ builder.Services.AddSwaggerGen(options =>
     });
 });
 
+builder.Services.AddMvcCore().AddXmlSerializerFormatters();
+
+builder.Services.AddMvc(options =>
+{
+    options.InputFormatters.Add(new XmlSerializerInputFormatter(options));
+    options.OutputFormatters.Add(new XmlSerializerOutputFormatter());
+});
 
 builder.Services.AddAuthorization();
 
