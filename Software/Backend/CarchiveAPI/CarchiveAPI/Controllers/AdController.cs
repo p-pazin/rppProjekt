@@ -34,8 +34,9 @@ namespace CarchiveAPI.Controllers
 
         }
 
-        [HttpGet("/index")]
+        [HttpGet("index")]
         [Authorize(Roles = "Admin, User")]
+        [Produces("application/xml")]
         [ProducesResponseType(200, Type = typeof(ICollection<IndexAdDto>))]
         public IActionResult GetIndexAds()
         {
