@@ -30,6 +30,8 @@ builder.Services.AddScoped<StatsServices>();
 builder.Services.AddScoped<StatsRepository>();
 builder.Services.AddScoped<AdServices>();
 builder.Services.AddScoped<AdRepository>();
+builder.Services.AddScoped<ContractRepository>();
+builder.Services.AddScoped<ContractServices>();
 builder.Services.AddScoped<InvoiceServices>();
 builder.Services.AddScoped<InvoiceRepository>();
 
