@@ -34,6 +34,8 @@ builder.Services.AddScoped<ContractRepository>();
 builder.Services.AddScoped<ContractServices>();
 builder.Services.AddScoped<InvoiceServices>();
 builder.Services.AddScoped<InvoiceRepository>();
+builder.Services.AddScoped<ReservationServices>();
+builder.Services.AddScoped<ReservationRepository>();
 
 builder.Services.AddControllers().AddJsonOptions(x =>
     x.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles);

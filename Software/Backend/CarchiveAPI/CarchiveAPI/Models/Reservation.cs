@@ -12,6 +12,6 @@
         public Contact Contact { get; set; }
         public Vehicle Vehicle { get; set; }
         public User User { get; set; }
-        public Contract Contract { get; set; }
+        public Contract? Contract { get; set; }
     }
 }
