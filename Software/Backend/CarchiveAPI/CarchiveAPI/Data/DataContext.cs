@@ -55,11 +55,6 @@ namespace CarchiveAPI.Data
             .WithOne(l => l.Vehicle)
             .HasForeignKey<Location>(l => l.VehicleId);
 
-            modelBuilder.Entity<Contract>()
-            .HasOne(c => c.Invoice)
-            .WithOne(i => i.Contract)
-            .HasForeignKey<Invoice>(i => i.ContractId);
-
             modelBuilder.Entity<Reservation>()
             .HasOne(r => r.Contract)
             .WithOne(c => c.Reservation)

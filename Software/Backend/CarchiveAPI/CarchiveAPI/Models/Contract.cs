@@ -14,7 +14,7 @@
         public Vehicle Vehicle { get; set; }
         public Offer? Offer { get; set; }
         public User User { get; set; }
-        public Invoice Invoice { get; set; }
+        public ICollection<Invoice> Invoices { get; set; }
         public int ReservationId { get; set; }
         public Reservation Reservation { get; set; }
         public Insurance Insurance { get; set; }

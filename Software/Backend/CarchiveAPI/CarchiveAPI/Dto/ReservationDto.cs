@@ -8,5 +8,6 @@
         public DateOnly StartDate { get; set; }
         public DateOnly EndDate { get; set; }
         public DateOnly DateOfCreation { get; set; }
+        public int MaxMileage { get; set; }
     }
 }
