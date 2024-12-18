@@ -14,5 +14,6 @@ namespace CarchiveAPI.Models
         public ICollection<Offer> Offers { get; set; }
         public ICollection<Contract> Contracts { get; set; }
         public ICollection<Ad> Ads { get; set; }
+        public ICollection<Reservation> Reservations { get; set; }
     }
 }

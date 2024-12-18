@@ -17,6 +17,9 @@ namespace CarchiveAPI.Helper
             CreateMap<User, UserDto>().ReverseMap();
             CreateMap<Vehicle, VehicleDto>().ReverseMap();
             CreateMap<VehiclePhoto, VehiclePhotoDto>().ReverseMap();
+            CreateMap<Reservation, ReservationDto>().ReverseMap();
+            CreateMap<Insurance, InsuranceDto>().ReverseMap();
+            CreateMap<Penalty, PenaltyDto>().ReverseMap();
             CreateMap<Ad, AdDto>()
                 .ForMember(dest => dest.Brand, opt =>
                     opt.MapFrom(src => src.Vehicle != null ? src.Vehicle.Brand : null))

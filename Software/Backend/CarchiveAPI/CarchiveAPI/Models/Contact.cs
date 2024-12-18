@@ -18,5 +18,6 @@
         public Company Company { get; set; }
         public ICollection<Offer> Offers { get; set; }
         public ICollection<Contract> Contracts { get; set; }
+        public ICollection<Reservation> Reservations { get; set; }
     }
 }

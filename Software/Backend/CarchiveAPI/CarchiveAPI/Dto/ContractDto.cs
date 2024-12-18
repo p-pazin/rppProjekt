@@ -8,5 +8,6 @@
         public DateOnly DateOfCreation { get; set; }
         public int Type { get; set; }
         public string Content { get; set; }
+        public int Signed { get; set; }
     }
 }

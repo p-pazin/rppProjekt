@@ -8,11 +8,15 @@
         public DateOnly DateOfCreation { get; set; }
         public int Type { get; set; }
         public string Content { get; set; }
+        public int Signed { get; set; }
         public Company Company { get; set; }
         public Contact Contact { get; set; }
         public Vehicle Vehicle { get; set; }
         public Offer? Offer { get; set; }
         public User User { get; set; }
         public Invoice Invoice { get; set; }
+        public int ReservationId { get; set; }
+        public Reservation Reservation { get; set; }
+        public Insurance Insurance { get; set; }
     }
 }

@@ -25,5 +25,6 @@
         public ICollection<Contract> Contracts { get; set; }
         public ICollection<VehiclePhoto> VehiclePhotos { get; set; }
         public ICollection<OfferVehicle> OfferVehicles { get; set; }
+        public ICollection<Reservation> Reservations { get; set; }
     }
 }

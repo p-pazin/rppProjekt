@@ -21,6 +21,10 @@ namespace CarchiveAPI.Data
         public DbSet<User> Users { get; set; }
         public DbSet<Vehicle> Vehicles { get; set; }
         public DbSet<VehiclePhoto> VehiclePhotos { get; set; }
+        public DbSet<Reservation> Reservations { get; set; }
+        public DbSet<Insurance> Insurances { get; set; }
+        public DbSet<Penalty> Penalties { get; set; }
+        public DbSet<InvoicePenalty> InvoicesPenalties { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -35,14 +39,31 @@ namespace CarchiveAPI.Data
                 .WithMany(ov => ov.OfferVehicles)
                 .HasForeignKey(o => o.OfferId);
 
+            modelBuilder.Entity<InvoicePenalty>()
+                .HasKey(ip => new { ip.InvoiceId, ip.PenaltyId });
+            modelBuilder.Entity<InvoicePenalty>()
+                .HasOne(i => i.Invoice)
+                .WithMany(ip => ip.InvoicePenalties)
+                .HasForeignKey(p => p.PenaltyId);
+            modelBuilder.Entity<InvoicePenalty>()
+                .HasOne(p => p.Penalty)
+                .WithMany(ip => ip.InvoicePenalties)
+                .HasForeignKey(i => i.InvoiceId);
+
             modelBuilder.Entity<Vehicle>()
             .HasOne(v => v.Location)
             .WithOne(l => l.Vehicle)
             .HasForeignKey<Location>(l => l.VehicleId);
+
             modelBuilder.Entity<Contract>()
             .HasOne(c => c.Invoice)
             .WithOne(i => i.Contract)
             .HasForeignKey<Invoice>(i => i.ContractId);
+
+            modelBuilder.Entity<Reservation>()
+            .HasOne(r => r.Contract)
+            .WithOne(c => c.Reservation)
+            .HasForeignKey<Contract>(c => c.ReservationId);
         }
     }
 }
