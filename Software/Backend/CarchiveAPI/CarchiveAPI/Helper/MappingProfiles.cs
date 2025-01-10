@@ -20,6 +20,26 @@ namespace CarchiveAPI.Helper
             CreateMap<Reservation, ReservationDto>().ReverseMap();
             CreateMap<Insurance, InsuranceDto>().ReverseMap();
             CreateMap<Penalty, PenaltyDto>().ReverseMap();
+            CreateMap<Contract, SaleContractDto>()
+                .ForMember(dest => dest.CompanyName, opt => opt.MapFrom(src => src.Company.Name))
+                .ForMember(dest => dest.CompanyPin, opt => opt.MapFrom(src => src.Company.Pin))
+                .ForMember(dest => dest.CompanyAddress, opt => opt.MapFrom(src => src.Company.Address))
+                .ForMember(dest => dest.ContactPin, opt => opt.MapFrom(src => src.Contact != null ? src.Contact.Pin :
+                (src.Offer != null && src.Offer.Contact != null ? src.Offer.Contact.Pin : "")))
+                .ForMember(dest => dest.ContactAddress, opt => opt.MapFrom(src => src.Contact != null ? src.Contact.Address :
+                (src.Offer != null && src.Offer.Contact != null ? src.Offer.Contact.Address : "")))
+                .ForMember(dest => dest.ContactName, opt => opt.MapFrom(src => src.Contact != null ? src.Contact.FirstName + " " + src.Contact.LastName :
+                (src.Offer != null && src.Offer.Contact != null ? src.Offer.Contact.FirstName + " " + src.Offer.Contact.LastName : "")))
+                .ForMember(dest => dest.VehicleBrand, opt => opt.MapFrom(src => src.Vehicle.Brand))
+                .ForMember(dest => dest.VehicleModel, opt => opt.MapFrom(src => src.Vehicle.Model))
+                .ForMember(dest => dest.VehicleRegistration, opt => opt.MapFrom(src => src.Vehicle.Registration))
+                .ForMember(dest => dest.VehicleCubicCapacity, opt => opt.MapFrom(src => src.Vehicle.CubicCapacity))
+                .ForMember(dest => dest.Price, opt => opt.MapFrom(src => src.Vehicle != null ? src.Vehicle.Price : 
+                (src.Offer != null ? src.Offer.Price : 0)))
+                .ForMember(dest => dest.UserName, opt => opt.MapFrom(src => src.User.FirstName + src.User.LastName))
+                .ForMember(dest => dest.Vehicles, opt => opt.MapFrom((src, dest) => src.Offer != null ?
+                src.Offer.OfferVehicles.Select(ov => new VehicleDto { Brand = ov.Vehicle.Brand })
+                .ToList(): new List<VehicleDto>()));
             CreateMap<Ad, AdDto>()
                 .ForMember(dest => dest.Brand, opt =>
                     opt.MapFrom(src => src.Vehicle != null ? src.Vehicle.Brand : null))
