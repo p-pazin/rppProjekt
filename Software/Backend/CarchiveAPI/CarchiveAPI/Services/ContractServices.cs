@@ -43,10 +43,18 @@ namespace CarchiveAPI.Services
             return _contractRepository.ContractExists(contractId);
         }
 
+        public SaleContractDto GetSaleContract(int contractId, string email)
+        {
+            int companyId = _companyServices.GetCompanyId(email);
+            var contract = _contractRepository.GetSaleContractDto(contractId, companyId);
+
+            return contract;
+        }
+
         public Contract GetContract(int contractId, string email)
         {
             int companyId = _companyServices.GetCompanyId(email);
-            var contract = _contractRepository.GetContract(contractId, companyId);
+            var contract = _contractRepository.GetSaleContract(contractId, companyId);
             return contract;
         }
         public SaleContractDto MapContract(Contract contract)
@@ -106,7 +114,7 @@ namespace CarchiveAPI.Services
         public bool UpdateContractForSale(ContractDto contractDto, int? contactId, int? vehicleId, int? offerId, string email)
         {
             int companyId = _companyServices.GetCompanyId(email);
-            var contract = _contractRepository.GetContract(contractDto.Id, companyId);
+            var contract = _contractRepository.GetSaleContract(contractDto.Id, companyId);
 
             if(contract.Type != 1)
             {

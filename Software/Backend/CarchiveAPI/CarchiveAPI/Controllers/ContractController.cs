@@ -34,6 +34,23 @@ namespace CarchiveAPI.Controllers
             return Ok(contracts);
         }
 
+
+        [HttpGet("sell/{contractId}")]
+        [Authorize(Roles = "Admin, User")]
+        [ProducesResponseType(200, Type = typeof(List<SaleContractDto>))]
+
+        public IActionResult GetSaleContract(int contractId)
+        {
+            var email = User.FindFirst(ClaimTypes.Name)?.Value;
+            var contract = _contractService.GetSaleContract(contractId, email);
+
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+            return Ok(contract);
+        }
+
         [HttpGet("{contractId}")]
         [Authorize(Roles = "Admin, User")]
         [ProducesResponseType(200, Type = typeof(SaleContractDto))]

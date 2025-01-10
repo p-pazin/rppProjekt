@@ -1,4 +1,6 @@
-﻿namespace CarchiveAPI.Dto
+﻿using CarchiveAPI.Models;
+
+namespace CarchiveAPI.Dto
 {
     public class SaleContractDto
     {
@@ -15,11 +17,7 @@
         public string ContactName { get; set; }
         public string ContactPin { get; set; }
         public string ContactAddress { get; set; }
-        public string? VehicleBrand { get; set; }
-        public string? VehicleModel { get; set; }
-        public string? VehicleRegistration { get; set; }
-        public string? VehicleCubicCapacity { get; set; }
-        public string Price { get; set; }
+        public double Price { get; set; }
         public string UserName { get; set; }
         public List<VehicleDto>? Vehicles { get; set; }
     }

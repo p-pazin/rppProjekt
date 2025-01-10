@@ -52,7 +52,7 @@ namespace CarchiveAPI.Services
         public bool CreateInvoiceForSale(InvoiceDto invoiceCreate, int contractId, string email)
         {
             int companyId = _companyServices.GetCompanyId(email);
-            var contract = _contractRepository.GetContract(contractId, companyId);
+            var contract = _contractRepository.GetSaleContract(contractId, companyId);
 
             if (contract == null || contract.Type == 2)
             {
