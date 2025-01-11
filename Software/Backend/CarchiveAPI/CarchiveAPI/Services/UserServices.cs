@@ -30,8 +30,8 @@ namespace CarchiveAPI.Services
         public UserDto GetUserInfo(string email)
         {
             var user = _userRepository.GetUserAndCompanyByEmail(email);
-            var usersDto = _mapper.Map<UserDto>(user.Company.Users);
-            return usersDto;
+            var userDto = _mapper.Map<UserDto>(user);
+            return userDto;
         }
 
         public bool UserExists(string userEmail)
