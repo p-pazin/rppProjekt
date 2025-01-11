@@ -17,6 +17,7 @@ namespace CarchiveAPI.Dto
         public string ContactName { get; set; }
         public string ContactPin { get; set; }
         public string ContactAddress { get; set; }
+        public VehicleDto? Vehicle { get; set; }
         public double Price { get; set; }
         public string UserName { get; set; }
         public List<VehicleDto>? Vehicles { get; set; }

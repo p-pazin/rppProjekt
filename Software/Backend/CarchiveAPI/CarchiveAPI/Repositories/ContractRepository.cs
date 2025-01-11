@@ -54,48 +54,82 @@ namespace CarchiveAPI.Repositories
 
         public SaleContractDto GetSaleContractDto(int contractId, int companyId)
         {
+            var saleContractDto = new SaleContractDto();
 
-            var contract = _context.Contracts.FirstOrDefault(c => c.Company.Id == companyId && c.Id == contractId);
+            var contract = _context.Contracts.Include(c => c.Vehicle).Include(c => c.Contact).FirstOrDefault(c => c.Company.Id == companyId && c.Id == contractId);
 
             var company = _context.Companies.FirstOrDefault(c => c.Id == companyId);
 
             var offer = _context.Offers.Include(o => o.User).Include(o => o.Contact).FirstOrDefault(o => o.Id == contract.OfferId);
 
-            var contact = _context.Contacts.FirstOrDefault(c => c.Id == offer.Contact.Id);
-
-            var user = _context.Users.FirstOrDefault(u => u.Id == offer.User.Id);
-
-            var offerVehicles = _context.OffersVehicles.Where(ov => ov.OfferId == offer.Id).ToList();
-
-            List<Vehicle> vehicles = new List<Vehicle>();
-
-            foreach (var offerVehicle in offerVehicles)
+            if(offer != null)
             {
-                var vehicle = _context.Vehicles.First(v => v.Id == offerVehicle.VehicleId);
-                vehicles.Add(vehicle);
+                var contact = _context.Contacts.FirstOrDefault(c => c.Id == offer.Contact.Id);
+
+                var user = _context.Users.FirstOrDefault(u => u.Id == offer.User.Id);
+
+                var offerVehicles = _context.OffersVehicles.Where(ov => ov.OfferId == offer.Id).ToList();
+
+                List<Vehicle> vehicles = new List<Vehicle>();
+
+                foreach (var offerVehicle in offerVehicles)
+                {
+                    var vehicle = _context.Vehicles.First(v => v.Id == offerVehicle.VehicleId);
+                    vehicles.Add(vehicle);
+                }
+
+                var mappedVehicles = _mapper.Map<List<VehicleDto>>(vehicles);
+
+                saleContractDto = new SaleContractDto
+                {
+                    Id = contract.Id,
+                    Title = contract.Title,
+                    Place = contract.Place,
+                    DateOfCreation = contract.DateOfCreation,
+                    Type = contract.Type,
+                    Content = contract.Content,
+                    Signed = contract.Signed,
+                    CompanyName = company.Name,
+                    CompanyAddress = company.Address,
+                    CompanyPin = company.Pin,
+                    ContactName = contact.LastName + " " + contact.FirstName,
+                    ContactAddress = contact.Address,
+                    ContactPin = contact.Pin,
+                    UserName = user.FirstName + " " + user.LastName,
+                    Price = offer.Price,
+                    Vehicles = mappedVehicles
+                };
             }
-
-            var mappedVehicles = _mapper.Map<List<VehicleDto>>(vehicles);
-
-            var saleContractDto = new SaleContractDto
+            else
             {
-                Id = contract.Id,
-                Title = contract.Title,
-                Place = contract.Place,
-                DateOfCreation = contract.DateOfCreation,
-                Type = contract.Type,
-                Content = contract.Content,
-                Signed = contract.Signed,
-                CompanyName = company.Name,
-                CompanyAddress = company.Address,
-                CompanyPin = company.Pin,
-                ContactName = contact.LastName + " " + contact.FirstName,
-                ContactAddress = contact.Address,
-                ContactPin = contact.Pin,
-                UserName = user.FirstName + " " + user.LastName,
-                Price = offer.Price,
-                Vehicles = mappedVehicles
-            };
+                var contact = _context.Contacts.FirstOrDefault(c => c.Id == contract.Contact.Id);
+
+                var user = _context.Users.FirstOrDefault(u => u.Id == contract.User.Id);
+
+                var vehicle = _context.Vehicles.FirstOrDefault(v => v.Id == contract.Vehicle.Id);
+
+                var mappedVehicle = _mapper.Map<VehicleDto>(vehicle);
+
+                saleContractDto = new SaleContractDto
+                {
+                    Id = contract.Id,
+                    Title = contract.Title,
+                    Place = contract.Place,
+                    DateOfCreation = contract.DateOfCreation,
+                    Type = contract.Type,
+                    Content = contract.Content,
+                    Signed = contract.Signed,
+                    CompanyName = company.Name,
+                    CompanyAddress = company.Address,
+                    CompanyPin = company.Pin,
+                    ContactName = contact?.LastName + " " + contact?.FirstName,
+                    ContactAddress = contact?.Address,
+                    ContactPin = contact?.Pin,
+                    UserName = user.FirstName + " " + user.LastName,
+                    Price = vehicle.Price,
+                    Vehicle = mappedVehicle,
+                };
+            }
 
             return saleContractDto;
         }
