@@ -153,7 +153,7 @@ namespace CarchiveAPI.Services
                 Title = contractCreate.Title,
                 Place = contractCreate.Place,
                 DateOfCreation = contractCreate.DateOfCreation,
-                Type = contractCreate.Type,
+                Type = 1,
                 Content = contractCreate.Content,
                 Signed = contractCreate.Signed,
                 User = user,
