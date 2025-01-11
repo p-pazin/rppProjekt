@@ -10,15 +10,19 @@ namespace CarchiveAPI.Services
     {
         private readonly VehicleRepository _vehicleRepository;
         private readonly CompanyRepository _companyRepository;
+        private readonly OfferRepository _offerRepository;
         private readonly CompanyServices _companyServices;
+        private readonly OfferVehicleRepository _offerVehicleRepository;
         private readonly IMapper _mapper;
 
-        public VehicleServices(VehicleRepository vehicleRepository, IMapper mapper, CompanyRepository companyRepository, CompanyServices companyServices)
+        public VehicleServices(VehicleRepository vehicleRepository, OfferVehicleRepository offerVehicleRepository, IMapper mapper, CompanyRepository companyRepository, OfferRepository offerRepository, CompanyServices companyServices)
         {
             _vehicleRepository = vehicleRepository;
             _mapper = mapper;
             _companyRepository = companyRepository;
             _companyServices = companyServices;
+            _offerRepository = offerRepository;
+            _offerVehicleRepository = offerVehicleRepository;
         }
 
         public ICollection<VehicleDto> GetAll(string email)
@@ -126,6 +130,13 @@ namespace CarchiveAPI.Services
             return _mapper.Map<ICollection<VehicleDto>>(vehicles);
         }
 
+        public ICollection<VehicleDto> GetVehiclesByOffer(string email, int offerId)
+        {
+            var offer = _offerRepository.GetOfferById(offerId);
+            var vehicles = _vehicleRepository.GetVehiclesByOffer(offer);
+            return _mapper.Map<ICollection<VehicleDto>>(vehicles);
+        }
+
         public bool AddVehicle(VehicleDto vehicleDto, string email)
         {
             int companyId = _companyServices.GetCompanyId(email);
@@ -145,6 +156,26 @@ namespace CarchiveAPI.Services
         public bool DeleteVehicle(int id, string email)
         {
             var vehicleDto = GetVehicleById(id, email).FirstOrDefault();
+            var offerVehicles = _offerVehicleRepository.GetAllByVehicleId(id);
+            if (offerVehicles.Count > 0)
+            {
+                foreach (var offerVehicle in offerVehicles)
+                {
+                    _offerVehicleRepository.Delete(offerVehicle.OfferId);
+                }
+            }
+            var offer = _offerRepository.GetOfferById(id);
+            if (offer != null)
+            {
+                if(offer.OfferVehicles.Count > 1)
+                {
+                    _offerVehicleRepository.Delete(id);
+                }
+                else
+                {
+                    _offerRepository.Delete(offer);
+                }
+            }
             var vehicle = _mapper.Map<Vehicle>(vehicleDto);
             return _vehicleRepository.DeleteVehicle(vehicle);
         }

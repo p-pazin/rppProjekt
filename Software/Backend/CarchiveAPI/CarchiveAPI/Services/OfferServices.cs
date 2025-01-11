@@ -100,6 +100,11 @@ namespace CarchiveAPI.Services
         {
             int companyId = _companyServices.GetCompanyId(email);
             var offer = _offerRepository.GetOfferById(id);
+            var offerVehicles = _offerVehicleRepository.GetAllByOfferId(offer.Id);
+            foreach (var offerVehicle in offerVehicles)
+            {
+                _offerVehicleRepository.Delete(offerVehicle.OfferId);
+            }
             return _offerRepository.Delete(offer);
         }
 

@@ -1,5 +1,6 @@
 ﻿using CarchiveAPI.Data;
 using CarchiveAPI.Models;
+using CarchiveAPI.Services;
 
 namespace CarchiveAPI.Repositories
 {
@@ -90,6 +91,21 @@ namespace CarchiveAPI.Repositories
         public ICollection<Vehicle> GetVehiclesByState(int state, int companyId)
         {
             return _context.Vehicles.Where(v => v.State == state && v.Company.Id == companyId).ToList();
+        }
+
+        public ICollection<Vehicle> GetVehiclesByOffer(Offer offer)
+        {
+            var vehicles = new List<Vehicle>();
+            var foundOfferVehicles = _context.OffersVehicles.Where(v => v.OfferId == offer.Id).ToList();
+            foreach(var foundOfferVehicle in foundOfferVehicles)
+            {
+                var foundVehicle = _context.Vehicles.FirstOrDefault(v => v.Id == foundOfferVehicle.VehicleId);
+                if (foundVehicle != null)
+                {
+                    vehicles.Add(foundVehicle);
+                }
+            }
+            return vehicles;
         }
 
         public bool AddVehicle(Vehicle vehicle)

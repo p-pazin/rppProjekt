@@ -12,6 +12,7 @@ namespace CarchiveAPI.Controllers
     public class VehicleController : Controller
     {
         private readonly VehicleServices _vehicleServices;
+        private readonly OfferServices _offerServices;
 
         public VehicleController(VehicleServices vehicleServices)
         {
@@ -258,7 +259,7 @@ namespace CarchiveAPI.Controllers
             var email = User.FindFirst(ClaimTypes.Name)?.Value;
             var findVehicle = _vehicleServices.GetVehiclesByRegistration(vehicle.Registration, email);
 
-            if (findVehicle != null)
+            if (findVehicle.Count != 0)
             {
                 ModelState.AddModelError("", "Vehicle already exists");
                 return StatusCode(422, ModelState);
@@ -338,6 +339,21 @@ namespace CarchiveAPI.Controllers
             }
 
             return Ok("Successfully deleted vehicle!");
+        }
+
+        [HttpGet("/offer/{offerId}")]
+        [Authorize(Roles = "Admin, User")]
+        [ProducesResponseType(200)]
+        [ProducesResponseType(400)]
+        public IActionResult GetVehiclesByOffer(int offerId)
+        {
+            var email = User.FindFirst(ClaimTypes.Name)?.Value;
+            var vehicle = _vehicleServices.GetVehiclesByOffer(email, offerId);
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+            return Ok(vehicle);
         }
     }
 }
