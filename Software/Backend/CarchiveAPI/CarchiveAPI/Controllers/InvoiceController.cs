@@ -45,6 +45,32 @@ namespace CarchiveAPI.Controllers
             return Ok(invoice);
         }
 
+        [HttpPost("sell")]
+        [Authorize(Roles = "Admin, User")]
+        [ProducesResponseType(204)]
+        [ProducesResponseType(400)]
+
+        public IActionResult CreateInvoiceForSale([FromQuery] int contractId, [FromBody] InvoiceDto invoiceCreate)
+        {
+            if (invoiceCreate == null)
+            {
+                return BadRequest(ModelState);
+            }
+
+            var email = User.FindFirst(ClaimTypes.Name)?.Value;
+
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+            if (!_invoiceServices.CreateInvoiceForSale(invoiceCreate, contractId, email))
+            {
+                ModelState.AddModelError("", "Something went wrong when saving invoice.");
+                return StatusCode(500, ModelState);
+            }
+            return Ok("Successfully created invoice!");
+        }
+
         [HttpDelete("{id}")]
         [Authorize(Roles = "Admin, User")]
         public IActionResult DeleteInvoice(int id)

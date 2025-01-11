@@ -25,6 +25,18 @@ namespace CarchiveAPI.Repositories
             return p;
         }
 
+        public ICollection<InvoicePenalty> GetList(int id)
+        {
+            var p = _context.InvoicesPenalties.Where(p => p.InvoiceId == id).ToList();
+            return p;
+        }
+
+        public bool Delete(InvoicePenalty penalty)
+        {
+            _context.InvoicesPenalties.Remove(penalty);
+            return Save();
+        }
+
         public bool AddPenltyInvoice(InvoicePenalty penalty)
         {
             if (penalty == null)

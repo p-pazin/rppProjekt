@@ -1,5 +1,6 @@
 ﻿using CarchiveAPI.Data;
 using CarchiveAPI.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace CarchiveAPI.Repositories
 {
