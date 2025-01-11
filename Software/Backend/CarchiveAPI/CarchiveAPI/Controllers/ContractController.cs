@@ -4,6 +4,7 @@ using CarchiveAPI.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using CarchiveAPI.Models;
+using System.Diagnostics.Contracts;
 
 namespace CarchiveAPI.Controllers
 {
@@ -83,5 +84,80 @@ namespace CarchiveAPI.Controllers
             }
             return Ok("Successfully deleted contract!");
         }
+
+        [HttpGet("rent/{contractId}")]
+        [Authorize(Roles = "Admin, User")]
+        [ProducesResponseType(200, Type = typeof(RentContractDto))]
+        [ProducesResponseType(400)]
+
+        public IActionResult GetRentContract(int contractId)
+        {
+            if (!_contractService.CheckIfContractExists(contractId))
+            {
+                return NotFound();
+            }
+
+            var email = User.FindFirst(ClaimTypes.Name)?.Value;
+            var contract = _contractService.GetRentContract(contractId, email);
+
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+            return Ok(contract);
+        }
+
+        [HttpPost("rent")]
+        [Authorize(Roles = "Admin, User")]
+        [ProducesResponseType(201)]
+        [ProducesResponseType(400)]
+        public IActionResult AddRentContract([FromBody] ContractDto newContract, [FromQuery] int contactId, [FromQuery] int vehicleId, [FromQuery] int reservationId, [FromQuery]int insuranceId)
+        {
+            if (newContract == null)
+            {
+                return BadRequest("Contract object is null.");
+            }
+
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            var email = User.FindFirst(ClaimTypes.Name)?.Value;
+            var result = _contractService.AddRentContract(newContract, email, contactId, vehicleId, reservationId, insuranceId);
+            if (!result)
+            {
+                return BadRequest("Something went wrong when adding contract.");
+            }
+            return Ok("Successfully added contract!");
+        }
+
+        [HttpPut("rent")]
+        [Authorize(Roles = "Admin, User")]
+        [ProducesResponseType(201)]
+        [ProducesResponseType(400)]
+        public IActionResult UpdateRentContract([FromBody] ContractDto newContract, [FromQuery] int contactId, [FromQuery] int vehicleId, [FromQuery] int reservationId, [FromQuery] int insuranceId)
+        {
+            if (newContract == null)
+            {
+                return BadRequest("Contract object is null.");
+            }
+
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            var email = User.FindFirst(ClaimTypes.Name)?.Value;
+            var result = _contractService.UpdateRentContract(newContract, email, contactId, vehicleId, reservationId, insuranceId);
+            if (!result)
+            {
+                return BadRequest("Something went wrong when adding contract.");
+            }
+            return Ok("Successfully added contract!");
+        }
+
+
+
     }
 }
