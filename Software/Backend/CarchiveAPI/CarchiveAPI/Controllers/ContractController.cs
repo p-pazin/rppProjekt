@@ -42,6 +42,10 @@ namespace CarchiveAPI.Controllers
 
         public IActionResult GetSaleContract(int contractId)
         {
+            if (!_contractService.CheckIfContractExists(contractId))
+            {
+                return NotFound();
+            }
             var email = User.FindFirst(ClaimTypes.Name)?.Value;
             var contract = _contractService.GetSaleContract(contractId, email);
 

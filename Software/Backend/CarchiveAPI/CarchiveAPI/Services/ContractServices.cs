@@ -38,11 +38,11 @@ namespace CarchiveAPI.Services
             _insuranceRepository = insuranceRepository;
         }
 
-        public ICollection<SaleContractDto> GetContracts(string email)
+        public ICollection<ContractDto> GetContracts(string email)
         {
             int companyId = _companyServices.GetCompanyId(email);
             var contracts = _contractRepository.GetContracts(companyId);
-            return _mapper.Map<List<SaleContractDto>>(contracts);
+            return _mapper.Map<List<ContractDto>>(contracts);
         }
 
         public bool CheckIfContractExists(int contractId)
