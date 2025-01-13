@@ -17,7 +17,7 @@ namespace CarchiveAPI.Controllers
             this._statsServices = statsServices;
         }
 
-        [HttpGet("/ContactStatus")]
+        [HttpGet("ContactStatus")]
         [Authorize(Roles = "Admin, User")]
         [ProducesResponseType(200, Type = typeof(ContactStatusStatsDto))]
         
@@ -33,7 +33,7 @@ namespace CarchiveAPI.Controllers
             return Ok(contactStatusStats);
         }
 
-        [HttpGet("/ContactCreation")]
+        [HttpGet("ContactCreation")]
         [Authorize(Roles = "Admin, User")]
         [ProducesResponseType(200, Type = typeof(YearlyInfoDto))]
 
@@ -49,7 +49,7 @@ namespace CarchiveAPI.Controllers
             return Ok(contactCreationStats);
         }
 
-        [HttpGet("/InvoiceCreation")]
+        [HttpGet("InvoiceCreation")]
         [Authorize(Roles = "Admin, User")]
         [ProducesResponseType(200, Type = typeof(YearlyInfoDto))]
 
