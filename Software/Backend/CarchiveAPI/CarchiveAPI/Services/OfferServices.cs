@@ -30,7 +30,8 @@ namespace CarchiveAPI.Services
         }
         public ICollection<OfferDto> GetOffers(string email)
         {
-            var offers = _offerRepository.GetAll();
+            int companyId = _companyServices.GetCompanyId(email);
+            var offers = _offerRepository.GetAll(companyId);
             return _mapper.Map<ICollection<OfferDto>>(offers);
         }
         public ICollection<OfferDto> GetOffersByContact(int contactId, string email)
@@ -43,7 +44,8 @@ namespace CarchiveAPI.Services
 
         public OfferDto GetOfferById(int id, string email)
         {
-            var offer = _offerRepository.GetOfferById(id);
+            int companyId = _companyServices.GetCompanyId(email);
+            var offer = _offerRepository.GetOfferById(id, companyId);
             return _mapper.Map<OfferDto>(offer);
         }
 
@@ -99,7 +101,7 @@ namespace CarchiveAPI.Services
         public bool DeleteOffer(int id, string email)
         {
             int companyId = _companyServices.GetCompanyId(email);
-            var offer = _offerRepository.GetOfferById(id);
+            var offer = _offerRepository.GetOfferById(id, companyId);
             var offerVehicles = _offerVehicleRepository.GetAllByOfferId(offer.Id);
             foreach (var offerVehicle in offerVehicles)
             {

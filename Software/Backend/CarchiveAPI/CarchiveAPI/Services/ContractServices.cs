@@ -162,7 +162,7 @@ namespace CarchiveAPI.Services
 
             if(offerId.HasValue)
             {
-                Offer offer = _offerRepository.GetOfferById((int)offerId);
+                Offer offer = _offerRepository.GetOfferById((int)offerId, companyId);
                 if (offer == null)
                 {
                     return false;
@@ -195,7 +195,7 @@ namespace CarchiveAPI.Services
             }
             if(offerId.HasValue)
             {
-                contract.Offer = _offerRepository.GetOfferById((int)offerId);
+                contract.Offer = _offerRepository.GetOfferById((int)offerId, companyId);
                 if(contract.Offer == null)
                 {
                     return false;

@@ -132,7 +132,8 @@ namespace CarchiveAPI.Services
 
         public ICollection<VehicleDto> GetVehiclesByOffer(string email, int offerId)
         {
-            var offer = _offerRepository.GetOfferById(offerId);
+            var companyId = _companyServices.GetCompanyId(email);
+            var offer = _offerRepository.GetOfferById(offerId, companyId);
             var vehicles = _vehicleRepository.GetVehiclesByOffer(offer);
             return _mapper.Map<ICollection<VehicleDto>>(vehicles);
         }
@@ -164,16 +165,20 @@ namespace CarchiveAPI.Services
                     _offerVehicleRepository.Delete(offerVehicle.OfferId);
                 }
             }
-            var offer = _offerRepository.GetOfferById(id);
+            var companyId = _companyServices.GetCompanyId(email);
+            var offer = _offerRepository.GetOfferById(id, companyId);
             if (offer != null)
             {
-                if(offer.OfferVehicles.Count > 1)
+                if (offer.OfferVehicles != null)
                 {
-                    _offerVehicleRepository.Delete(id);
-                }
-                else
-                {
-                    _offerRepository.Delete(offer);
+                    if (offer.OfferVehicles.Count > 1)
+                    {
+                        _offerVehicleRepository.Delete(id);
+                    }
+                    else
+                    {
+                        _offerRepository.Delete(offer);
+                    }
                 }
             }
             var vehicle = _mapper.Map<Vehicle>(vehicleDto);

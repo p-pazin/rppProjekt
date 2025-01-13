@@ -1,6 +1,7 @@
 ﻿using CarchiveAPI.Data;
 using CarchiveAPI.Models;
 using Microsoft.EntityFrameworkCore;
+using System.ComponentModel.Design;
 
 namespace CarchiveAPI.Repositories
 {
@@ -13,14 +14,14 @@ namespace CarchiveAPI.Repositories
             this._context = context;
         }
 
-        public ICollection<Offer> GetAll()
+        public ICollection<Offer> GetAll(int companyId)
         {
-            return _context.Offers.ToList();
+            return _context.Offers.Where(o => o.User.Company.Id == companyId).ToList();
         }
 
-        public Offer GetOfferById(int id)
+        public Offer GetOfferById(int id, int companyId)
         {
-            return _context.Offers.Where(o => o.Id == id).FirstOrDefault();
+            return _context.Offers.Where(o => o.Id == id && o.User.Company.Id == companyId).FirstOrDefault();
         }
 
         public Offer GetLastOffer()
@@ -33,9 +34,9 @@ namespace CarchiveAPI.Repositories
             return _context.Offers.Where(o => o.Contact == contact).ToList();
         }
 
-        public ICollection<Offer> GetOffersByTitle(string title)
+        public ICollection<Offer> GetOffersByTitle(string title, int companyId)
         {
-            return _context.Offers.Where(o => o.Title == title).ToList();
+            return _context.Offers.Where(o => o.Title == title && o.User.Company.Id == companyId).ToList();
         }
 
 
