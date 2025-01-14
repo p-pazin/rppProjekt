@@ -62,7 +62,7 @@ namespace CarchiveAPI.Controllers
         }
 
         [HttpPost]
-        [ProducesResponseType(204)]
+        [ProducesResponseType(200)]
         public IActionResult AddCompany([FromBody] NewCompanyDto newComapany)
         {
             if (newComapany == null)
@@ -88,7 +88,7 @@ namespace CarchiveAPI.Controllers
                 return StatusCode(500, $"Internal server error: {ex.Message}");
             }
 
-            return Ok();
+            return Ok("Kompanija dodana!");
         }
     }
 }
