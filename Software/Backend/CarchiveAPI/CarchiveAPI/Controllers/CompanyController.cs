@@ -88,7 +88,7 @@ namespace CarchiveAPI.Controllers
                 return StatusCode(500, $"Internal server error: {ex.Message}");
             }
 
-            return NoContent();
+            return Ok();
         }
     }
 }
