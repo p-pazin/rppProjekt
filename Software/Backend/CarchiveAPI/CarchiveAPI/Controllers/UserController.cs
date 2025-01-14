@@ -43,7 +43,6 @@ namespace CarchiveAPI.Controllers
         }
 
         [HttpPost("new")]
-        [Authorize(Roles = "Admin")]
         public IActionResult AddUser([FromBody] RegisterUserDto newUserDto)
         {
             var adminEmail = User.FindFirst(ClaimTypes.Name)?.Value;
