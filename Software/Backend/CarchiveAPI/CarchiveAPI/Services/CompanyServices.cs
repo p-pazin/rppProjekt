@@ -34,9 +34,14 @@ namespace CarchiveAPI.Services
             return companyDto;
         }
 
-        public bool CompanyExists(string companyPin)
+        public bool CompanyExists(string name)
         {
-            return _companyRepository.CompanyExists(companyPin);
+            return _companyRepository.CompanyExists(name);
+        }
+
+        public bool CompanyRegistered(string companyPin)
+        {
+            return _companyRepository.CompanyRegistered(companyPin);
         }
 
         public int GetCompanyId(string email)
@@ -64,7 +69,11 @@ namespace CarchiveAPI.Services
                 Address = newCompanyDto.Address,
                 Pin = newCompanyDto.Pin
             };
-            if (CompanyExists(company.Pin))
+            if (CompanyRegistered(company.Pin))
+            {
+                return false;
+            }
+            if (CompanyExists(company.Name))
             {
                 return false;
             }
