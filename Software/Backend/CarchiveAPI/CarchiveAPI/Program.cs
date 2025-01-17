@@ -40,6 +40,8 @@ builder.Services.AddScoped<InsuranceServices>();
 builder.Services.AddScoped<InsuranceRepository>();
 builder.Services.AddScoped<PenaltyServices>();
 builder.Services.AddScoped<PenaltyRepository>();
+builder.Services.AddScoped<LocationServices>();
+builder.Services.AddScoped<LocationRepository>();
 
 
 builder.Services.AddControllers().AddJsonOptions(x =>
