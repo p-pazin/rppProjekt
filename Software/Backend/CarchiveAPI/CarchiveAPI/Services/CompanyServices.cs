@@ -154,7 +154,7 @@ namespace CarchiveAPI.Services
                 <p><strong>Pin:</strong> {company.Pin}</p>
                 <p><strong>Kontakt osoba:</strong> {user.FirstName} {user.LastName}</p>
                 <p><strong>Email:</strong> {user.Email}</p>
-                < a href = '{approvalLink}' style = 'padding:10px 20px; background-color:green; color:white; text-decoration:none;' > Odobri firmu </ a > ";
+                <a href='{approvalLink}'> Odobri firmu </a> ";
 
                 await _emailService.SendEmailAsync("dvucina22@carchive.online", "Novi zahtjev za registraciju", emailBody);
 
