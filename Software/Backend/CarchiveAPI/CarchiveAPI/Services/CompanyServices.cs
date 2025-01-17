@@ -11,14 +11,16 @@ namespace CarchiveAPI.Services
         private DataContext _context;
         private CompanyRepository _companyRepository;
         private UserRepository _userRepository;
+        private EmailService _emailService;
         private readonly IMapper _mapper;
 
-        public CompanyServices(DataContext context, IMapper mapper, UserRepository userRepository)
+        public CompanyServices(DataContext context, IMapper mapper, UserRepository userRepository, EmailService emailService)
         {
             this._context = context;
             this._companyRepository = new CompanyRepository(context);
             this._mapper = mapper;
             _userRepository = userRepository;
+            _emailService = emailService;
         }
 
         public ICollection<CompanyDto> GetCompanies()
@@ -102,5 +104,61 @@ namespace CarchiveAPI.Services
             }
             return true;
         }
+
+        public async Task<bool> AddCompanyAsync(NewCompanyDto newCompanyDto)
+        {
+            Company company = new Company
+            {
+                Name = newCompanyDto.Name,
+                City = newCompanyDto.City,
+                Address = newCompanyDto.Address,
+                Pin = newCompanyDto.Pin
+            };
+
+            if (CompanyRegistered(company.Pin) || CompanyExists(company.Name))
+            {
+                return false;
+            }
+
+            var admin = _companyRepository.getAdminRole();
+
+            User user = new User
+            {
+                FirstName = newCompanyDto.FirstName,
+                LastName = newCompanyDto.LastName,
+                Email = newCompanyDto.Email,
+                Password = BCrypt.Net.BCrypt.HashPassword(newCompanyDto.Password),
+                Role = admin,
+                Company = company
+            };
+
+            if (_companyRepository.newAdminExists(user.Email))
+            {
+                return false;
+            }
+
+            bool addedCompany = _companyRepository.AddCompany(company);
+            bool addedUser = _userRepository.AddUser(user);
+
+            if (addedCompany && addedUser)
+            {
+                // Slanje maila
+                var emailBody = $@"
+            <h1>Novi zahtjev za registraciju</h1>
+            <p><strong>Ime firme:</strong> {company.Name}</p>
+            <p><strong>Grad:</strong> {company.City}</p>
+            <p><strong>Adresa:</strong> {company.Address}</p>
+            <p><strong>Pin:</strong> {company.Pin}</p>
+            <p><strong>Kontakt osoba:</strong> {user.FirstName} {user.LastName}</p>
+            <p><strong>Email:</strong> {user.Email}</p>";
+
+                await _emailService.SendEmailAsync("dvucina22@carchive.online", "Novi zahtjev za registraciju", emailBody);
+
+                return true;
+            }
+
+            return false;
+        }
+
     }
 }

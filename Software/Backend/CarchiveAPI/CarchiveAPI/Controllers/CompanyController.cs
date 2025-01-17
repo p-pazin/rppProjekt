@@ -90,5 +90,36 @@ namespace CarchiveAPI.Controllers
 
             return Ok("Kompanija dodana!");
         }
+
+        [HttpPost("2")]
+        [ProducesResponseType(200)]
+        public async Task<IActionResult> AddCompany2([FromBody] NewCompanyDto newComapany)
+        {
+            if (newComapany == null)
+            {
+                return BadRequest("User object is null.");
+            }
+
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            try
+            {
+                var result = await _companyServices.AddCompanyAsync(newComapany);
+                if (!result)
+                {
+                    return BadRequest("Company could not be added. It may already exist.");
+                }
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, $"Internal server error: {ex.Message}");
+            }
+
+            return Ok("Kompanija dodana!");
+        }
+
     }
 }

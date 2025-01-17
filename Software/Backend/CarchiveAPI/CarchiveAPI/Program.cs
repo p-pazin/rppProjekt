@@ -42,6 +42,8 @@ builder.Services.AddScoped<PenaltyServices>();
 builder.Services.AddScoped<PenaltyRepository>();
 builder.Services.AddScoped<LocationServices>();
 builder.Services.AddScoped<LocationRepository>();
+builder.Services.AddTransient<EmailService>();
+
 
 
 builder.Services.AddControllers().AddJsonOptions(x =>
