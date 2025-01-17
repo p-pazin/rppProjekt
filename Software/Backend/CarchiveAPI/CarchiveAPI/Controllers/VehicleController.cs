@@ -341,7 +341,7 @@ namespace CarchiveAPI.Controllers
             return Ok("Successfully deleted vehicle!");
         }
 
-        [HttpGet("/offer/{offerId}")]
+        [HttpGet("offer/{offerId}")]
         [Authorize(Roles = "Admin, User")]
         [ProducesResponseType(200)]
         [ProducesResponseType(400)]
