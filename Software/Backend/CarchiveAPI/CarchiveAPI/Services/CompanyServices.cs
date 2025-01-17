@@ -69,7 +69,8 @@ namespace CarchiveAPI.Services
                 Name = newCompanyDto.Name,
                 City = newCompanyDto.City,
                 Address = newCompanyDto.Address,
-                Pin = newCompanyDto.Pin
+                Pin = newCompanyDto.Pin,
+                Approved = 0
             };
             if (CompanyRegistered(company.Pin))
             {
@@ -112,7 +113,8 @@ namespace CarchiveAPI.Services
                 Name = newCompanyDto.Name,
                 City = newCompanyDto.City,
                 Address = newCompanyDto.Address,
-                Pin = newCompanyDto.Pin
+                Pin = newCompanyDto.Pin,
+                Approved = 0
             };
 
             if (CompanyRegistered(company.Pin) || CompanyExists(company.Name))
@@ -142,15 +144,14 @@ namespace CarchiveAPI.Services
 
             if (addedCompany && addedUser)
             {
-                // Slanje maila
                 var emailBody = $@"
-            <h1>Novi zahtjev za registraciju</h1>
-            <p><strong>Ime firme:</strong> {company.Name}</p>
-            <p><strong>Grad:</strong> {company.City}</p>
-            <p><strong>Adresa:</strong> {company.Address}</p>
-            <p><strong>Pin:</strong> {company.Pin}</p>
-            <p><strong>Kontakt osoba:</strong> {user.FirstName} {user.LastName}</p>
-            <p><strong>Email:</strong> {user.Email}</p>";
+                <h1>Novi zahtjev za registraciju</h1>
+                <p><strong>Ime firme:</strong> {company.Name}</p>
+                <p><strong>Grad:</strong> {company.City}</p>
+                <p><strong>Adresa:</strong> {company.Address}</p>
+                <p><strong>Pin:</strong> {company.Pin}</p>
+                <p><strong>Kontakt osoba:</strong> {user.FirstName} {user.LastName}</p>
+                <p><strong>Email:</strong> {user.Email}</p>";
 
                 await _emailService.SendEmailAsync("dvucina22@carchive.online", "Novi zahtjev za registraciju", emailBody);
 

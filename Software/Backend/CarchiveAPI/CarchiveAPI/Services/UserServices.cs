@@ -66,7 +66,8 @@ namespace CarchiveAPI.Services
         public string Login(string email, string password)
         {
             var user = _context.Users.Include(u => u.Role).FirstOrDefault(u => u.Email == email);
-            if(user != null && user.Role.Name == "Inactive")
+            var company = _companyServices.GetCompany(email);
+            if(user == null || user.Role.Name == "Inactive" || company.Approved == 0)
             {
                 return null;
             }
