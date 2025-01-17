@@ -124,7 +124,8 @@ namespace CarchiveAPI.Services
             User user = _userRepository.GetUserAndCompanyByEmail(email);
             Insurance insurance = _insuranceRepository.Get(insuranceId);
             Contract contract = _contractRepository.GetContract(newContract.Id, companyId);
-            if(contract == null || contact == null || vehicle == null || user == null || reservation == null || insurance == null || contract.Signed == 1)
+            if(contract == null || contact == null || vehicle == null || user == null || reservation == null || insurance == null || contract.Signed == 1 
+                || vehicle.Usage == 1 || vehicle.State != 1)
             {
                 return false;
             }

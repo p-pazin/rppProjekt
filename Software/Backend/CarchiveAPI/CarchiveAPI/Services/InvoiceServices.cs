@@ -116,10 +116,12 @@ namespace CarchiveAPI.Services
         {
             int companyId = _companyServices.GetCompanyId(email);
             var contract = _contractRepository.GetContractsRent(contractId, companyId);
+
             if (contract == null || contract.Type == 1)
             {
                 return false;
             }
+
             var numberOfDays = (contract.Reservation.EndDate.ToDateTime(TimeOnly.MinValue) -
                     contract.Reservation.StartDate.ToDateTime(TimeOnly.MinValue)).Days;
             var invoice = new Invoice
@@ -131,7 +133,16 @@ namespace CarchiveAPI.Services
                 PaymentMethod = invoiceCreate.PaymentMethod
             };
 
-            return _invoiceRepository.AddInvoice(invoice, companyId);
+            var invoiceResult = _invoiceRepository.AddInvoice(invoice, companyId);
+
+            var vehicle = _context.Vehicles.Find(contract.VehicleId);
+            if (vehicle != null)
+            {
+                vehicle.State = 3;
+                _vehicleRepository.UpdateVehicle(vehicle);
+            }
+            
+            return invoiceResult;
         }
 
         public bool PostFinalInvoiceRent(InvoiceDto invoiceCreate, int contractId, string email, List<int> penaltyId)
@@ -174,6 +185,14 @@ namespace CarchiveAPI.Services
                 _penaltyRepository.AddPenltyInvoice(invoicePenalty);
                 _context.SaveChanges();
             }
+
+            var vehicle = _context.Vehicles.Find(contract.VehicleId);
+            if (vehicle != null)
+            {
+                vehicle.State = 1;
+                _vehicleRepository.UpdateVehicle(vehicle);
+            }
+            
 
             return true;
         }
