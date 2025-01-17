@@ -136,7 +136,7 @@ namespace CarchiveAPI.Repositories
                     ContactAddress = contact?.Address,
                     ContactPin = contact?.Pin,
                     UserName = user.FirstName + " " + user.LastName,
-                    Price = vehicle.Price,
+                    Price = (double)vehicle.Price,
                     Vehicle = mappedVehicle,
                 };
             }

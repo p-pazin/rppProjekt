@@ -168,6 +168,7 @@ namespace CarchiveAPI.Services
                     return false;
                 }
                 contract.Offer = offer;
+
             }
             else
             {

@@ -15,11 +15,11 @@
         public DateOnly RegisteredTo { get; set; }
         public string Color { get; set; }
         public string DriveType { get; set; }
-        public double Price { get; set; }
+        public double? Price { get; set; }
         public string TransmissionType { get; set; }
         public string Type { get; set; }
         public string Condition { get; set; }
-        public double RentPrice { get; set; }
+        public double? RentPrice { get; set; }
         public int Usage { get; set; }
     }
 }

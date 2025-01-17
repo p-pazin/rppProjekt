@@ -12,13 +12,16 @@ namespace CarchiveAPI.Services
         private readonly CompanyServices _companyServices;
         private readonly UserRepository _userRepository;
         private readonly ContractRepository _contractRepository;
+        private readonly VehicleRepository _vehicleRepository;
+        private readonly OfferVehicleRepository _offerVehicleRepository;
         private DataContext _context;
         private PenaltyRepository _penaltyRepository;
         private readonly IMapper _mapper;
 
         public InvoiceServices(DataContext context,InvoiceRepository invoiceRepository, 
             CompanyServices companyServices, IMapper mapper, UserRepository userRepository, 
-            ContractRepository contractRepository, PenaltyRepository penaltyRepository)
+            ContractRepository contractRepository, PenaltyRepository penaltyRepository, VehicleRepository vehicleRepository, 
+            OfferVehicleRepository offerVehicleRepository)
         {
             this._invoiceRepository = invoiceRepository;
             this._companyServices = companyServices;
@@ -26,6 +29,8 @@ namespace CarchiveAPI.Services
             this._mapper = mapper;
             this._userRepository = userRepository;
             this._contractRepository = contractRepository;
+            this._vehicleRepository = vehicleRepository;
+            this._offerVehicleRepository = offerVehicleRepository;
             _userRepository = userRepository;
             _contractRepository = contractRepository;
             _penaltyRepository = penaltyRepository;
@@ -68,6 +73,31 @@ namespace CarchiveAPI.Services
             if (contract == null || contract.Type == 2)
             {
                 return false;
+            }
+
+            if(contract.OfferId.HasValue)
+            {
+                var offer = contract.Offer;
+
+                var offerVehicles = _offerVehicleRepository.GetAllByOfferId(offer.Id);
+
+                foreach (var offerVehicle in offerVehicles)
+                {
+                    var vehicle = _vehicleRepository.GetOneVehicleById(offerVehicle.VehicleId, companyId);
+
+                    if (vehicle != null)
+                    {
+                        vehicle.State = 2;
+                        _vehicleRepository.UpdateVehicle(vehicle);
+                    }
+                }
+            }
+            else
+            {
+                var vehicle = contract.Vehicle;
+                vehicle.State = 2;
+
+                _vehicleRepository.UpdateVehicle(vehicle);
             }
 
             var invoice = new Invoice
