@@ -19,5 +19,7 @@
         public string TransmissionType { get; set; }
         public string Type { get; set; }
         public string Condition { get; set; }
+        public double RentPrice { get; set; }
+        public int Usage { get; set; }
     }
 }
