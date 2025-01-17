@@ -11,15 +11,19 @@ namespace CarchiveAPI.Services
         private readonly ContactRepository _contactRepository;
         private readonly CompanyRepository _companyRepository;
         private readonly UserRepository _userRepository;
+        private readonly OfferRepository _offerRepository;
+        private readonly OfferVehicleRepository _offerVehicleRepository;
         private readonly CompanyServices _companyServices;
         private readonly IMapper _mapper;
         public ContactServices(ContactRepository contactRepository, CompanyRepository companyRepository, 
-            UserRepository userRepository, CompanyServices companyServices, IMapper mapper)
+            UserRepository userRepository, OfferRepository offerRepository, OfferVehicleRepository offerVehicleRepository, CompanyServices companyServices, IMapper mapper)
         {
             this._contactRepository = contactRepository;
             this._companyRepository = companyRepository;
             this._userRepository = userRepository;
             this._companyServices = companyServices;
+            this._offerRepository = offerRepository;
+            this._offerVehicleRepository = offerVehicleRepository;
             this._mapper = mapper;
         }
 
@@ -92,6 +96,22 @@ namespace CarchiveAPI.Services
             {
                 return false;
             }
+            var offers = _offerRepository.GetOffersByContact(contact);
+            if (offers.Count > 0)
+            {
+                foreach (var offer in offers)
+                {
+                    var offerVehicles = _offerVehicleRepository.GetAllByOfferId(offer.Id);
+
+                    foreach (var offerVehicle in offerVehicles)
+                    {
+                        _offerVehicleRepository.Delete(offerVehicle.OfferId);
+                    }
+
+                    _offerRepository.Delete(offer);
+                }
+            }
+
             return _contactRepository.DeleteContact(contact);
         }
     }
