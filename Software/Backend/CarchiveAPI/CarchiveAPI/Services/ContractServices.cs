@@ -173,7 +173,7 @@ namespace CarchiveAPI.Services
             {
                 Contact contact = _contactRepository.GetContact((int)contactId, companyId);
                 Vehicle vehicle = _vehicleRepository.GetOneVehicleById((int)vehicleId, companyId);
-                if(contact == null || vehicle == null)
+                if(contact == null || vehicle == null || vehicle.Usage == 2 || vehicle.State == 2)
                 {
                     return false;
                 }
