@@ -144,6 +144,8 @@ namespace CarchiveAPI.Services
 
             if (addedCompany && addedUser)
             {
+                var approvalLink = $"https://carchive.online/api/approve-company/{company.Id}";
+
                 var emailBody = $@"
                 <h1>Novi zahtjev za registraciju</h1>
                 <p><strong>Ime firme:</strong> {company.Name}</p>
@@ -151,7 +153,8 @@ namespace CarchiveAPI.Services
                 <p><strong>Adresa:</strong> {company.Address}</p>
                 <p><strong>Pin:</strong> {company.Pin}</p>
                 <p><strong>Kontakt osoba:</strong> {user.FirstName} {user.LastName}</p>
-                <p><strong>Email:</strong> {user.Email}</p>";
+                <p><strong>Email:</strong> {user.Email}</p>
+                < a href = '{approvalLink}' style = 'padding:10px 20px; background-color:green; color:white; text-decoration:none;' > Odobri firmu </ a > ";
 
                 await _emailService.SendEmailAsync("dvucina22@carchive.online", "Novi zahtjev za registraciju", emailBody);
 
@@ -160,6 +163,20 @@ namespace CarchiveAPI.Services
 
             return false;
         }
+
+        public async Task<bool> ApproveCompanyAsync(int companyId)
+        {
+            var company = _companyRepository.GetCompanyById(companyId);
+            if (company == null)
+            {
+                return false;
+            }
+
+            company.Approved = 1;
+            var result = _companyRepository.UpdateCompany(company);
+            return result;
+        }
+
 
     }
 }
