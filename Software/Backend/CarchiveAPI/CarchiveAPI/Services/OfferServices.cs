@@ -49,11 +49,12 @@ namespace CarchiveAPI.Services
             return _mapper.Map<OfferDto>(offer);
         }
 
-        public bool AddOffer(OfferDto offerDto, int userId, int contactId, List<int> vehiclesId, string email)
+        public bool AddOffer(OfferDto offerDto, int contactId, List<int> vehiclesId, string email)
         {
             var offer = _mapper.Map<Offer>(offerDto);
             int companyId = _companyServices.GetCompanyId(email);
-            offer.User = _userRepository.GetAll().Where(s => s.Id == userId).FirstOrDefault();
+            User user = _userRepository.GetUserAndCompanyByEmail(email);
+            offer.User = user;
             offer.Contact = _contactRepository.GetContact(contactId, companyId);
             _offerRepository.Add(offer);
             _offerRepository.Save();
