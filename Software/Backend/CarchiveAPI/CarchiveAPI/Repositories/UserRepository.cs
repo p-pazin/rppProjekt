@@ -22,7 +22,11 @@ namespace CarchiveAPI.Repositories
         public User GetUserByIdAndCheckCompany(int userId, int companyId)
         {
             return _context.Users.Where(u => u.Id == userId && u.Company.Id == companyId).FirstOrDefault();
-        }       
+        }
+        public User GetUserByAdminRoleAndCheckCompany(int companyId)
+        {
+            return _context.Users.Where(u => u.Role.Id == 1 && u.Company.Id == companyId).FirstOrDefault();
+        }
         public User GetUserAndCompanyByEmail(string email)
         {
             return _context.Users.Include(u => u.Company).FirstOrDefault(u => u.Email == email);

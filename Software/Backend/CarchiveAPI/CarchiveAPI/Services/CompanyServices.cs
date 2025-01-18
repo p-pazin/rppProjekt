@@ -174,8 +174,27 @@ namespace CarchiveAPI.Services
 
             company.Approved = 1;
             var result = _companyRepository.UpdateCompany(company);
-            return result;
+            if (!result)
+            {
+                return false;
+            }
+
+            var adminUser = _userRepository.GetUserByAdminRoleAndCheckCompany(companyId);
+            if (adminUser != null)
+            {
+                var emailSubject = "Vaša firma je odobrena!";
+                var emailBody = $@"
+            <h1>Čestitamo!</h1>
+            <p>Vaša firma <strong>{company.Name}</strong> je uspješno odobrena.</p>
+            <p>Sada možete pristupiti svim značajkama naše platforme.</p>
+            <p>Za dodatne informacije slobodno nas kontaktirajte.</p>";
+
+                await _emailService.SendEmailAsync(adminUser.Email, emailSubject, emailBody);
+            }
+
+            return true;
         }
+
 
 
     }
