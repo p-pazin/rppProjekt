@@ -14,10 +14,12 @@ namespace CarchiveAPI.Controllers
     public class ContactController : Controller
     {
         private readonly ContactServices _contactService;
+        private readonly OfferServices _offerService;
 
-        public ContactController(ContactServices contactService)
+        public ContactController(ContactServices contactService, OfferServices offerServices)
         {
             this._contactService = contactService;
+            this._offerService = offerServices;
         }
 
         [HttpGet]
@@ -97,6 +99,28 @@ namespace CarchiveAPI.Controllers
                 return BadRequest(ModelState);
             }
             return Ok(offers);
+        }
+
+        [HttpGet("contacts/{offerId}")]
+        [Authorize(Roles = "Admin, User")]
+        [ProducesResponseType(200, Type = typeof(List<ContactDto>))]
+        [ProducesResponseType(400)]
+
+        public IActionResult GetContactsByOfferId(int offerId)
+        {
+            var email = User.FindFirst(ClaimTypes.Name)?.Value;
+
+            if (_offerService.GetOfferById(offerId, email) == null)
+            {
+                return NotFound();
+            }
+            
+            var contacts = _contactService.GetContactsByOffer(offerId, email);
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+            return Ok(contacts);
         }
 
         [HttpGet("contracts/{contactId}")]

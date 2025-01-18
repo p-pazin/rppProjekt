@@ -64,6 +64,15 @@ namespace CarchiveAPI.Services
             var contracts = _contactRepository.GetContractsByContact(contactId, companyId);
             return _mapper.Map<List<ContractDto>>(contracts);
         }
+
+        public Contact GetContactsByOffer(int id, string email)
+        {
+            int companyId = _companyServices.GetCompanyId(email);
+            var offer = _offerRepository.GetOfferById(id, companyId);
+            var contact = _contactRepository.GetContactsByOffer(offer);
+            return _mapper.Map<Contact>(contact);
+        }
+
         public Contact GetContactByPin(string contactPin, string email)
         {
             int companyId = _companyServices.GetCompanyId(email);

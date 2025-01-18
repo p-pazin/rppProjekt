@@ -1,5 +1,6 @@
 ﻿using CarchiveAPI.Data;
 using CarchiveAPI.Models;
+using System;
 
 namespace CarchiveAPI.Repositories
 {
@@ -31,6 +32,12 @@ namespace CarchiveAPI.Repositories
         {
             return _context.Contracts.Where(c => c.Contact.Id == contactId && c.Company.Id == companyId).ToList();
         }
+
+        public Contact GetContactsByOffer(Offer offer)
+        {
+            return _context.Contacts.Where(c => c.Offers.Contains(offer)).FirstOrDefault();
+        }
+
         public bool CreateContact(Contact contact)
         {
             _context.Contacts.Add(contact);
