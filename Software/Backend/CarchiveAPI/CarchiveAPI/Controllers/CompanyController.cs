@@ -91,7 +91,7 @@ namespace CarchiveAPI.Controllers
             return Ok("Kompanija dodana!");
         }
 
-        [HttpPost("approve-company/{companyId}")]
+        [HttpGet("approve-company/{companyId}")]
         [ProducesResponseType(200)]
         [ProducesResponseType(400)]
         public async Task<IActionResult> ApproveCompany(int companyId)
