@@ -144,7 +144,7 @@ namespace CarchiveAPI.Services
 
             if (addedCompany && addedUser)
             {
-                var approvalLink = $"https://carchive.online/api/approve-company/{company.Id}";
+                var approvalLink = $"https://carchive.online/api/Company/approve-company/{company.Id}";
 
                 var emailBody = $@"
                 <h1>Novi zahtjev za registraciju</h1>
