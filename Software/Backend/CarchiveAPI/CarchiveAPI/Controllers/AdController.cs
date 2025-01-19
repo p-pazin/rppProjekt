@@ -58,7 +58,7 @@ namespace CarchiveAPI.Controllers
         [HttpPost]
         [Authorize(Roles = "Admin, User")]
         [ProducesResponseType(200, Type = typeof(bool))]
-        public IActionResult AddAd([FromBody] AdDto newAdDto, int id)
+        public IActionResult AddAd([FromBody] AdDto newAdDto, [FromQuery] int id)
         {
             var email = User.FindFirst(ClaimTypes.Name)?.Value;
             var result = _adServices.AddAd(newAdDto, email, id);
