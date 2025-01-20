@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using CarchiveAPI.Dto;
+using CarchiveAPI.Models;
 using CarchiveAPI.Repositories;
 
 namespace CarchiveAPI.Services
@@ -22,14 +23,14 @@ namespace CarchiveAPI.Services
         public List<LocationDto> GetAll(string email)
         {
             var companyId = _companyServices.GetCompanyId(email);
-            var locations = _locationRepository.GetAll();
-            foreach(var location in locations)
+            var vehiclesIds = _vehicleRepository.GetAll(companyId).Select(v => v.Id);
+            var locations = new List<Location>();
+            foreach (var vehicleId in vehiclesIds)
             {
-                var vehicleId = location.VehicleId;
-                var vehicle = _vehicleRepository.GetVehicleById(vehicleId, companyId);
-                if(vehicle == null)
+                var location = _locationRepository.GetLocationForVehicle(vehicleId);
+                if(location != null)
                 {
-                    locations.Remove(location);
+                    locations.Add(location);
                 }
             }
             return _mapper.Map<List<LocationDto>>(locations);
