@@ -355,5 +355,27 @@ namespace CarchiveAPI.Controllers
             }
             return Ok(vehicle);
         }
+
+        [HttpPost("upload")]
+        public async Task<IActionResult> UploadImage(IFormFile file)
+        {
+            if (file == null || file.Length == 0)
+            {
+                return BadRequest("No file uploaded.");
+            }
+
+            var uploadsPath = Path.Combine(Directory.GetCurrentDirectory(), "UploadedImages");
+            var fileName = Guid.NewGuid() + Path.GetExtension(file.FileName);
+            var filePath = Path.Combine(uploadsPath, fileName);
+
+            using (var stream = new FileStream(filePath, FileMode.Create))
+            {
+                await file.CopyToAsync(stream);
+            }
+
+            var url = $"{Request.Scheme}://{Request.Host}/UploadedImages/{fileName}";
+            return Ok(new { FilePath = url });
+        }
+
     }
 }
