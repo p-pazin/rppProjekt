@@ -86,10 +86,10 @@ namespace CarchiveAPI.Controllers
         [ProducesResponseType(204)]
         [ProducesResponseType(400)]
 
-        public IActionResult UpdateOffer([FromBody] OfferDto offerDto, int userId, int contactId, [FromQuery] List<int> vehiclesId)
+        public IActionResult UpdateOffer([FromBody] OfferDto offerDto, int contactId, [FromQuery] List<int> vehiclesId)
         {
             var email = User.FindFirst(ClaimTypes.Name)?.Value;
-            _offerServices.UpdateOffer(offerDto, userId, contactId, vehiclesId, email);
+            _offerServices.UpdateOffer(offerDto, contactId, vehiclesId, email);
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);

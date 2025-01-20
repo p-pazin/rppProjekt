@@ -24,7 +24,16 @@ namespace CarchiveAPI.Repositories
 
         public bool Add(OfferVehicle offerVehicle)
         {
-            _context.OffersVehicles.Add(offerVehicle);
+            var existingEntity = _context.OffersVehicles.Find(offerVehicle.OfferId, offerVehicle.VehicleId);
+            if (existingEntity == null)
+            {
+                _context.OffersVehicles.Add(offerVehicle);
+            }
+            else
+            {
+                _context.Entry(existingEntity).CurrentValues.SetValues(offerVehicle);
+            }
+
             return Save();
         }
 
