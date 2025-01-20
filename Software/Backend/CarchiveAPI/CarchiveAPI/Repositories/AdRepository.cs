@@ -16,11 +16,12 @@ namespace CarchiveAPI.Repositories
         {
             return _context.Ads
                 .Include(a => a.User.Company)
-                .Include(v=> v.Vehicle)
+                .Include(v => v.Vehicle)
                 .Include(v => v.Vehicle.VehiclePhotos)
                 .Where(a => a.User.Company.Id == companyId)
                 .ToList();
         }
+
 
         public Ad Get(int id, int companyId) {
             return _context.Ads

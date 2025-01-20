@@ -70,17 +70,16 @@ namespace CarchiveAPI.Helper
                     opt.MapFrom(src => src.Vehicle != null ? src.Vehicle.Brand : null))
                 .ForMember(dest => dest.Model, opt =>
                     opt.MapFrom(src => src.Vehicle != null ? src.Vehicle.Model : null))
-                .ForMember(dest => dest.Link, opt =>
-                    opt.MapFrom(src => src.Vehicle != null &&
-                                      src.Vehicle.VehiclePhotos != null &&
-                                      src.Vehicle.VehiclePhotos.Any()
-                        ? src.Vehicle.VehiclePhotos.FirstOrDefault().Link
-                        : null))
+                .ForMember(dest => dest.Links, opt =>
+                    opt.MapFrom(src => src.Vehicle != null && src.Vehicle.VehiclePhotos != null
+                        ? src.Vehicle.VehiclePhotos.Select(vp => vp.Link).ToList() 
+                        : new List<string>()))
                 .ForMember(dest => dest.DateOfPublishment, opt => opt.MapFrom(src => src.DateOfPublishment))
                 .ForMember(dest => dest.PaymentMethod, opt => opt.MapFrom(src => src.PaymentMethod))
                 .ForMember(dest => dest.Description, opt => opt.MapFrom(src => src.Description))
                 .ForMember(dest => dest.Title, opt => opt.MapFrom(src => src.Title))
                 .ReverseMap();
+
 
             CreateMap<Ad, IndexAdDto>()
                 .ForMember(dest => dest.Title, opt => opt.MapFrom(src => src.Title))
