@@ -101,11 +101,15 @@ namespace CarchiveAPI.Controllers
         [Authorize(Roles = "Admin, User")]
         [ProducesResponseType(204)]
         [ProducesResponseType(400)]
+        [ProducesResponseType(404)]
 
         public IActionResult DeleteOffer(int id)
         {
             var email = User.FindFirst(ClaimTypes.Name)?.Value;
-            _offerServices.DeleteOffer(id, email);
+            if (_offerServices.DeleteOffer(id, email) == false)
+            {
+                return NotFound(new { message = "Offer connected to a contract." });
+            }
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);

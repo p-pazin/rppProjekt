@@ -13,11 +13,12 @@ namespace CarchiveAPI.Services
         private readonly CompanyRepository _companyRepository;
         private readonly UserRepository _userRepository;
         private readonly CompanyServices _companyServices;
+        private readonly ContractRepository _contractRepository;
         private readonly OfferVehicleRepository _offerVehicleRepository;
         private readonly IMapper _mapper;
         public OfferServices(OfferRepository offerRepository, IMapper mapper, VehicleRepository vehicleRepository, 
             ContactRepository contactRepository, CompanyRepository companyRepository, UserRepository userRepository, 
-            OfferVehicleRepository offerVehicleRepository, CompanyServices companyServices)
+            OfferVehicleRepository offerVehicleRepository, CompanyServices companyServices, ContractRepository contractRepository)
         {
             _offerRepository = offerRepository;
             _contactRepository = contactRepository;
@@ -26,6 +27,7 @@ namespace CarchiveAPI.Services
             _vehicleRepository = vehicleRepository;
             _offerVehicleRepository = offerVehicleRepository;
             _companyServices = companyServices;
+            _contractRepository = contractRepository;
             _mapper = mapper;
         }
         public ICollection<OfferDto> GetOffers(string email)
@@ -102,6 +104,11 @@ namespace CarchiveAPI.Services
         {
             int companyId = _companyServices.GetCompanyId(email);
             var offer = _offerRepository.GetOfferById(id, companyId);
+            var contractsForOffer = _contractRepository.GetContracts(companyId).Where(c => c.OfferId == id).ToList();
+            if (contractsForOffer != null)
+            {
+                return false;
+            }
             var offerVehicles = _offerVehicleRepository.GetAllByOfferId(offer.Id);
             foreach (var offerVehicle in offerVehicles)
             {
