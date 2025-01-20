@@ -74,11 +74,10 @@ namespace CarchiveAPI.Services
             return result;
         }
 
-        public bool UpdateOffer(OfferDto offerDto, int userId, int contactId, List<int> vehiclesId, string email)
+        public bool UpdateOffer(OfferDto offerDto, int contactId, List<int> vehiclesId, string email)
         {
             var offer = _mapper.Map<Offer>(offerDto);
             int companyId = _companyServices.GetCompanyId(email);
-            offer.User = _userRepository.GetAll().Where(s => s.Id == userId).FirstOrDefault();
             offer.Contact = _contactRepository.GetContact(contactId, companyId);
             
             _offerRepository.Update(offer);
