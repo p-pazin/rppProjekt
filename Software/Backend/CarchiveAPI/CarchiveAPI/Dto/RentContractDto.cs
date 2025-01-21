@@ -36,6 +36,7 @@
         public int Mileage { get; set; }
 
         // Reservation
+        public int ReservationId { get; set; }
         public double Price { get; set; }
         public DateOnly StartDate { get; set; }
         public DateOnly EndDate { get; set; }

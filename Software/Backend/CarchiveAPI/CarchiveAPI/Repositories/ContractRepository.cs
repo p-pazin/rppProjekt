@@ -28,13 +28,22 @@ namespace CarchiveAPI.Repositories
                 .Include(c => c.Insurance)
                 .Where(c => c.Company.Id == companyId).ToList();
         }
+
+        public ICollection<Contract> GetUnsignedContracts(int companyId)
+        {
+            return _context.Contracts.Include(c => c.Company)
+                .Include(c => c.Contact)
+                .Include(c => c.Vehicle)
+                .Include(c => c.Offer)
+                .Include(c => c.User)
+                .Include(c => c.Reservation)
+                .Include(c => c.Insurance)
+                .Where(c => c.Company.Id == companyId && c.Signed == 0).ToList();
+        }
         public Contract GetContractsRent(int contractId, int companyId)
         {
             return _context.Contracts
                 .Include(c => c.Company)
-                .Include(c => c.Contact)
-                .Include(c => c.Vehicle)
-                .Include(c => c.Offer)
                 .Include(c => c.User)
                 .Include(c => c.Reservation)
                 .Include(c => c.Insurance)
@@ -107,6 +116,7 @@ namespace CarchiveAPI.Repositories
                     ContactPin = contact.Pin,
                     UserName = user.FirstName + " " + user.LastName,
                     Price = offer.Price,
+                    OfferId = offer.Id,
                     Vehicles = mappedVehicles
                 };
             }

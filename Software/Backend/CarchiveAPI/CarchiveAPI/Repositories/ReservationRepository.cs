@@ -17,7 +17,7 @@ namespace CarchiveAPI.Repositories
         }
         public Reservation Get(int id, int companyId)
         {
-            return _context.Reservations.FirstOrDefault(r => r.Id == id && r.Vehicle.Company.Id == companyId);
+            return _context.Reservations.Include(r => r.Vehicle).Include(r => r.Contact).FirstOrDefault(r => r.Id == id && r.Vehicle.Company.Id == companyId);
         }
         public bool Add(Reservation reservation)
         {

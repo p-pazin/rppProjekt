@@ -20,6 +20,7 @@ namespace CarchiveAPI.Dto
         public VehicleDto? Vehicle { get; set; }
         public double Price { get; set; }
         public string UserName { get; set; }
+        public int? OfferId { get; set; }
         public List<VehicleDto>? Vehicles { get; set; }
     }
 }

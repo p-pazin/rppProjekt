@@ -45,6 +45,13 @@ namespace CarchiveAPI.Services
             return _mapper.Map<List<ContractDto>>(contracts);
         }
 
+        public ICollection<ContractDto> GetUnsignedContracts(string email)
+        {
+            int companyId = _companyServices.GetCompanyId(email);
+            var contracts = _contractRepository.GetUnsignedContracts(companyId);
+            return _mapper.Map<List<ContractDto>>(contracts);
+        }
+
         public bool CheckIfContractExists(int contractId)
         {
             return _contractRepository.ContractExists(contractId);
@@ -68,8 +75,49 @@ namespace CarchiveAPI.Services
         public RentContractDto GetRentContract(int contractId, string email)
         {
             int companyId = _companyServices.GetCompanyId(email);
+            var company = _companyRepository.GetCompanyById(companyId);
             var contract = _contractRepository.GetContractsRent(contractId, companyId);
-            return _mapper.Map<RentContractDto>(contract);
+            var reservation = _reservationRepository.Get(contract.Reservation.Id, companyId);
+            var vehicle = _vehicleRepository.GetOneVehicleById(reservation.Vehicle.Id, companyId);
+            var contact = _contactRepository.GetContact(reservation.Contact.Id, companyId);
+            var director = _userRepository.GetUserByAdminRoleAndCheckCompany(companyId);
+
+            RentContractDto rentContract = new RentContractDto
+            {
+                Id = contractId,
+                Title = contract.Title,
+                Place = contract.Place,
+                DateOfCreation = contract.DateOfCreation,
+                Type = contract.Type,
+                Content = contract.Content,
+                Signed = contract.Signed,
+                Name = company.Name,
+                City = company.City,
+                Address = company.Address,
+                Pin = company.Pin,
+                FirstNameDirector = director.FirstName,
+                LastNameDirector = director.LastName,
+                FirstNameContact = contact.FirstName,
+                LastNameContact = contact.LastName,
+                PinContact = contact.Pin,
+                CountryContact = contact.Country,
+                CityContact = contact.City,
+                AddressContact = contact.Address,
+                Brand = vehicle.Brand,
+                Model = vehicle.Model,
+                Engine = vehicle.Engine,
+                Registration = vehicle.Registration,
+                Mileage = vehicle.Mileage,
+                ReservationId = reservation.Id,
+                Price = reservation.Price,
+                StartDate = reservation.StartDate,
+                EndDate = reservation.EndDate,
+                MaxMileage = reservation.MaxMileage,
+                NameInsurance = contract.Insurance.Name,
+                CostInsurance = contract.Insurance.Cost
+            };
+
+            return rentContract;
         }
 
         public ContractDto MapContract(Contract contract)
@@ -85,15 +133,14 @@ namespace CarchiveAPI.Services
             return _contractRepository.DeleteContract(contractToDelete);
         }
 
-        public bool AddRentContract(ContractDto newContract, string? email, int contactId, int vehicleId, int reservationId, int insuranceId)
+        public bool AddRentContract(ContractDto newContract, string? email, int reservationId, int insuranceId)
         {
             int companyId = _companyServices.GetCompanyId(email);
-            Contact contact = _contactRepository.GetContact(contactId, companyId);
-            Vehicle vehicle = _vehicleRepository.GetOneVehicleById(vehicleId, companyId);
             Reservation reservation = _reservationRepository.Get(reservationId, companyId);
             User user = _userRepository.GetUserAndCompanyByEmail(email);
             Insurance insurance = _insuranceRepository.Get(insuranceId);
-            if (contact == null || vehicle == null || user == null || reservation == null || insurance == null)
+            Contact contact = _contactRepository.GetContact(reservation.Contact.Id, companyId);
+            if (user == null || reservation == null || insurance == null)
             {
                 return false;
             }
@@ -107,7 +154,6 @@ namespace CarchiveAPI.Services
                 Signed = newContract.Signed,
                 Company = user.Company,
                 Contact = contact,
-                Vehicle = vehicle,
                 Reservation = reservation,
                 Insurance = insurance,
                 User = user
@@ -115,17 +161,15 @@ namespace CarchiveAPI.Services
             return _contractRepository.AddContract(contract);
         }
 
-        public bool UpdateRentContract(ContractDto newContract, string? email, int contactId, int vehicleId, int reservationId, int insuranceId)
+        public bool UpdateRentContract(ContractDto newContract, string? email, int reservationId, int insuranceId)
         {
             int companyId = _companyServices.GetCompanyId(email);
-            Contact contact = _contactRepository.GetContact(contactId, companyId);
-            Vehicle vehicle = _vehicleRepository.GetOneVehicleById(vehicleId, companyId);
             Reservation reservation = _reservationRepository.Get(reservationId, companyId);
             User user = _userRepository.GetUserAndCompanyByEmail(email);
             Insurance insurance = _insuranceRepository.Get(insuranceId);
             Contract contract = _contractRepository.GetContract(newContract.Id, companyId);
-            if(contract == null || contact == null || vehicle == null || user == null || reservation == null || insurance == null || contract.Signed == 1 
-                || vehicle.Usage == 1 || vehicle.State != 1)
+            Contact contact = _contactRepository.GetContact(reservation.Contact.Id, companyId);
+            if(contract == null || user == null || reservation == null || insurance == null || contract.Signed == 1)
             {
                 return false;
             }
@@ -135,9 +179,8 @@ namespace CarchiveAPI.Services
             contract.Content = newContract.Content;
             contract.Signed = newContract.Signed;
             contract.Company = user.Company;
-            contract.Contact = contact;
-            contract.Vehicle = vehicle;
             contract.Reservation = reservation;
+            contract.Contact = contact;
             contract.Insurance = insurance;
             contract.User = user;
             return _contractRepository.UpdateContract(contract);
