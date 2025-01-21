@@ -21,7 +21,7 @@ namespace CarchiveAPI.Repositories
 
         public Offer GetOfferById(int id, int companyId)
         {
-            return _context.Offers.Where(o => o.Id == id && o.User.Company.Id == companyId).FirstOrDefault();
+            return _context.Offers.Include(o => o.Contact).Where(o => o.Id == id && o.User.Company.Id == companyId).FirstOrDefault();
         }
 
         public Offer GetLastOffer()
