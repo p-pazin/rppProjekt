@@ -189,5 +189,10 @@ namespace CarchiveAPI.Services
         {
             return _vehicleRepository.CheckIfVehicleExists(id);
         }
+
+        public bool ConnectVehicleToPhoto(int vehicleId, string photoUrl)
+        {
+            return _vehicleRepository.ConnectVehicleToPhoto(vehicleId, photoUrl);
+        }
     }
 }

@@ -377,5 +377,20 @@ namespace CarchiveAPI.Controllers
             return Ok(new { FilePath = url });
         }
 
+        [HttpPost("connect/{vehicleId}/{photoUrl}")]
+        public IActionResult ConnectVehicleToPhoto(int vehicleId, string photoUrl)
+        {
+            Console.WriteLine(photoUrl);
+            if (!_vehicleServices.CheckIfVehicleExists(vehicleId))
+            {
+                return NotFound();
+            }
+            if (!_vehicleServices.ConnectVehicleToPhoto(vehicleId, photoUrl))
+            {
+                ModelState.AddModelError("", "Something went wrong when connecting the vehicle to the photo.");
+                return StatusCode(500, ModelState);
+            }
+            return Ok("Successfully connected vehicle to photo!");
+        }
     }
 }

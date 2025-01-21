@@ -144,10 +144,28 @@ namespace CarchiveAPI.Repositories
         {
             return _context.Vehicles.Any(v => v.Registration == registration);
         }
-        
+
         public bool CheckIfVehicleExists(int id)
         {
             return _context.Vehicles.Any(v => v.Id == id);
+        }
+
+        public bool ConnectVehicleToPhoto(int vehicleId, string photoUrl)
+        {
+            var vehicle = _context.Vehicles.FirstOrDefault(v => v.Id == vehicleId);
+            VehiclePhoto photo = new VehiclePhoto()
+            {
+                Link = photoUrl,
+                Vehicle = vehicle
+            };
+
+            _context.VehiclePhotos.Add(photo);
+            if (vehicle != null)
+            {
+                vehicle.VehiclePhotos.Add(photo);
+                return Save();
+            }
+            return false;
         }
     }
 }
