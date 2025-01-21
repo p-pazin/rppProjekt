@@ -357,6 +357,9 @@ namespace CarchiveAPI.Controllers
         }
 
         [HttpPost("upload")]
+        [Authorize(Roles = "Admin, User")]
+        [ProducesResponseType(200)]
+        [ProducesResponseType(400)]
         public async Task<IActionResult> UploadImage(IFormFile file)
         {
             if (file == null || file.Length == 0)
@@ -377,8 +380,11 @@ namespace CarchiveAPI.Controllers
             return Ok(new { FilePath = url });
         }
 
-        [HttpPost("connect/{vehicleId}/{photoUrl}")]
-        public IActionResult ConnectVehicleToPhoto(int vehicleId, string photoUrl)
+        [HttpPost("connect/{vehicleId}")]
+        [Authorize(Roles = "Admin, User")]
+        [ProducesResponseType(200)]
+        [ProducesResponseType(400)]
+        public IActionResult ConnectVehicleToPhoto(int vehicleId, [FromBody] string photoUrl)
         {
             Console.WriteLine(photoUrl);
             if (!_vehicleServices.CheckIfVehicleExists(vehicleId))
