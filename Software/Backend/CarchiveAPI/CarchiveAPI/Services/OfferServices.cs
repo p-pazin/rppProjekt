@@ -85,9 +85,10 @@ namespace CarchiveAPI.Services
             _offerRepository.Update(offer);
             bool result = false;
 
+            _offerVehicleRepository.DeleteById(offer.Id);
+
             foreach (var vehicleId in vehiclesId)
             {
-                _offerVehicleRepository.Delete(offer.Id);
                 var vehicle = _vehicleRepository.GetVehicleById(vehicleId, companyId).ToList();
                 OfferVehicle offerVehicle = new OfferVehicle
                 {

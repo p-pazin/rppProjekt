@@ -43,6 +43,13 @@ namespace CarchiveAPI.Repositories
             return Save();
         }
 
+        public bool DeleteById(int id)
+        {
+            var offerVehicles = _context.OffersVehicles.Where(ov => ov.OfferId == id).ToList();
+            _context.OffersVehicles.RemoveRange(offerVehicles);
+            return Save();
+        }
+
         public bool Delete(int id)
         {
             var offerVehicle = _context.OffersVehicles.Where(o => o.OfferId == id).ToList()[0];
