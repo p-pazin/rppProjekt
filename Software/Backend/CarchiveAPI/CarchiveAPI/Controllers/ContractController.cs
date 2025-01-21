@@ -21,12 +21,28 @@ namespace CarchiveAPI.Controllers
 
         [HttpGet]
         [Authorize(Roles = "Admin, User")]
-        [ProducesResponseType(200, Type = typeof(List<SaleContractDto>))]
+        [ProducesResponseType(200, Type = typeof(List<ContractDto>))]
 
         public IActionResult GetContracts()
         {
             var email = User.FindFirst(ClaimTypes.Name)?.Value;
             var contracts = _contractService.GetContracts(email);
+
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+            return Ok(contracts);
+        }
+
+        [HttpGet("unsigned")]
+        [Authorize(Roles = "Admin, User")]
+        [ProducesResponseType(200, Type = typeof(List<ContractDto>))]
+
+        public IActionResult GetUnsignedContracts()
+        {
+            var email = User.FindFirst(ClaimTypes.Name)?.Value;
+            var contracts = _contractService.GetUnsignedContracts(email);
 
             if (!ModelState.IsValid)
             {
@@ -203,7 +219,7 @@ namespace CarchiveAPI.Controllers
         [Authorize(Roles = "Admin, User")]
         [ProducesResponseType(201)]
         [ProducesResponseType(400)]
-        public IActionResult AddRentContract([FromBody] ContractDto newContract, [FromQuery] int contactId, [FromQuery] int vehicleId, [FromQuery] int reservationId, [FromQuery]int insuranceId)
+        public IActionResult AddRentContract([FromBody] ContractDto newContract, [FromQuery] int reservationId, [FromQuery]int insuranceId)
         {
             if (newContract == null)
             {
@@ -216,7 +232,7 @@ namespace CarchiveAPI.Controllers
             }
 
             var email = User.FindFirst(ClaimTypes.Name)?.Value;
-            var result = _contractService.AddRentContract(newContract, email, contactId, vehicleId, reservationId, insuranceId);
+            var result = _contractService.AddRentContract(newContract, email, reservationId, insuranceId);
             if (!result)
             {
                 return BadRequest("Something went wrong when adding contract.");
@@ -228,7 +244,7 @@ namespace CarchiveAPI.Controllers
         [Authorize(Roles = "Admin, User")]
         [ProducesResponseType(201)]
         [ProducesResponseType(400)]
-        public IActionResult UpdateRentContract([FromBody] ContractDto newContract, [FromQuery] int contactId, [FromQuery] int vehicleId, [FromQuery] int reservationId, [FromQuery] int insuranceId)
+        public IActionResult UpdateRentContract([FromBody] ContractDto newContract, [FromQuery] int reservationId, [FromQuery] int insuranceId)
         {
             if (newContract == null)
             {
@@ -241,12 +257,12 @@ namespace CarchiveAPI.Controllers
             }
 
             var email = User.FindFirst(ClaimTypes.Name)?.Value;
-            var result = _contractService.UpdateRentContract(newContract, email, contactId, vehicleId, reservationId, insuranceId);
+            var result = _contractService.UpdateRentContract(newContract, email, reservationId, insuranceId);
             if (!result)
             {
                 return BadRequest("Something went wrong when adding contract.");
             }
-            return Ok("Successfully added contract!");
+            return Ok("Successfully updated contract!");
         }
 
 
