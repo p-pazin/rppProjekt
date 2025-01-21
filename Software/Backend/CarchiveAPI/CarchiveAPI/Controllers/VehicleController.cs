@@ -51,6 +51,22 @@ namespace CarchiveAPI.Controllers
             return Ok(vehicle);
         }
 
+
+        [HttpGet("id/{registration}")]
+        [Authorize(Roles = "Admin, User")]
+        [ProducesResponseType(200, Type = typeof(VehicleDto))]
+        [ProducesResponseType(400)]
+        public IActionResult GetVehicleIdByRegistration(string registration)
+        {
+            var email = User.FindFirst(ClaimTypes.Name)?.Value;
+            var vehicle = _vehicleServices.GetVehicleIdByRegistration(registration, email);
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+            return Ok(vehicle.Id);
+        }
+
         [HttpGet("model/{model}")]
         [Authorize(Roles = "Admin, User")]
         [ProducesResponseType(200, Type = typeof(List<VehicleDto>))]
