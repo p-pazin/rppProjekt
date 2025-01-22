@@ -161,6 +161,7 @@ namespace CarchiveAPI.Repositories
             VehiclePhoto photo = new VehiclePhoto()
             {
                 Link = photoUrl,
+                Description = "0",
                 Vehicle = vehicle
             };
 
