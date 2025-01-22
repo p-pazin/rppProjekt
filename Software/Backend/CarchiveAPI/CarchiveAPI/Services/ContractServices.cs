@@ -2,6 +2,7 @@
 using CarchiveAPI.Dto;
 using CarchiveAPI.Models;
 using CarchiveAPI.Repositories;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
 
 namespace CarchiveAPI.Services
@@ -211,7 +212,11 @@ namespace CarchiveAPI.Services
                 {
                     return false;
                 }
+
+                Contact contact = _contactRepository.GetContact(offer.Contact.Id, companyId);
+
                 contract.Offer = offer;
+                contract.Contact = contact;
 
             }
             else
@@ -240,12 +245,17 @@ namespace CarchiveAPI.Services
             }
             if(offerId.HasValue)
             {
-                contract.Offer = _offerRepository.GetOfferById((int)offerId, companyId);
-                if(contract.Offer == null)
+                var offer = _offerRepository.GetOfferById((int)offerId, companyId);
+
+                if(offer == null)
                 {
                     return false;
                 }
-                contract.Contact = null;
+
+                var contact = _contactRepository.GetContact(offer.Contact.Id, companyId);
+
+                contract.Offer = offer;
+                contract.Contact = contact;
                 contract.ContactId = null;
                 contract.Vehicle = null;
                 contract.VehicleId = null;
@@ -261,6 +271,11 @@ namespace CarchiveAPI.Services
                 contract.Offer = null;
                 contract.OfferId = null;
             }
+
+            contract.Signed = contractDto.Signed;
+            contract.Title = contractDto.Title;
+            contract.Place = contractDto.Place;
+            contract.Content = contractDto.Content;
 
             return _contractRepository.UpdateContract(contract);
         }
