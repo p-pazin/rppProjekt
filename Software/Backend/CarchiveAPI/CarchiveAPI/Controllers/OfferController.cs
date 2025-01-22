@@ -108,7 +108,7 @@ namespace CarchiveAPI.Controllers
             var email = User.FindFirst(ClaimTypes.Name)?.Value;
             if (_offerServices.DeleteOffer(id, email) == false)
             {
-                return NotFound(new { message = "Offer connected to a contract." });
+                return NotFound(new { message = "Postoji ugovor vezan uz ponudu." });
             }
             if (!ModelState.IsValid)
             {

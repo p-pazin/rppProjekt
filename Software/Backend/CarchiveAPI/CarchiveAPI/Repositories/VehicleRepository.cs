@@ -172,5 +172,13 @@ namespace CarchiveAPI.Repositories
             }
             return false;
         }
+
+        public IEnumerable<object> GetVehiclePhotos(int vehicleId)
+        {
+            return _context.VehiclePhotos
+                .Where(vp => vp.Vehicle != null && vp.Vehicle.Id == vehicleId)
+                .ToList();
+        }
+
     }
 }

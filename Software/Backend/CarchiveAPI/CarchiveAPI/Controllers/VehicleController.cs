@@ -402,7 +402,6 @@ namespace CarchiveAPI.Controllers
         [ProducesResponseType(400)]
         public IActionResult ConnectVehicleToPhoto(int vehicleId, [FromBody] string photoUrl)
         {
-            Console.WriteLine(photoUrl);
             if (!_vehicleServices.CheckIfVehicleExists(vehicleId))
             {
                 return NotFound();
@@ -413,6 +412,22 @@ namespace CarchiveAPI.Controllers
                 return StatusCode(500, ModelState);
             }
             return Ok("Successfully connected vehicle to photo!");
+        }
+
+        [HttpGet("photos/{vehicleId}")]
+        [Authorize(Roles = "Admin, User")]
+        [ProducesResponseType(200)]
+        [ProducesResponseType(400)]
+        public IActionResult GetAllPhotosForVehicle(int vehicleId)
+        {
+            if (!_vehicleServices.CheckIfVehicleExists(vehicleId))
+            {
+                return NotFound();
+            }
+
+            var email = User.FindFirst(ClaimTypes.Name)?.Value;
+            var photos = _vehicleServices.GetVehiclePhotos(vehicleId, email);
+            return Ok(photos);
         }
     }
 }

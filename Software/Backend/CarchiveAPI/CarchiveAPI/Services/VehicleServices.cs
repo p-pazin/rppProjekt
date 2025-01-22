@@ -201,5 +201,12 @@ namespace CarchiveAPI.Services
         {
             return _vehicleRepository.ConnectVehicleToPhoto(vehicleId, photoUrl);
         }
+
+        public ICollection<VehiclePhotoDto> GetVehiclePhotos(int vehicleId, string email)
+        {
+            var companyId = _companyServices.GetCompanyId(email);
+            var photos = _vehicleRepository.GetVehiclePhotos(vehicleId);
+            return _mapper.Map<ICollection<VehiclePhotoDto>>(photos);
+        }
     }
 }
