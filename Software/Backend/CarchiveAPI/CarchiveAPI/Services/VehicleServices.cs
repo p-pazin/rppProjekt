@@ -13,9 +13,10 @@ namespace CarchiveAPI.Services
         private readonly OfferRepository _offerRepository;
         private readonly CompanyServices _companyServices;
         private readonly OfferVehicleRepository _offerVehicleRepository;
+        private readonly AdRepository _adRepository;
         private readonly IMapper _mapper;
 
-        public VehicleServices(VehicleRepository vehicleRepository, OfferVehicleRepository offerVehicleRepository, IMapper mapper, CompanyRepository companyRepository, OfferRepository offerRepository, CompanyServices companyServices)
+        public VehicleServices(VehicleRepository vehicleRepository, AdRepository adRepository, OfferVehicleRepository offerVehicleRepository, IMapper mapper, CompanyRepository companyRepository, OfferRepository offerRepository, CompanyServices companyServices)
         {
             _vehicleRepository = vehicleRepository;
             _mapper = mapper;
@@ -23,6 +24,7 @@ namespace CarchiveAPI.Services
             _companyServices = companyServices;
             _offerRepository = offerRepository;
             _offerVehicleRepository = offerVehicleRepository;
+            _adRepository = adRepository;
         }
 
         public ICollection<VehicleDto> GetAll(string email)
@@ -188,6 +190,24 @@ namespace CarchiveAPI.Services
                     }
                 }
             }
+            var vehiclePhotos = GetVehiclePhotos(id, email);
+            if (vehiclePhotos.Count > 0)
+            {
+                foreach (var photo in vehiclePhotos)
+                {
+                    DeleteVehiclePhoto(photo.Id);
+                }
+            }
+
+            var vehicleAds = _adRepository.GetAdsByVehicleId(id, companyId);
+            if (vehicleAds.Count > 0)
+            {
+                foreach (var ad in vehicleAds)
+                {
+                    _adRepository.DeleteAd(ad);
+                }
+            }
+
             var vehicle = _mapper.Map<Vehicle>(vehicleDto);
             return _vehicleRepository.DeleteVehicle(vehicle);
         }

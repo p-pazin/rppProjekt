@@ -348,7 +348,7 @@ namespace CarchiveAPI.Controllers
             }
 
             var email = User.FindFirst(ClaimTypes.Name)?.Value;
-            if (_vehicleServices.DeleteVehicle(id, email))
+            if (!_vehicleServices.DeleteVehicle(id, email))
             {
                 ModelState.AddModelError("", "Something went wrong when deleting contact.");
                 return StatusCode(500, ModelState);
