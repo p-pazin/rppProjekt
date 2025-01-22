@@ -429,5 +429,19 @@ namespace CarchiveAPI.Controllers
             var photos = _vehicleServices.GetVehiclePhotos(vehicleId, email);
             return Ok(photos);
         }
+
+        [HttpDelete("photo/{photoId}")]
+        [Authorize(Roles = "Admin, User")]
+        [ProducesResponseType(200)]
+        [ProducesResponseType(400)]
+        public IActionResult DeletePhoto(int photoId)
+        {
+            if (!_vehicleServices.DeleteVehiclePhoto(photoId))
+            {
+                ModelState.AddModelError("", "Something went wrong when deleting the photo.");
+                return StatusCode(500, ModelState);
+            }
+            return Ok("Successfully deleted photo!");
+        }
     }
 }

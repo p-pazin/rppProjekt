@@ -181,5 +181,15 @@ namespace CarchiveAPI.Repositories
                 .ToList();
         }
 
+        public bool DeleteVehiclePhoto(int photoId)
+        {
+            var photo = _context.VehiclePhotos.FirstOrDefault(vp => vp.Id == photoId);
+            if (photo != null)
+            {
+                _context.VehiclePhotos.Remove(photo);
+                return Save();
+            }
+            return false;
+        }
     }
 }

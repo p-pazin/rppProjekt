@@ -208,5 +208,10 @@ namespace CarchiveAPI.Services
             var photos = _vehicleRepository.GetVehiclePhotos(vehicleId);
             return _mapper.Map<ICollection<VehiclePhotoDto>>(photos);
         }
+
+        public bool DeleteVehiclePhoto(int photoId)
+        {
+            return _vehicleRepository.DeleteVehiclePhoto(photoId);
+        }
     }
 }
