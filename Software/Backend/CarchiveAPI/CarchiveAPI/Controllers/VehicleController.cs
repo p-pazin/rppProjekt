@@ -392,7 +392,7 @@ namespace CarchiveAPI.Controllers
                 await file.CopyToAsync(stream);
             }
 
-            var url = $"{Request.Scheme}://{Request.Host}/UploadedImages/{fileName}";
+            var url = $"https://{Request.Host}/UploadedImages/{fileName}";
             return Ok(new { FilePath = url });
         }
 
