@@ -15,7 +15,7 @@ namespace CarchiveAPI.Repositories
 
         public ICollection<Vehicle> GetAll(int companyId)
         {
-            var a = _context.Vehicles.Where(v => v.Company.Id == companyId).ToList();
+            var a = _context.Vehicles.Where(v => v.Company.Id == companyId && v.State != 4).ToList();
             return a;
         }
 
@@ -133,9 +133,10 @@ namespace CarchiveAPI.Repositories
         public bool DeleteVehicle(Vehicle vehicle)
         {
             var foundVehicle = _context.Vehicles.FirstOrDefault(v => v.Id == vehicle.Id);
+            foundVehicle.State = 4;
             if(foundVehicle != null)
             {
-                _context.Vehicles.Remove(foundVehicle);
+                _context.Vehicles.Update(foundVehicle);
                 return Save();
             }
             return false;
