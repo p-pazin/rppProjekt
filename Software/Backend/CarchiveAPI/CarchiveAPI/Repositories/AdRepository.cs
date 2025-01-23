@@ -32,6 +32,15 @@ namespace CarchiveAPI.Repositories
                 .FirstOrDefault();
         }
         
+        public ICollection<Ad> GetAdsByVehicleId(int vehicleId, int companyId)
+        {
+            return _context.Ads
+                .Include(a => a.User.Company)
+                .Include(v => v.Vehicle)
+                .Include(v => v.Vehicle.VehiclePhotos)
+                .Where(a => a.User.Company.Id == companyId && a.Vehicle.Id == vehicleId)
+                .ToList();
+        }
 
         public bool AddAd(Ad ad, int companyId)
         {

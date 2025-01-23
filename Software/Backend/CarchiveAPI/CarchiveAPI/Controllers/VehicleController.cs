@@ -348,7 +348,7 @@ namespace CarchiveAPI.Controllers
             }
 
             var email = User.FindFirst(ClaimTypes.Name)?.Value;
-            if (_vehicleServices.DeleteVehicle(id, email))
+            if (!_vehicleServices.DeleteVehicle(id, email))
             {
                 ModelState.AddModelError("", "Something went wrong when deleting contact.");
                 return StatusCode(500, ModelState);
@@ -428,6 +428,20 @@ namespace CarchiveAPI.Controllers
             var email = User.FindFirst(ClaimTypes.Name)?.Value;
             var photos = _vehicleServices.GetVehiclePhotos(vehicleId, email);
             return Ok(photos);
+        }
+
+        [HttpDelete("photo/{photoId}")]
+        [Authorize(Roles = "Admin, User")]
+        [ProducesResponseType(200)]
+        [ProducesResponseType(400)]
+        public IActionResult DeletePhoto(int photoId)
+        {
+            if (!_vehicleServices.DeleteVehiclePhoto(photoId))
+            {
+                ModelState.AddModelError("", "Something went wrong when deleting the photo.");
+                return StatusCode(500, ModelState);
+            }
+            return Ok("Successfully deleted photo!");
         }
     }
 }
