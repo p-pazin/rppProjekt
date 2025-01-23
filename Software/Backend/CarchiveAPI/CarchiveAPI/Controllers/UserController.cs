@@ -86,14 +86,14 @@ namespace CarchiveAPI.Controllers
             return Ok();
         }
 
-        [HttpDelete("delete")]
+        [HttpDelete("delete/{userId}")]
         [Authorize(Roles = "Admin")]
         [ProducesResponseType(200)]
         [ProducesResponseType(400)]
-        public IActionResult DeleteUser([FromBody] UserDto userDto)
+        public IActionResult DeleteUser(int userId)
         {
             var adminEmail = User.FindFirst(ClaimTypes.Name)?.Value;
-            bool success = _userServices.DeleteUser(userDto, adminEmail);
+            bool success = _userServices.DeleteUser(userId, adminEmail);
 
             if (!ModelState.IsValid)
             {
