@@ -85,6 +85,26 @@ namespace CarchiveAPI.Controllers
 
             return Ok();
         }
+        [HttpPut("newpassword")]
+        [Authorize(Roles = "Admin,User")]
+        [ProducesResponseType(200)]
+        [ProducesResponseType(400)]
+        public IActionResult ChangeUserPassword([FromBody] NewPasswordDto newPass)
+        {
+            bool success = _userServices.ChangeUserPassword(newPass);
+
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            if (!success)
+            {
+                return BadRequest("Failed to change password.");
+            }
+
+            return Ok("Password changed");
+        }
 
         [HttpDelete("delete/{userId}")]
         [Authorize(Roles = "Admin")]

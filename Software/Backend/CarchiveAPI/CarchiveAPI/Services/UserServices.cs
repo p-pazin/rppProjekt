@@ -113,6 +113,17 @@ namespace CarchiveAPI.Services
             return _userRepository.UpdateUser(user);
         }
 
+        public bool ChangeUserPassword(NewPasswordDto newPass)
+        {
+            var user = _userRepository.GetUserAndCompanyByEmail(newPass.Email);
+            if (user == null || !BCrypt.Net.BCrypt.Verify(newPass.Password, user.Password))
+            {
+                return false;
+            }
+            user.Password = BCrypt.Net.BCrypt.HashPassword(newPass.NewPassword);
+            return _userRepository.UpdateUser(user);
+        }
+
         public bool DeleteUser(int userId, string adminEmail)
         {
             var admin = _userRepository.GetUserAndCompanyByEmail(adminEmail);
