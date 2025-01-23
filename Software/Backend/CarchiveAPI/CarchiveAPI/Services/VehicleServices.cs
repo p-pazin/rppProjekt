@@ -166,47 +166,6 @@ namespace CarchiveAPI.Services
         public bool DeleteVehicle(int id, string email)
         {
             var vehicleDto = GetVehicleById(id, email).FirstOrDefault();
-            var offerVehicles = _offerVehicleRepository.GetAllByVehicleId(id);
-            if (offerVehicles.Count > 0)
-            {
-                foreach (var offerVehicle in offerVehicles)
-                {
-                    _offerVehicleRepository.Delete(offerVehicle.OfferId);
-                }
-            }
-            var companyId = _companyServices.GetCompanyId(email);
-            var offer = _offerRepository.GetOfferById(id, companyId);
-            if (offer != null)
-            {
-                if (offer.OfferVehicles != null)
-                {
-                    if (offer.OfferVehicles.Count > 1)
-                    {
-                        _offerVehicleRepository.Delete(id);
-                    }
-                    else
-                    {
-                        _offerRepository.Delete(offer);
-                    }
-                }
-            }
-            var vehiclePhotos = GetVehiclePhotos(id, email);
-            if (vehiclePhotos.Count > 0)
-            {
-                foreach (var photo in vehiclePhotos)
-                {
-                    DeleteVehiclePhoto(photo.Id);
-                }
-            }
-
-            var vehicleAds = _adRepository.GetAdsByVehicleId(id, companyId);
-            if (vehicleAds.Count > 0)
-            {
-                foreach (var ad in vehicleAds)
-                {
-                    _adRepository.DeleteAd(ad);
-                }
-            }
 
             var vehicle = _mapper.Map<Vehicle>(vehicleDto);
             return _vehicleRepository.DeleteVehicle(vehicle);
