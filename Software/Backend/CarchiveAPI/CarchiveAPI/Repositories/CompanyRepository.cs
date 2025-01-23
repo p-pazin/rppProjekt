@@ -30,7 +30,7 @@ namespace CarchiveAPI.Repositories
 
         public ICollection<User> GetCompanyWorkers(Company company)
         {
-            return _context.Users.Where(u => u.Company == company).ToList();
+            return _context.Users.Where(u => u.Company == company).Where(u => u.Role.Id == 2).ToList();
         }
 
         public bool CompanyExists(string name)
