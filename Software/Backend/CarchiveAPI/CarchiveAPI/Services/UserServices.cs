@@ -113,10 +113,10 @@ namespace CarchiveAPI.Services
             return _userRepository.UpdateUser(user);
         }
 
-        public bool DeleteUser(UserDto userDto, string adminEmail)
+        public bool DeleteUser(int userId, string adminEmail)
         {
             var admin = _userRepository.GetUserAndCompanyByEmail(adminEmail);
-            var user = _userRepository.GetUserByIdAndCheckCompany(userDto.Id, admin.Company.Id);
+            var user = _userRepository.GetUserByIdAndCheckCompany(userId, admin.Company.Id);
             if (admin == null || admin.Company == null || user == null)
             {
                 return false;

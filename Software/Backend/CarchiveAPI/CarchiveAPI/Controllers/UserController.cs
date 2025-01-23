@@ -44,6 +44,8 @@ namespace CarchiveAPI.Controllers
 
         [HttpPost("new")]
         [Authorize(Roles = "Admin")]
+        [ProducesResponseType(200)]
+        [ProducesResponseType(400)]
         public IActionResult AddUser([FromBody] RegisterUserDto newUserDto)
         {
             var adminEmail = User.FindFirst(ClaimTypes.Name)?.Value;
@@ -64,6 +66,8 @@ namespace CarchiveAPI.Controllers
 
         [HttpPut("update")]
         [Authorize(Roles = "Admin")]
+        [ProducesResponseType(200)]
+        [ProducesResponseType(400)]
         public IActionResult ChangeUserInfo([FromBody] UserDto UserDto)
         {
             var adminEmail = User.FindFirst(ClaimTypes.Name)?.Value;
@@ -82,12 +86,14 @@ namespace CarchiveAPI.Controllers
             return Ok();
         }
 
-        [HttpDelete("delete")]
+        [HttpDelete("delete/{userId}")]
         [Authorize(Roles = "Admin")]
-        public IActionResult DeleteUser([FromBody] UserDto userDto)
+        [ProducesResponseType(200)]
+        [ProducesResponseType(400)]
+        public IActionResult DeleteUser(int userId)
         {
             var adminEmail = User.FindFirst(ClaimTypes.Name)?.Value;
-            bool success = _userServices.DeleteUser(userDto, adminEmail);
+            bool success = _userServices.DeleteUser(userId, adminEmail);
 
             if (!ModelState.IsValid)
             {
@@ -96,7 +102,7 @@ namespace CarchiveAPI.Controllers
 
             if (!success)
             {
-                return BadRequest("Failed to add user. Ensure the email is unique and the admin has a valid company.");
+                return BadRequest("Failed to delete user.");
             }
 
             return Ok();
