@@ -44,7 +44,7 @@ namespace CarchiveAPI.Services
             User user = _userRepository.GetUserAndCompanyByEmail(email);
             Vehicle vehicle = _vehicleRepository.GetOneVehicleById(vehicleId, companyId);
             Contact contact = _contactRepository.GetContact(contactId, companyId);
-            if (vehicle == null || contact == null || user == null)
+            if (vehicle == null || contact == null || user == null || vehicle.Usage == 1 || vehicle.State != 1)
             {
                 return false;
             }
@@ -60,9 +60,6 @@ namespace CarchiveAPI.Services
                 Vehicle = vehicle,
                 User = user
             };
-            Console.WriteLine($"Ad ID: {reservation.Contact.FirstName}");
-            Console.WriteLine($"Ad ID: {reservation.Vehicle.Brand}");
-            Console.WriteLine($"Ad ID: {reservation.User.FirstName}");
             return _reservationRepository.Add(reservation);
         }
 

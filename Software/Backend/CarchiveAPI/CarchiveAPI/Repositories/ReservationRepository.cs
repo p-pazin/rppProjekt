@@ -13,7 +13,7 @@ namespace CarchiveAPI.Repositories
         }
         public ICollection<Reservation> GetAll(int companyId)
         {
-            return _context.Reservations.Where(r => r.Vehicle.Company.Id == companyId).ToList();
+            return _context.Reservations.Include(c=> c.Contact).Include(c => c.Vehicle).Include(c => c.User).Where(r => r.Vehicle.Company.Id == companyId).ToList();
         }
         public Reservation Get(int id, int companyId)
         {

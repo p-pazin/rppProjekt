@@ -9,5 +9,8 @@
         public DateOnly EndDate { get; set; }
         public DateOnly DateOfCreation { get; set; }
         public int MaxMileage { get; set; }
+        public int VehicleId { get; set; }
+        public int ContactId { get; set; }
+
     }
 }
