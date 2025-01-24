@@ -14,6 +14,7 @@ namespace CarchiveAPI.Services
         private readonly ContractRepository _contractRepository;
         private readonly VehicleRepository _vehicleRepository;
         private readonly OfferVehicleRepository _offerVehicleRepository;
+        private readonly ReservationRepository _reservationRepository;
         private DataContext _context;
         private PenaltyRepository _penaltyRepository;
         private readonly IMapper _mapper;
@@ -21,7 +22,7 @@ namespace CarchiveAPI.Services
         public InvoiceServices(DataContext context,InvoiceRepository invoiceRepository, 
             CompanyServices companyServices, IMapper mapper, UserRepository userRepository, 
             ContractRepository contractRepository, PenaltyRepository penaltyRepository, VehicleRepository vehicleRepository, 
-            OfferVehicleRepository offerVehicleRepository)
+            OfferVehicleRepository offerVehicleRepository, ReservationRepository reservationRepository)
         {
             this._invoiceRepository = invoiceRepository;
             this._companyServices = companyServices;
@@ -31,9 +32,10 @@ namespace CarchiveAPI.Services
             this._contractRepository = contractRepository;
             this._vehicleRepository = vehicleRepository;
             this._offerVehicleRepository = offerVehicleRepository;
-            _userRepository = userRepository;
-            _contractRepository = contractRepository;
-            _penaltyRepository = penaltyRepository;
+            this._userRepository = userRepository;
+            this._contractRepository = contractRepository;
+            this._penaltyRepository = penaltyRepository;
+            this._reservationRepository = reservationRepository;
         }
 
         public ICollection<InvoiceDto> GetInvoices(string email)
@@ -122,13 +124,15 @@ namespace CarchiveAPI.Services
                 return false;
             }
 
+            var reservation = _reservationRepository.Get((int)contract.ReservationId, companyId);
+
             var numberOfDays = (contract.Reservation.EndDate.ToDateTime(TimeOnly.MinValue) -
                     contract.Reservation.StartDate.ToDateTime(TimeOnly.MinValue)).Days;
             var invoice = new Invoice
             {
                 DateOfCreation = invoiceCreate.DateOfCreation,
                 Vat = invoiceCreate.Vat,
-                TotalCost = ((contract.Reservation.Price * numberOfDays) + contract.Insurance.Cost) * ((invoiceCreate.Vat + 100) / 100),
+                TotalCost = (double)(((contract.Reservation.Price * numberOfDays) + contract.Insurance.Cost) * ((invoiceCreate.Vat + 100) / 100)),
                 Contract = contract,
                 PaymentMethod = invoiceCreate.PaymentMethod
             };
