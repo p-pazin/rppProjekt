@@ -34,6 +34,36 @@ namespace CarchiveAPI.Controllers
             return Ok(vehicles);
         }
 
+        [HttpGet("sale")]
+        [Authorize(Roles = "Admin, User")]
+        [ProducesResponseType(200, Type = typeof(List<VehicleDto>))]
+
+        public IActionResult GetVehiclesSale()
+        {
+            var email = User.FindFirst(ClaimTypes.Name)?.Value;
+            var vehicles = _vehicleServices.GetAllSale(email);
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+            return Ok(vehicles);
+        }
+
+        [HttpGet("rent")]
+        [Authorize(Roles = "Admin, User")]
+        [ProducesResponseType(200, Type = typeof(List<VehicleDto>))]
+
+        public IActionResult GetVehiclesRent()
+        {
+            var email = User.FindFirst(ClaimTypes.Name)?.Value;
+            var vehicles = _vehicleServices.GetAllRent(email);
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+            return Ok(vehicles);
+        }
+
         [HttpGet("{vehicleId}")]
         [Authorize(Roles = "Admin, User")]
         [ProducesResponseType(200, Type = typeof(VehicleDto))]
