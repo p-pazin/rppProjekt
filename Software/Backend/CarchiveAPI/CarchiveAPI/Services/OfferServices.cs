@@ -106,7 +106,7 @@ namespace CarchiveAPI.Services
             int companyId = _companyServices.GetCompanyId(email);
             var offer = _offerRepository.GetOfferById(id, companyId);
             var contractsForOffer = _contractRepository.GetContracts(companyId).Where(c => c.OfferId == id).ToList();
-            if (contractsForOffer != null)
+            if (contractsForOffer.Count != 0)
             {
                 return false;
             }
