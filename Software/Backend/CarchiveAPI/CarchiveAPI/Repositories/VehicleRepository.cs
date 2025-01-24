@@ -42,9 +42,9 @@ namespace CarchiveAPI.Repositories
             return _context.Vehicles.Where(v => v.Id == id && v.Company.Id == companyId).FirstOrDefault();
         }
 
-        public ICollection<Vehicle> GetVehicleById(int id, int companyId)
+        public Vehicle GetVehicleById(int id, int companyId)
         {
-            return _context.Vehicles.Where(v => v.Id == id && v.Company.Id == companyId).ToList();
+            return _context.Vehicles.Where(v => v.Id == id && v.Company.Id == companyId).FirstOrDefault();
         }
 
         public Vehicle GetVehicleIdByRegistration(string reg, int companyId)
