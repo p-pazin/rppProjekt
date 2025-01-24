@@ -64,7 +64,7 @@ namespace CarchiveAPI.Services
             
             foreach (var vehicleId in vehiclesId)
             {
-                var vehicle = _vehicleRepository.GetVehicleById(vehicleId, companyId).ToList();
+                var vehicle = _vehicleRepository.GetVehicleById(vehicleId, companyId);
                 OfferVehicle offerVehicle = new OfferVehicle
                 {
                     OfferId = offer.Id,
@@ -89,7 +89,7 @@ namespace CarchiveAPI.Services
 
             foreach (var vehicleId in vehiclesId)
             {
-                var vehicle = _vehicleRepository.GetVehicleById(vehicleId, companyId).ToList();
+                var vehicle = _vehicleRepository.GetVehicleById(vehicleId, companyId);
                 OfferVehicle offerVehicle = new OfferVehicle
                 {
                     OfferId = offer.Id,
