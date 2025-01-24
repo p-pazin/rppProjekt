@@ -55,11 +55,11 @@ namespace CarchiveAPI.Services
             return _mapper.Map<ICollection<VehicleDto>>(vehicles);
         }
 
-        public ICollection<VehicleDto> GetVehicleById(int id, string email)
+        public VehicleDto GetVehicleById(int id, string email)
         {
             int companyId = _companyServices.GetCompanyId(email);
             var vehicle = _vehicleRepository.GetVehicleById(id, companyId);
-            return _mapper.Map<ICollection<VehicleDto>>(vehicle);
+            return _mapper.Map<VehicleDto>(vehicle);
         }
 
         public VehicleDto  GetVehicleIdByRegistration(string reg, string email)
