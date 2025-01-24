@@ -27,6 +27,13 @@ namespace CarchiveAPI.Services
             _adRepository = adRepository;
         }
 
+        public ICollection<VehicleDto> GetAllCatalog(string email)
+        {
+            int companyId = _companyServices.GetCompanyId(email);
+            var vehicles = _vehicleRepository.GetAllCatalog(companyId);
+            return _mapper.Map<ICollection<VehicleDto>>(vehicles);
+        }
+
         public ICollection<VehicleDto> GetAll(string email)
         {
             int companyId = _companyServices.GetCompanyId(email);

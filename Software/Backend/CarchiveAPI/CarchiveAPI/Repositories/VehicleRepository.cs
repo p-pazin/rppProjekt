@@ -13,9 +13,15 @@ namespace CarchiveAPI.Repositories
             _context = context;
         }
 
-        public ICollection<Vehicle> GetAll(int companyId)
+        public ICollection<Vehicle> GetAllCatalog(int companyId)
         {
             var a = _context.Vehicles.Where(v => v.Company.Id == companyId && v.State != 4).ToList();
+            return a;
+        }
+
+        public ICollection<Vehicle> GetAll(int companyId)
+        {
+            var a = _context.Vehicles.Where(v => v.Company.Id == companyId).ToList();
             return a;
         }
 
