@@ -186,7 +186,7 @@ namespace CarchiveAPI.Services
 
         public bool DeleteVehicle(int id, string email)
         {
-            var vehicleDto = GetVehicleById(id, email).FirstOrDefault();
+            var vehicleDto = GetVehicleById(id, email);
 
             var vehicle = _mapper.Map<Vehicle>(vehicleDto);
             return _vehicleRepository.DeleteVehicle(vehicle);
