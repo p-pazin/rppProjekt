@@ -1,6 +1,5 @@
 ﻿using CarchiveAPI.Data;
 using CarchiveAPI.Models;
-using CarchiveAPI.Services;
 
 namespace CarchiveAPI.Repositories
 {

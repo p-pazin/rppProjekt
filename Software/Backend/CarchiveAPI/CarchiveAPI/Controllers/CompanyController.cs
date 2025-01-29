@@ -32,20 +32,6 @@ namespace CarchiveAPI.Controllers
             return Ok(company);
         }
 
-        [HttpGet("companies")]
-        [Authorize(Roles = "Admin")]
-        [ProducesResponseType(200, Type = typeof(ICollection<CompanyDto>))]
-        public IActionResult GetCompanies()
-        {
-            var companies = _companyServices.GetCompanies();
-
-            if (!ModelState.IsValid)
-            {
-                return BadRequest(ModelState);
-            }
-            return Ok(companies);
-        }
-
         [HttpGet("users")]
         [Authorize(Roles = "Admin")]
         [ProducesResponseType(200, Type = typeof(ICollection<UserDto>))]

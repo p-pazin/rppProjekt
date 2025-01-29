@@ -8,5 +8,6 @@
         public string PaymentMethod { get; set; }
         public double TotalCost { get; set; }
         public int Mileage { get; set; }
+        public int ContractId { get; set; }
     }
 }

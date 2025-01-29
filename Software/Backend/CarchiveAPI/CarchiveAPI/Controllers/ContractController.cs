@@ -63,6 +63,11 @@ namespace CarchiveAPI.Controllers
                 return NotFound();
             }
             var email = User.FindFirst(ClaimTypes.Name)?.Value;
+            if (_contractService.GetSaleContract(contractId, email) == null)
+            {
+                ModelState.AddModelError("", "Contract not found.");
+                return StatusCode(404, ModelState);
+            }
             var contract = _contractService.GetSaleContract(contractId, email);
 
             if (!ModelState.IsValid)
@@ -206,6 +211,11 @@ namespace CarchiveAPI.Controllers
             }
 
             var email = User.FindFirst(ClaimTypes.Name)?.Value;
+            if (_contractService.GetRentContract(contractId, email) == null)
+            {
+                ModelState.AddModelError("", "Contract not found.");
+                return StatusCode(404, ModelState);
+            }
             var contract = _contractService.GetRentContract(contractId, email);
 
             if (!ModelState.IsValid)

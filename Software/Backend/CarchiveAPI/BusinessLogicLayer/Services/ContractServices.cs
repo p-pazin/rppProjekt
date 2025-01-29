@@ -2,8 +2,6 @@
 using CarchiveAPI.Dto;
 using CarchiveAPI.Models;
 using CarchiveAPI.Repositories;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.IdentityModel.Tokens;
 
 namespace CarchiveAPI.Services
 {
@@ -18,11 +16,13 @@ namespace CarchiveAPI.Services
         private readonly OfferRepository _offerRepository;
         private readonly ReservationRepository _reservationRepository;
         private readonly InsuranceRepository _insuranceRepository;
+        private readonly OfferVehicleRepository _offerVehicleRepository;
         private readonly IMapper _mapper;
 
         public ContractServices(ContractRepository contractRepository, CompanyServices companyServices, UserRepository userRepository, 
             CompanyRepository companyRepository, ContactRepository contactRepository, VehicleRepository vehicleRepository, 
-            OfferRepository offerRepository, IMapper mapper, ReservationRepository reservationRepository, InsuranceRepository insuranceRepository)
+            OfferRepository offerRepository, IMapper mapper, ReservationRepository reservationRepository, InsuranceRepository insuranceRepository,
+            OfferVehicleRepository offerVehicleRepository)
         {
             this._contractRepository = contractRepository;
             this._companyServices = companyServices;
@@ -36,7 +36,8 @@ namespace CarchiveAPI.Services
             this._vehicleRepository = vehicleRepository;
             this._offerRepository = offerRepository;
             this._mapper = mapper;
-            _insuranceRepository = insuranceRepository;
+            this._insuranceRepository = insuranceRepository;
+            this._offerVehicleRepository = offerVehicleRepository;
         }
 
         public ICollection<ContractDto> GetContracts(string email)
@@ -61,9 +62,83 @@ namespace CarchiveAPI.Services
         public SaleContractDto GetSaleContract(int contractId, string email)
         {
             int companyId = _companyServices.GetCompanyId(email);
-            var contract = _contractRepository.GetSaleContractDto(contractId, companyId);
 
-            return contract;
+            var contract = _contractRepository.GetContract(contractId, companyId);
+
+            if(contract == null || contract.Type == 2)
+            {
+                return null;
+            }
+
+            var company = _companyRepository.GetCompanyById(companyId);
+
+            SaleContractDto saleContractDto = new SaleContractDto();
+
+            if(contract.OfferId != null)
+            {
+                var offer = _offerRepository.GetOfferById((int)contract.OfferId, companyId);
+                var contact = _contactRepository.GetContact(offer.Contact.Id, companyId);
+                var user = _userRepository.GetUserById(offer.User.Id);
+                var offerVehicles = _offerVehicleRepository.GetAllByOfferId(offer.Id);
+
+                List<VehicleDto> mappedVehicles = new List<VehicleDto>();
+                foreach (var offerVehicle in offerVehicles)
+                {
+                    var vehicle = _vehicleRepository.GetVehicleById(offerVehicle.VehicleId, companyId);
+                    mappedVehicles.Add(_mapper.Map<VehicleDto>(vehicle));
+                }
+
+                saleContractDto = new SaleContractDto
+                {
+                    Id = contract.Id,
+                    Title = contract.Title,
+                    Place = contract.Place,
+                    DateOfCreation = contract.DateOfCreation,
+                    Type = contract.Type,
+                    Content = contract.Content,
+                    Signed = contract.Signed,
+                    CompanyName = company.Name,
+                    CompanyAddress = company.Address,
+                    CompanyPin = company.Pin,
+                    ContactName = contact.LastName + " " + contact.FirstName,
+                    ContactAddress = contact.Address,
+                    ContactPin = contact.Pin,
+                    UserName = user.FirstName + " " + user.LastName,
+                    Price = offer.Price,
+                    OfferId = offer.Id,
+                    Vehicles = mappedVehicles
+                };
+            }
+            else
+            {
+                var contact = _contactRepository.GetContact(contract.Contact.Id, companyId);
+                var user = _userRepository.GetUserById(contract.User.Id);
+                var vehicle = _vehicleRepository.GetVehicleById(contract.Vehicle.Id, companyId);
+
+                var mappedVehicle = _mapper.Map<VehicleDto>(vehicle);
+
+                saleContractDto = new SaleContractDto
+                {
+                    Id = contract.Id,
+                    Title = contract.Title,
+                    Place = contract.Place,
+                    DateOfCreation = contract.DateOfCreation,
+                    Type = contract.Type,
+                    Content = contract.Content,
+                    Signed = contract.Signed,
+                    CompanyName = company.Name,
+                    CompanyAddress = company.Address,
+                    CompanyPin = company.Pin,
+                    ContactName = contact?.LastName + " " + contact?.FirstName,
+                    ContactAddress = contact?.Address,
+                    ContactPin = contact?.Pin,
+                    UserName = user.FirstName + " " + user.LastName,
+                    Price = (double)vehicle.Price,
+                    Vehicle = mappedVehicle
+                };
+            }
+
+            return saleContractDto;
         }
 
         public Contract GetContract(int contractId, string email)
@@ -78,6 +153,12 @@ namespace CarchiveAPI.Services
             int companyId = _companyServices.GetCompanyId(email);
             var company = _companyRepository.GetCompanyById(companyId);
             var contract = _contractRepository.GetContractsRent(contractId, companyId);
+
+            if (contract == null || contract.Type == 1)
+            {
+                return null;
+            }
+
             var reservation = _reservationRepository.Get(contract.Reservation.Id, companyId);
             var vehicle = _vehicleRepository.GetOneVehicleById(reservation.Vehicle.Id, companyId);
             var contact = _contactRepository.GetContact(reservation.Contact.Id, companyId);

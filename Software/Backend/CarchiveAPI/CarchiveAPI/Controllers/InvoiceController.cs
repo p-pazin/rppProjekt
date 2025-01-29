@@ -71,23 +71,6 @@ namespace CarchiveAPI.Controllers
             return Ok("Successfully created invoice!");
         }
 
-        [HttpDelete("{id}")]
-        [Authorize(Roles = "Admin, User")]
-        public IActionResult DeleteInvoice(int id)
-        {
-            var email = User.FindFirst(ClaimTypes.Name)?.Value;
-            var result = _invoiceServices.DeleteInvoice(email, id);
-            if (!ModelState.IsValid)
-            {
-                return BadRequest(ModelState);
-            }
-            if (!result)
-            {
-                return BadRequest("Failed to delete invoice");
-            }
-            return Ok("Invoice deleted!");
-        }
-
         [HttpPost("rent/start")]
         [Authorize(Roles = "Admin, User")]
         public IActionResult PostStartInvoiceRent([FromQuery] int contractId, [FromBody] InvoiceDto invoiceCreate)
