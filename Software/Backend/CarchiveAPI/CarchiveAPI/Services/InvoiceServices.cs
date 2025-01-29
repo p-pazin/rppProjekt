@@ -119,7 +119,7 @@ namespace CarchiveAPI.Services
             int companyId = _companyServices.GetCompanyId(email);
             var contract = _contractRepository.GetContractsRent(contractId, companyId);
 
-            if (contract == null || contract.Type == 1)
+            if (contract == null || contract.Type == 1 || contract.Signed == 1)
             {
                 return false;
             }
@@ -132,7 +132,7 @@ namespace CarchiveAPI.Services
             {
                 DateOfCreation = invoiceCreate.DateOfCreation,
                 Vat = invoiceCreate.Vat,
-                TotalCost = (double)(((contract.Reservation.Price * numberOfDays) + contract.Insurance.Cost) * ((invoiceCreate.Vat + 100) / 100)),
+                TotalCost = Math.Round(((contract.Reservation.Price * numberOfDays) + contract.Insurance.Cost) * ((invoiceCreate.Vat + 100) / 100), 2),
                 Contract = contract,
                 PaymentMethod = invoiceCreate.PaymentMethod
             };
@@ -145,7 +145,10 @@ namespace CarchiveAPI.Services
                 vehicle.State = 3;
                 _vehicleRepository.UpdateVehicle(vehicle);
             }
-            
+            contract.Signed = 1;
+            _contractRepository.UpdateContract(contract);
+            _context.SaveChanges();
+
             return invoiceResult;
         }
 

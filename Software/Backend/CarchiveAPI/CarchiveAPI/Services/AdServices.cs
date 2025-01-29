@@ -31,10 +31,9 @@ namespace CarchiveAPI.Services
             var ads = _adRepository.GetAll(companyId);
             return _mapper.Map<List<AdDto>>(ads);
         }
-        public ICollection<IndexAdDto> GetIndexAds(string email)
+        public ICollection<IndexAdDto> GetIndexAds(int id)
         {
-            int companyId = _companyServices.GetCompanyId(email);
-            var ads = _adRepository.GetAll(companyId);
+            var ads = _adRepository.GetAll(id);
             return _mapper.Map<List<IndexAdDto>>(ads);
         }
 

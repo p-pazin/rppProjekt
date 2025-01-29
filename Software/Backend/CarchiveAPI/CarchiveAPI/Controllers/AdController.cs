@@ -34,22 +34,20 @@ namespace CarchiveAPI.Controllers
 
         }
 
-        [HttpGet("index")]
-        [Authorize(Roles = "Admin, User")]
-        [Produces("application/xml")]
+        [HttpGet("index/{companyId}")]
+         [Produces("application/xml")]
         [ProducesResponseType(200, Type = typeof(ICollection<IndexAdDto>))]
-        public IActionResult GetIndexAds()
+        public IActionResult GetIndexAds(int companyId)
         {
-            var email = User.FindFirst(ClaimTypes.Name)?.Value;
-            var ads = _adServices.GetIndexAds(email);
+            var ads = _adServices.GetIndexAds(companyId);
 
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
-            var jsonString = JsonConvert.SerializeObject(new { Ads = ads });
+            var jsonString = JsonConvert.SerializeObject(new { ad_item = ads });
             Console.WriteLine(JsonConvert.SerializeObject(ads, Formatting.Indented));
-            XmlDocument doc = JsonConvert.DeserializeXmlNode(jsonString, "Root");
+            XmlDocument doc = JsonConvert.DeserializeXmlNode(jsonString, "ad-list");
             return Ok(doc);
         }
 
