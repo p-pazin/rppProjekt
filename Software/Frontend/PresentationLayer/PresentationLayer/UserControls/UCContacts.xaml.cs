@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics.Contracts;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -12,6 +13,9 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using CarchiveAPI.Dto;
+using ServiceLayer.Network.Dto;
+using ServiceLayer.Services;
 
 namespace PresentationLayer.UserControls
 {
@@ -20,9 +24,81 @@ namespace PresentationLayer.UserControls
     /// </summary>
     public partial class UCContacts : UserControl
     {
+        private readonly ContactService _contactService;
         public UCContacts()
         {
             InitializeComponent();
+            _contactService = new ContactService();
+        }
+
+        private void UserControl_Loaded(object sender, RoutedEventArgs e)
+        {
+            LoadContactsData();
+        }
+
+        private async void LoadContactsData()
+        {
+            try
+            {
+                List<ContactDto> contacts = await _contactService.GetContactsAsync();
+                dgvContacts.ItemsSource = contacts;
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Greška pri dohvaćanju podataka: {ex.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+        }
+
+        private void btnAddContact_Click(object sender, RoutedEventArgs e)
+        {
+            if(Application.Current.MainWindow is MainWindow mw)
+            {
+                mw.LoadUC(new UCContactForm());
+                mw.AdjustUserControlMargin();
+            }
+        }
+
+        private void btnEditContact_Click(object sender, RoutedEventArgs e)
+        {
+            var selectedContact = dgvContacts.SelectedItem as ContactDto;
+
+            if(selectedContact != null) {
+                if(Application.Current.MainWindow is MainWindow mw)
+                {
+                    mw.LoadUC(new UCContactForm(selectedContact));
+                    mw.AdjustUserControlMargin();
+                }
+            }
+            else
+            {
+                MessageBox.Show("Potrebno je označiti kontakt!", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+        }
+
+        private void btnDeleteContact_Click(object sender, RoutedEventArgs e)
+        {
+            var selectedContact = dgvContacts.SelectedItem as ContactDto;
+
+            if(selectedContact != null)
+            {
+                var result = MessageBox.Show("Jeste li sigurni da želite obrisati kontakt?", "Confirmation", MessageBoxButton.YesNo, MessageBoxImage.Question);
+                if(result == MessageBoxResult.Yes)
+                {
+                    try
+                    {
+                        _contactService.DeleteContactAsync(selectedContact.Id);
+                        LoadContactsData();
+                    }
+                    catch (Exception ex)
+                    {
+                        MessageBox.Show($"Greška pri brisanju kontakta: {ex.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                    }
+                }
+            }
+            else
+            {
+                MessageBox.Show("Potrebno je označiti kontakt!", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
         }
     }
 }
