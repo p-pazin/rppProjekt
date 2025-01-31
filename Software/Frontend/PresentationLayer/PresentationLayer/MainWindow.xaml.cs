@@ -26,13 +26,26 @@ namespace PresentationLayer
                 switch (selectedItem.Content.ToString())
                 {
                     case "Nadzorna ploča":
-                        MainContentFrame.Content = null;
+                        MainContentFrame.Navigate(new UCDashboard());
                         break;
                     case "Katalog vozila":
                         MainContentFrame.Navigate(new UCVehicleCatalog());
                         break;
                     case "Ponude":
                         MainContentFrame.Navigate(new UCOfferCatalog());
+                        break;
+                    case "Popis kontakata":
+                        MainContentFrame.Navigate(new UCContacts());
+                        break;
+                    case "Ugovori":
+                        MainContentFrame.Navigate(new UCContracts());
+                        break;
+                    case "Odjava":
+                        var loginWindow = new LoginWindow();
+                        loginWindow.Show();
+                        Close();
+                        var token = new TokenManager();
+                        token.ClearToken();
                         break;
                     default:
                         MainContentFrame.Content = null;

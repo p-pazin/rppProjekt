@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <PropertyGroup>
@@ -55,11 +55,29 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="LoginWindow.xaml.cs">
+      <DependentUpon>LoginWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="UserControls\UCAddOffer.xaml.cs">
       <DependentUpon>UCAddOffer.xaml</DependentUpon>
     </Compile>
     <Compile Include="UserControls\UCAddVehicle.xaml.cs">
       <DependentUpon>UCAddVehicle.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UserControls\UCContactForm.xaml.cs">
+      <DependentUpon>UCContactForm.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UserControls\UCContacts.xaml.cs">
+      <DependentUpon>UCContacts.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UserControls\UCContracts.xaml.cs">
+      <DependentUpon>UCContracts.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UserControls\UCDashboard.xaml.cs">
+      <DependentUpon>UCDashboard.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UserControls\UCInvoices.xaml.cs">
+      <DependentUpon>UCInvoices.xaml</DependentUpon>
     </Compile>
     <Compile Include="UserControls\UCEditOffer.xaml.cs">
       <DependentUpon>UCEditOffer.xaml</DependentUpon>
@@ -73,6 +91,10 @@
     <Compile Include="UserControls\UCVehicleCatalog.xaml.cs">
       <DependentUpon>UCVehicleCatalog.xaml</DependentUpon>
     </Compile>
+    <Page Include="LoginWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Compile Include="UserControls\UCVehicleLocation.xaml.cs">
       <DependentUpon>UCVehicleLocation.xaml</DependentUpon>
     </Compile>
@@ -93,6 +115,26 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="UserControls\UCAddVehicle.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UserControls\UCContactForm.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UserControls\UCContacts.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UserControls\UCContracts.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UserControls\UCInvoices.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UserControls\UCDashboard.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -145,6 +187,12 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="images\CarchiveLogo.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\ServiceLayer\ServiceLayer.csproj">
+      <Project>{2b7600fb-b105-4b71-9d50-f194cebe638c}</Project>
+      <Name>ServiceLayer</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
