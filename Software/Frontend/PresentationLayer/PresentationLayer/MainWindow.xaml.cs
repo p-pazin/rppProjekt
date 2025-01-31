@@ -31,6 +31,9 @@ namespace PresentationLayer
                     case "Katalog vozila":
                         MainContentFrame.Navigate(new UCVehicleCatalog());
                         break;
+                    case "Ponude":
+                        MainContentFrame.Navigate(new UCOfferCatalog());
+                        break;
                     default:
                         MainContentFrame.Content = null;
                         break;
@@ -84,6 +87,7 @@ namespace PresentationLayer
         public void LoadUC(UserControl uc)
         {
             MainContentFrame.Content = uc;
+            AdjustUserControlMargin();
         }
     }
 }

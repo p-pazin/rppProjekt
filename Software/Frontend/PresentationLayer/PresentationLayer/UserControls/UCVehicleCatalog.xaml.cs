@@ -23,6 +23,10 @@ namespace PresentationLayer.UserControls
         public UCVehicleCatalog()
         {
             InitializeComponent();
+            if (Application.Current.MainWindow is MainWindow mw)
+            {
+                mw.AdjustUserControlMargin();
+            }
         }
 
         private void Button_Click(object sender, RoutedEventArgs e)
@@ -32,6 +36,20 @@ namespace PresentationLayer.UserControls
                 mw.LoadUC(new UCAddVehicle());
                 mw.AdjustUserControlMargin();
             }
+        }
+
+        private void btnEditvehicle_Click(object sender, RoutedEventArgs e)
+        {
+            if (Application.Current.MainWindow is MainWindow mw)
+            {
+                mw.LoadUC(new UCEditVehicle());
+                mw.AdjustUserControlMargin();
+            }
+        }
+
+        private void btnDeleteVehicle_Click(object sender, RoutedEventArgs e)
+        {
+
         }
     }
 }

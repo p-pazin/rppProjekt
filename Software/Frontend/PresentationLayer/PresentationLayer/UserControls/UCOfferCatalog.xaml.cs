@@ -16,24 +16,28 @@ using System.Windows.Shapes;
 namespace PresentationLayer.UserControls
 {
     /// <summary>
-    /// Interaction logic for UCAddVehicle.xaml
+    /// Interaction logic for UCOfferCatalog.xaml
     /// </summary>
-    public partial class UCAddVehicle : UserControl
+    public partial class UCOfferCatalog : UserControl
     {
-        public UCAddVehicle()
+        public UCOfferCatalog()
         {
             InitializeComponent();
+        }
+
+        private void btnAddOffer_Click(object sender, RoutedEventArgs e)
+        {
             if (Application.Current.MainWindow is MainWindow mw)
             {
-                mw.AdjustUserControlMargin();
+                mw.LoadUC(new UCAddOffer());
             }
         }
 
-        private void btnExit_Click(object sender, RoutedEventArgs e)
+        private void btnEditOffer_Click(object sender, RoutedEventArgs e)
         {
             if (Application.Current.MainWindow is MainWindow mw)
             {
-                mw.LoadUC(new UCVehicleCatalog());
+                mw.LoadUC(new UCEditOffer());
             }
         }
     }

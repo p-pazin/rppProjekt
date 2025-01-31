@@ -16,25 +16,13 @@ using System.Windows.Shapes;
 namespace PresentationLayer.UserControls
 {
     /// <summary>
-    /// Interaction logic for UCAddVehicle.xaml
+    /// Interaction logic for UCVehicleLocation.xaml
     /// </summary>
-    public partial class UCAddVehicle : UserControl
+    public partial class UCVehicleLocation : UserControl
     {
-        public UCAddVehicle()
+        public UCVehicleLocation()
         {
             InitializeComponent();
-            if (Application.Current.MainWindow is MainWindow mw)
-            {
-                mw.AdjustUserControlMargin();
-            }
-        }
-
-        private void btnExit_Click(object sender, RoutedEventArgs e)
-        {
-            if (Application.Current.MainWindow is MainWindow mw)
-            {
-                mw.LoadUC(new UCVehicleCatalog());
-            }
         }
     }
 }

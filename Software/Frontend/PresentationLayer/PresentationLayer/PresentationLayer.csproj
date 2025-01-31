@@ -55,11 +55,26 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="UserControls\UCAddOffer.xaml.cs">
+      <DependentUpon>UCAddOffer.xaml</DependentUpon>
+    </Compile>
     <Compile Include="UserControls\UCAddVehicle.xaml.cs">
       <DependentUpon>UCAddVehicle.xaml</DependentUpon>
     </Compile>
+    <Compile Include="UserControls\UCEditOffer.xaml.cs">
+      <DependentUpon>UCEditOffer.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UserControls\UCEditVehicle.xaml.cs">
+      <DependentUpon>UCEditVehicle.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UserControls\UCOfferCatalog.xaml.cs">
+      <DependentUpon>UCOfferCatalog.xaml</DependentUpon>
+    </Compile>
     <Compile Include="UserControls\UCVehicleCatalog.xaml.cs">
       <DependentUpon>UCVehicleCatalog.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UserControls\UCVehicleLocation.xaml.cs">
+      <DependentUpon>UCVehicleLocation.xaml</DependentUpon>
     </Compile>
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
@@ -73,11 +88,31 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Page Include="UserControls\UCAddOffer.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="UserControls\UCAddVehicle.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="UserControls\UCEditOffer.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UserControls\UCEditVehicle.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UserControls\UCOfferCatalog.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="UserControls\UCVehicleCatalog.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UserControls\UCVehicleLocation.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
