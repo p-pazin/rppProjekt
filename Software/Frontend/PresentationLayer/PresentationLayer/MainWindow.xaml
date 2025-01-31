@@ -1,0 +1,88 @@
+﻿<Window x:Class="PresentationLayer.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:PresentationLayer"
+        mc:Ignorable="d"
+        Title="Carchive" Height="600" Width="1000"
+        WindowState="Maximized"
+        WindowStartupLocation="CenterScreen">
+    <Grid Background="#FF555555">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto" MinWidth="220"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+
+        <Border Grid.Column="0" Background="#FF333333" x:Name="Drawer">
+            <ScrollViewer VerticalScrollBarVisibility="Auto">
+                <StackPanel>
+                    <Image Source="/images/CarchiveLogo.png" Height="40" Margin="0,20,0,20" Stretch="Uniform"/>
+                    <ListBox x:Name="NavigationMenu" Background="Transparent" BorderThickness="0" Foreground="White">
+                        <ListBox.ItemContainerStyle>
+                            <Style TargetType="ListBoxItem">
+                                <Setter Property="Padding" Value="15"/>
+                                <Setter Property="Background" Value="Transparent"/>
+                                <Setter Property="Template">
+                                    <Setter.Value>
+                                        <ControlTemplate TargetType="ListBoxItem">
+                                            <Border Background="{TemplateBinding Background}" Padding="{TemplateBinding Padding}">
+                                                <ContentPresenter HorizontalAlignment="Left" VerticalAlignment="Center"/>
+                                            </Border>
+                                        </ControlTemplate>
+                                    </Setter.Value>
+                                </Setter>
+                                <Setter Property="Foreground" Value="White"/>
+                                <Setter Property="FontSize" Value="14"/>
+                                <Setter Property="HorizontalContentAlignment" Value="Left"/>
+                                <Setter Property="VerticalContentAlignment" Value="Center"/>
+                                <Setter Property="Cursor" Value="Hand"/>
+                                <Style.Triggers>
+                                    <Trigger Property="IsMouseOver" Value="True">
+                                        <Setter Property="Background" Value="#FF555555"/>
+                                    </Trigger>
+                                    <Trigger Property="IsSelected" Value="True">
+                                        <Setter Property="Background" Value="#FF666666"/>
+                                    </Trigger>
+                                </Style.Triggers>
+                            </Style>
+                        </ListBox.ItemContainerStyle>
+                        <ListBoxItem Content="Nadzorna ploča"/>
+                        <ListBoxItem Content="Katalog vozila"/>
+                        <ListBoxItem Content="Popis kontakata"/>
+                        <ListBoxItem Content="Mapa vozila"/>
+                        <ListBoxItem Content="Ponude"/>
+                        <ListBoxItem Content="Statistika"/>
+                        <ListBoxItem Content="Ugovori"/>
+                        <ListBoxItem Content="Računi"/>
+                        <ListBoxItem Content="Oglasi"/>
+                        <ListBoxItem Content="Rezervacije"/>
+                        <ListBoxItem Content="Pomoć"/>
+                        <ListBoxItem Content="Postavke"/>
+                        <ListBoxItem Content="Odjava"/>
+                    </ListBox>
+
+                    <Border Background="#FF333333" Padding="20" VerticalAlignment="Bottom">
+                        <TextBlock HorizontalAlignment="Center" Text="Verzija aplikacije 1.0" Foreground="White" FontSize="10"/>
+                    </Border>
+                </StackPanel>
+            </ScrollViewer>
+        </Border>
+
+        <Grid Background="#FF555555" Grid.Column="1">
+            <Button x:Name="ToggleDrawerButton" Content="☰" HorizontalAlignment="Left" VerticalAlignment="Top" 
+                    Margin="10,10,0,0" Padding="10" FontSize="16" Click="ToggleDrawerButton_Click" Panel.ZIndex="1"
+                   >
+                <Button.Resources>
+                    <Style TargetType="Border">
+                        <Setter Property="CornerRadius" Value="5"/>
+                    </Style>
+                </Button.Resources>
+            </Button>
+
+            <Border x:Name="ContentArea" Margin="20,50,20,20" Background="Transparent">
+                <Frame x:Name="MainContentFrame" NavigationUIVisibility="Hidden"/>
+            </Border>
+        </Grid>
+    </Grid>
+</Window>
