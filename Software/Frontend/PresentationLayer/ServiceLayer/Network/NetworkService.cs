@@ -8,7 +8,6 @@ namespace ServiceLayer.Network
 {
     public class NetworkService
     {
-        private const string BASE_URL = "https://carchive.online/api/";
         private static HttpClient _httpClient;
 
         public static HttpClient GetHttpClient(TokenManager tokenManager)
@@ -18,7 +17,7 @@ namespace ServiceLayer.Network
                 var handler = new HttpClientHandler();
                 _httpClient = new HttpClient(handler)
                 {
-                    BaseAddress = new Uri(BASE_URL)
+                    BaseAddress = new Uri(Environment.BASE_URL)
                 };
                 _httpClient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
                 _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", tokenManager.GetToken());

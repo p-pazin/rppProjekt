@@ -6,7 +6,8 @@ using System.Threading.Tasks;
 
 namespace ServiceLayer
 {
-    public class Class1
+    public abstract class Environment
     {
+        public const string BASE_URL = "https://carchive.online/api/";
     }
 }
