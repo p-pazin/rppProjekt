@@ -36,7 +36,7 @@ namespace PresentationLayer.UserControls
             LoadContactsData();
         }
 
-        private async void LoadContactsData()
+        public async void LoadContactsData()
         {
             try
             {

@@ -78,7 +78,8 @@ namespace PresentationLayer.UserControls
             cmbCountry.SelectedIndex = 0;
             cmbCity.SelectedIndex = 0;
             cmbStatus.SelectedIndex = 0;
-            if(_contact != null) { 
+            if(_contact != null) {
+                txtTitle.Text = "Ažuriranje kontakta";
                 txtFirstName.Text = _contact.FirstName;
                 txtLastName.Text = _contact.LastName;
                 txtEmail.Text = _contact.Email;
@@ -94,7 +95,7 @@ namespace PresentationLayer.UserControls
         }
         private void btnSave_Click(object sender, RoutedEventArgs e)
         {
-            bool inputsValid = validateInputs();
+            bool inputsValid = ValidateInputs();
 
             if(inputsValid) {
                 DateTime currentDate = DateTime.Now;
@@ -127,8 +128,14 @@ namespace PresentationLayer.UserControls
                     }
                     if(Application.Current.MainWindow is MainWindow mw)
                     {
-                        mw.LoadUC(new UCContacts());
+                        var ucContacts = new UCContacts();
+                        mw.LoadUC(ucContacts);
                         mw.AdjustUserControlMargin();
+                        Application.Current.Dispatcher.InvokeAsync(async () =>
+                        {
+                            await Task.Delay(100);
+                            ucContacts.LoadContactsData();
+                        });
                     }
                 }
                 catch (Exception ex) {
@@ -141,7 +148,7 @@ namespace PresentationLayer.UserControls
             }
         }
 
-        private bool validateInputs()
+        private bool ValidateInputs()
         {
             if(txtFirstName.Text.Length == 0 || txtLastName.Text.Length == 0 || txtOIB.Text.Length == 0 || txtEmail.Text.Length == 0
                 || txtDescription.Text.Length == 0 || txtPhoneNumber.Text.Length == 0 || txtMobileNumber.Text.Length == 0 ||

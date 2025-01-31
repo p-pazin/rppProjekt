@@ -26,7 +26,24 @@
                 <DataGridTextColumn Header="Prezime" Binding="{Binding LastName}" Width="Auto"/>
                 <DataGridTextColumn Header="OIB" Binding="{Binding Pin}" Width="Auto"/>
                 <DataGridTextColumn Header="Datum stvaranja" Binding="{Binding DateOfCreation, StringFormat=\{0:yyyy-MM-dd\}}" Width="Auto"/>
-                <DataGridTextColumn Header="Status" Binding="{Binding State}" Width="Auto"/>
+                <DataGridTemplateColumn Header="Status" Width="Auto">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <TextBlock>
+                                <TextBlock.Style>
+                                    <Style TargetType="TextBlock">
+                                        <Setter Property="Text" Value="Neaktivan" />
+                                        <Style.Triggers>
+                                            <DataTrigger Binding="{Binding State}" Value="1">
+                                                <Setter Property="Text" Value="Aktivan" />
+                                            </DataTrigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </TextBlock.Style>
+                            </TextBlock>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
                 <DataGridTextColumn Header="Država" Binding="{Binding Country}" Width="Auto"/>
                 <DataGridTextColumn Header="Grad" Binding="{Binding City}" Width="Auto"/>
                 <DataGridTextColumn Header="Adresa" Binding="{Binding Address}" Width="Auto"/>
