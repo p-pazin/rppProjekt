@@ -26,7 +26,7 @@ namespace PresentationLayer
                 switch (selectedItem.Content.ToString())
                 {
                     case "Nadzorna ploča":
-                        MainContentFrame.Content = null;
+                        MainContentFrame.Navigate(new UCDashboard());
                         break;
                     case "Katalog vozila":
                         MainContentFrame.Navigate(new UCVehicleCatalog());
