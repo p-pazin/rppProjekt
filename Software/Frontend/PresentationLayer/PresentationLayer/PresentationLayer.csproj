@@ -58,6 +58,12 @@
     <Compile Include="UserControls\UCAddVehicle.xaml.cs">
       <DependentUpon>UCAddVehicle.xaml</DependentUpon>
     </Compile>
+    <Compile Include="UserControls\UCContactForm.xaml.cs">
+      <DependentUpon>UCContactForm.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UserControls\UCContacts.xaml.cs">
+      <DependentUpon>UCContacts.xaml</DependentUpon>
+    </Compile>
     <Compile Include="UserControls\UCVehicleCatalog.xaml.cs">
       <DependentUpon>UCVehicleCatalog.xaml</DependentUpon>
     </Compile>
@@ -74,6 +80,14 @@
       <SubType>Code</SubType>
     </Compile>
     <Page Include="UserControls\UCAddVehicle.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UserControls\UCContactForm.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UserControls\UCContacts.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
