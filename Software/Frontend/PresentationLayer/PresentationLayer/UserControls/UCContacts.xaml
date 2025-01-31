@@ -25,7 +25,7 @@
         </DataGrid>
 
         <StackPanel Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Right" Margin="10">
-            <Button Content="Dodaj kontakt" x:Name="btnAddContact" Padding="10" Margin="5" Click="Button_Click" Foreground="White" Background="#FF444444" BorderBrush="#FF555555">
+            <Button Content="Dodaj kontakt" x:Name="btnAddContact" Padding="10" Margin="5"  Foreground="White" Background="#FF444444" BorderBrush="#FF555555">
                 <Button.Resources>
                     <Style TargetType="Border">
                         <Setter Property="CornerRadius" Value="5"/>

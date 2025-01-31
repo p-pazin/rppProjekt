@@ -31,6 +31,19 @@ namespace PresentationLayer
                     case "Katalog vozila":
                         MainContentFrame.Navigate(new UCVehicleCatalog());
                         break;
+                    case "Popis kontakata":
+                        MainContentFrame.Navigate(new UCContacts());
+                        break;
+                    case "Ugovori":
+                        MainContentFrame.Navigate(new UCContracts());
+                        break;
+                    case "Odjava":
+                        var loginWindow = new LoginWindow();
+                        loginWindow.Show();
+                        Close();
+                        var token = new TokenManager();
+                        token.ClearToken();
+                        break;
                     default:
                         MainContentFrame.Content = null;
                         break;

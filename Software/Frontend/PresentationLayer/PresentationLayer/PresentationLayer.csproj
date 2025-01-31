@@ -70,6 +70,9 @@
     <Compile Include="UserControls\UCContracts.xaml.cs">
       <DependentUpon>UCContracts.xaml</DependentUpon>
     </Compile>
+    <Compile Include="UserControls\UCDashboard.xaml.cs">
+      <DependentUpon>UCDashboard.xaml</DependentUpon>
+    </Compile>
     <Compile Include="UserControls\UCVehicleCatalog.xaml.cs">
       <DependentUpon>UCVehicleCatalog.xaml</DependentUpon>
     </Compile>
