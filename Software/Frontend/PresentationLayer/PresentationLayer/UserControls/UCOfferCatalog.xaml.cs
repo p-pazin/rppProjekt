@@ -29,6 +29,7 @@ namespace PresentationLayer.UserControls
         {
             InitializeComponent();
             selectedWarning.Visibility = Visibility.Hidden;
+            warning.Visibility = Visibility.Hidden;
             LoadOffersAsync();
         }
 
@@ -62,11 +63,23 @@ namespace PresentationLayer.UserControls
 
         private void btnDeleteOffer_Click(object sender, RoutedEventArgs e)
         {
+            selectedWarning.Visibility = Visibility.Hidden;
             var selectedOffer = dgvOffers.SelectedItem as OfferDto;
             if (selectedOffer != null)
             {
-                offerServices.DeleteOffer(selectedOffer.Id);
-                LoadOffersAsync();
+                var deletionWarningWindow = new DeletionWarningWindow("ponudu");
+                if (deletionWarningWindow.ShowDialog() == true)
+                {
+                    try
+                    {
+                        offerServices.DeleteOffer(selectedOffer.Id);
+                        LoadOffersAsync();
+                    }
+                    catch (Exception ex)
+                    {
+                        warning.Visibility = Visibility.Visible;
+                    }
+                }
             }
             else
             {

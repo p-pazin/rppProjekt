@@ -73,14 +73,18 @@ namespace PresentationLayer.UserControls
             var selectedVehicle = dgvVehicles.SelectedItem as VehicleDto;
             if (selectedVehicle != null)
             {
-                try
+                var messageBox = new DeletionWarningWindow("vozilo");
+                if (messageBox.ShowDialog() == true)
                 {
-                    await vehicleService.DeleteVehicle(selectedVehicle.Id);
-                    LoadVehiclesAsync();
-                }
-                catch (Exception ex)
-                {
-                    deletionWarning.Visibility = Visibility.Visible;
+                    try
+                    {
+                        await vehicleService.DeleteVehicle(selectedVehicle.Id);
+                        LoadVehiclesAsync();
+                    }
+                    catch (Exception ex)
+                    {
+                        deletionWarning.Visibility = Visibility.Visible;
+                    }
                 }
             }
             else

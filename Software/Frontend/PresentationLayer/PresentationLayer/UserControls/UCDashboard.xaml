@@ -24,7 +24,10 @@
                         </Style>
                     </Button.Resources>
                 </Button>
+                <TextBlock x:Name="passwordChangeSuccess" Text="Lozinka uspješno promjenjena!" Margin="0,0,0,0" Foreground="GreenYellow" FontWeight="SemiBold" FontSize="18" HorizontalAlignment="Center"/>
             </StackPanel>
+            
+            
 
             <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center" Margin="20">
                 <TextBlock Text="Kompanija zaposlenika" FontSize="20" FontWeight="Bold" Foreground="White"/>
@@ -41,6 +44,7 @@
                         </Style>
                     </Button.Resources>
                 </Button>
+                <TextBlock x:Name="JustFrame" Text="!" Margin="0,0,0,0" Foreground="#FF444444" FontWeight="SemiBold" FontSize="18" HorizontalAlignment="Center"/>
             </StackPanel>
         </DockPanel>
     </Grid>

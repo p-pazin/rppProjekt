@@ -1,17 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 using ServiceLayer.Network.Dto;
 using ServiceLayer.Services;
 
@@ -23,10 +14,33 @@ namespace PresentationLayer.UserControls
     public partial class UCCompanyUsers : UserControl
     {
         CompanyService companyService = new CompanyService();
-        public UCCompanyUsers()
+        UserService userService = new UserService();
+        public UCCompanyUsers(int info = 0)
         {
             InitializeComponent();
             LoadUsersAsync();
+            selectedWarning.Visibility = Visibility.Hidden;
+            deletionWarning.Visibility = Visibility.Hidden;
+            addSuccess.Visibility = Visibility.Hidden;
+            updateSuccess.Visibility = Visibility.Hidden;
+
+            if (info == 1)
+            {
+                addSuccess.Visibility = Visibility.Visible;
+                Task.Delay(3000).ContinueWith(_ =>
+                {
+                    Dispatcher.Invoke(() => addSuccess.Visibility = Visibility.Hidden);
+                });
+            }
+            if (info == 2)
+            {
+                updateSuccess.Visibility = Visibility.Visible;
+                Task.Delay(3000).ContinueWith(_ =>
+                {
+                    Dispatcher.Invoke(() => updateSuccess.Visibility = Visibility.Hidden);
+                });
+            }
+
         }
 
         private async void LoadUsersAsync()
@@ -52,29 +66,48 @@ namespace PresentationLayer.UserControls
 
         private void btnEditUser_Click(object sender, RoutedEventArgs e)
         {
+            if (dgvUsers.SelectedItem == null)
+            {
+                selectedWarning.Visibility = Visibility.Visible;
+                Task.Delay(3000).ContinueWith(_ =>
+                {
+                    Dispatcher.Invoke(() => selectedWarning.Visibility = Visibility.Hidden);
+                });
+                return;
+            }
             if (dgvUsers.SelectedItem is UserDto user)
             {
                 if (Application.Current.MainWindow is MainWindow mw)
                 {
-                   // mw.LoadUC(new UCEditCompanyUser(user));
+                   mw.LoadUC(new UCEditCompanyUser(user));
                 }
             }
         }
 
         private async void btnDeleteUser_Click(object sender, RoutedEventArgs e)
         {
+            if (dgvUsers.SelectedItem == null)
+            {
+                selectedWarning.Visibility = Visibility.Visible;
+                Task.Delay(3000).ContinueWith(_ =>
+                {
+                    Dispatcher.Invoke(() => selectedWarning.Visibility = Visibility.Hidden);
+                });
+                return;
+            }
             if (dgvUsers.SelectedItem is UserDto user)
             {
                 try
                 {
-                    //await companyService.DeleteCompanyUserAsync(user.Id);
+                    await userService.DeleteCompanyUser(user.Id);
                     LoadUsersAsync();
                 }
-                catch (Exception ex)
+                catch (Exception)
                 {
-                    MessageBox.Show($"Greška pri brisanju korisnika: {ex.Message}", "Greška", MessageBoxButton.OK, MessageBoxImage.Error);
+                    deletionWarning.Visibility = Visibility.Visible;
                 }
             }
+            
         }
 
         private void btnExit_Click(object sender, RoutedEventArgs e)

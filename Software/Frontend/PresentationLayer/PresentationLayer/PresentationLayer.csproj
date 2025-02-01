@@ -14,6 +14,8 @@
     <WarningLevel>4</WarningLevel>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
     <Deterministic>true</Deterministic>
+    <NuGetPackageImportStamp>
+    </NuGetPackageImportStamp>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -39,8 +41,17 @@
     </ApplicationIcon>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Esri.ArcGISRuntime, Version=200.6.0.0, Culture=neutral, PublicKeyToken=8fc3cc631e44ad86, processorArchitecture=MSIL">
+      <HintPath>..\packages\Esri.ArcGISRuntime.200.6.0\lib\net472\Esri.ArcGISRuntime.dll</HintPath>
+    </Reference>
+    <Reference Include="Esri.ArcGISRuntime.WPF, Version=200.6.0.0, Culture=neutral, PublicKeyToken=8fc3cc631e44ad86, processorArchitecture=MSIL">
+      <HintPath>..\packages\Esri.ArcGISRuntime.WPF.200.6.0\lib\net472\Esri.ArcGISRuntime.WPF.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
+    <Reference Include="System.Device" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Net.Http.WebRequest" />
     <Reference Include="System.Xml" />
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Core" />
@@ -59,6 +70,9 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="DeletionWarningWindow.xaml.cs">
+      <DependentUpon>DeletionWarningWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="enums\EnumBrands.cs" />
     <Compile Include="enums\EnumCities.cs" />
     <Compile Include="enums\EnumCountries.cs" />
@@ -93,6 +107,9 @@
     <Compile Include="UserControls\UCDashboard.xaml.cs">
       <DependentUpon>UCDashboard.xaml</DependentUpon>
     </Compile>
+    <Compile Include="UserControls\UCEditCompanyUser.xaml.cs">
+      <DependentUpon>UCEditCompanyUser.xaml</DependentUpon>
+    </Compile>
     <Compile Include="UserControls\UCEditContractRent.xaml.cs">
       <DependentUpon>UCEditContractRent.xaml</DependentUpon>
     </Compile>
@@ -123,6 +140,10 @@
     <Compile Include="UserControls\UCVehicleCatalog.xaml.cs">
       <DependentUpon>UCVehicleCatalog.xaml</DependentUpon>
     </Compile>
+    <Page Include="DeletionWarningWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="LoginWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -171,6 +192,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="UserControls\UCContracts.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UserControls\UCEditCompanyUser.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -241,6 +266,7 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
+    <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
@@ -265,4 +291,15 @@
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <Import Project="..\packages\Esri.ArcGISRuntime.runtimes.win.200.6.0\build\net472\Esri.ArcGISRuntime.runtimes.win.targets" Condition="Exists('..\packages\Esri.ArcGISRuntime.runtimes.win.200.6.0\build\net472\Esri.ArcGISRuntime.runtimes.win.targets')" />
+  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
+    <PropertyGroup>
+      <ErrorText>This project references NuGet package(s) that are missing on this computer. Use NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
+    </PropertyGroup>
+    <Error Condition="!Exists('..\packages\Esri.ArcGISRuntime.runtimes.win.200.6.0\build\net472\Esri.ArcGISRuntime.runtimes.win.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Esri.ArcGISRuntime.runtimes.win.200.6.0\build\net472\Esri.ArcGISRuntime.runtimes.win.targets'))" />
+    <Error Condition="!Exists('..\packages\Esri.ArcGISRuntime.200.6.0\build\net472\Esri.ArcGISRuntime.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Esri.ArcGISRuntime.200.6.0\build\net472\Esri.ArcGISRuntime.targets'))" />
+    <Error Condition="!Exists('..\packages\Esri.ArcGISRuntime.WPF.200.6.0\build\net472\Esri.ArcGISRuntime.WPF.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Esri.ArcGISRuntime.WPF.200.6.0\build\net472\Esri.ArcGISRuntime.WPF.targets'))" />
+  </Target>
+  <Import Project="..\packages\Esri.ArcGISRuntime.200.6.0\build\net472\Esri.ArcGISRuntime.targets" Condition="Exists('..\packages\Esri.ArcGISRuntime.200.6.0\build\net472\Esri.ArcGISRuntime.targets')" />
+  <Import Project="..\packages\Esri.ArcGISRuntime.WPF.200.6.0\build\net472\Esri.ArcGISRuntime.WPF.targets" Condition="Exists('..\packages\Esri.ArcGISRuntime.WPF.200.6.0\build\net472\Esri.ArcGISRuntime.WPF.targets')" />
 </Project>

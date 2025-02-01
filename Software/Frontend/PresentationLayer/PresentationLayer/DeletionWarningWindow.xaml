@@ -1,0 +1,81 @@
+﻿<Window x:Class="PresentationLayer.DeletionWarningWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:PresentationLayer"
+        mc:Ignorable="d"
+        Title="Upozorenje"         WindowStyle="None"
+        AllowsTransparency="True"
+        Background="Transparent"
+        WindowStartupLocation="CenterScreen"
+        ResizeMode="NoResize"
+        Height="200" Width="400">
+    <Border Background="#FF444444"
+            CornerRadius="10"
+            BorderBrush="#FF555555"
+            BorderThickness="1">
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+
+            <TextBlock Text="Upozorenje"
+                       FontSize="18"
+                       FontWeight="Bold"
+                       Foreground="White"
+                       HorizontalAlignment="Center"
+                       Margin="10"/>
+            
+            <TextBlock x:Name="txtMessage"
+                       Grid.Row="1"
+                       Text="This is a custom message box."
+                       FontSize="14"
+                       Foreground="White"
+                       HorizontalAlignment="Center"
+                       VerticalAlignment="Center"
+                       TextWrapping="Wrap"
+                       Margin="20,0,20,0"/>
+
+  <StackPanel Grid.Row="2"
+                        Orientation="Horizontal"
+                        HorizontalAlignment="Center"
+                        Margin="10">
+                <Button x:Name="btnDelete"
+                        Content="Obriši"
+                        Width="80"
+                        Margin="5"
+                        Padding="10,5"
+                        FontSize="14"
+                        Foreground="White"
+                        Background="#FF555555"
+                        BorderBrush="#FF666666"
+                        Click="btnDelete_Click">
+                    <Button.Resources>
+                        <Style TargetType="Border">
+                            <Setter Property="CornerRadius" Value="5"/>
+                        </Style>
+                    </Button.Resources>
+                </Button>
+                <Button x:Name="btnCancel"
+                        Content="Odustani"
+                        Width="80"
+                        Margin="5"
+                        Padding="10,5"
+                        FontSize="14"
+                        Foreground="White"
+                        Background="#FF555555"
+                        BorderBrush="#FF666666"
+                        Click="btnCancel_Click">
+                    <Button.Resources>
+                        <Style TargetType="Border">
+                            <Setter Property="CornerRadius" Value="5"/>
+                        </Style>
+                    </Button.Resources>
+                </Button>
+            </StackPanel>
+        </Grid>
+    </Border>
+</Window>
