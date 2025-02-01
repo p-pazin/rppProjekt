@@ -30,6 +30,9 @@ namespace PresentationLayer.UserControls
         public UCContactForm(ContactDto contact = null)
         {
             InitializeComponent();
+            addContactWarning.Visibility = Visibility.Hidden;
+            updateContactWarning.Visibility = Visibility.Hidden;
+            infoWarning.Visibility = Visibility.Hidden;
             var countries = Enum.GetValues(typeof(EnumCountries))
             .Cast<EnumCountries>()
             .Select(c => GetEnumDescription(c))
@@ -69,6 +72,9 @@ namespace PresentationLayer.UserControls
         }
         private void btnSave_Click(object sender, RoutedEventArgs e)
         {
+            infoWarning.Visibility = Visibility.Hidden;
+            addContactWarning.Visibility = Visibility.Hidden;
+            updateContactWarning.Visibility = Visibility.Hidden;
             bool inputsValid = ValidateInputs();
 
             if(inputsValid) {
@@ -84,7 +90,7 @@ namespace PresentationLayer.UserControls
                     MobileNumber = txtMobileNumber.Text,
                     Address = txtAddress.Text,
                     Country = cmbCountry.SelectedItem as string,
-                    City = cmbCity.SelectedItem as string,
+                    City = cmbCountry.SelectedItem == "Hrvatska" ? cmbCity.SelectedItem as string : null,
                     State = (cmbStatus.SelectedItem as string == "Aktivan kontakt") ? 1 : 0,
                     DateOfCreation = currentDate.ToString("yyyy-MM-dd"),
                     Id = _contact?.Id ?? 0,
@@ -113,12 +119,28 @@ namespace PresentationLayer.UserControls
                     }
                 }
                 catch (Exception ex) {
-                    MessageBox.Show($"Greška pri dodavanju kontakta: {ex.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                    if(_contact != null)
+                    {
+                        updateContactWarning.Visibility = Visibility.Hidden;
+                    }
+                    else
+                    {
+                        addContactWarning.Visibility = Visibility.Visible;
+
+                    }
                 }
             }
             else
             {
-                MessageBox.Show("Potrebno je popuniti sva polja!", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                infoWarning.Visibility = Visibility.Visible;
+            }
+        }
+
+        private void btnExit_Click(object sender, RoutedEventArgs e)
+        {
+            if(Application.Current.MainWindow is MainWindow mw)
+            {
+                mw.LoadUC(new UCContacts());
             }
         }
 

@@ -28,6 +28,8 @@ namespace PresentationLayer.UserControls
         public UCContacts()
         {
             InitializeComponent();
+            deletionWarning.Visibility = Visibility.Hidden;
+            selectedWarning.Visibility = Visibility.Hidden;
             _contactService = new ContactService();
         }
 
@@ -71,12 +73,14 @@ namespace PresentationLayer.UserControls
             }
             else
             {
-                MessageBox.Show("Potrebno je označiti kontakt!", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                selectedWarning.Visibility = Visibility.Visible;
             }
         }
 
         private void btnDeleteContact_Click(object sender, RoutedEventArgs e)
         {
+            deletionWarning.Visibility = Visibility.Hidden;
+            selectedWarning.Visibility = Visibility.Hidden;
             var selectedContact = dgvContacts.SelectedItem as ContactDto;
 
             if(selectedContact != null)
@@ -91,13 +95,13 @@ namespace PresentationLayer.UserControls
                     }
                     catch (Exception ex)
                     {
-                        MessageBox.Show($"Greška pri brisanju kontakta: {ex.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                        deletionWarning.Visibility = Visibility.Visible;
                     }
                 }
             }
             else
             {
-                MessageBox.Show("Potrebno je označiti kontakt!", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                selectedWarning.Visibility = Visibility.Visible;
             }
         }
     }

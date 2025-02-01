@@ -4,29 +4,97 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:PresentationLayer.UserControls"
-             mc:Ignorable="d" 
+             mc:Ignorable="d"  
+             Background="Transparent"
              d:DesignHeight="450" d:DesignWidth="800"
+             HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
              Loaded="UserControl_Loaded">
+
+    <UserControl.Resources>
+        <Style x:Key="ModernDataGridStyle" TargetType="DataGrid">
+            <Setter Property="Background" Value="#FF444444"/>
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="BorderBrush" Value="#FF555555"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="RowBackground" Value="#FF444444"/>
+            <Setter Property="AlternatingRowBackground" Value="#FF555555"/>
+            <Setter Property="GridLinesVisibility" Value="None"/>
+            <Setter Property="HeadersVisibility" Value="Column"/>
+            <Setter Property="AutoGenerateColumns" Value="False"/>
+            <Setter Property="IsReadOnly" Value="True"/>
+            <Setter Property="CanUserResizeRows" Value="False"/>
+            <Setter Property="CanUserAddRows" Value="False"/>
+            <Setter Property="CanUserDeleteRows" Value="False"/>
+            <Setter Property="SelectionUnit" Value="FullRow"/>
+            <Setter Property="SelectionMode" Value="Single"/>
+            <Setter Property="ScrollViewer.CanContentScroll" Value="True"/>
+            <Setter Property="ScrollViewer.VerticalScrollBarVisibility" Value="Auto"/>
+            <Setter Property="ScrollViewer.HorizontalScrollBarVisibility" Value="Auto"/>
+        </Style>
+
+        <Style x:Key="ModernDataGridColumnHeaderStyle" TargetType="DataGridColumnHeader">
+            <Setter Property="Background" Value="#FF555555"/>
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="FontWeight" Value="Bold"/>
+            <Setter Property="Padding" Value="10"/>
+            <Setter Property="HorizontalContentAlignment" Value="Center"/>
+            <Setter Property="BorderBrush" Value="#FF444444"/>
+            <Setter Property="BorderThickness" Value="0,0,1,1"/>
+        </Style>
+
+        <Style x:Key="ModernDataGridCellStyle" TargetType="DataGridCell">
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="Padding" Value="10"/>
+            <Setter Property="BorderBrush" Value="#FF555555"/>
+            <Setter Property="BorderThickness" Value="0,0,1,1"/>
+            <Setter Property="VerticalContentAlignment" Value="Center"/>
+            <Setter Property="HorizontalContentAlignment" Value="Center"/>
+        </Style>
+
+        <Style x:Key="ModernDataGridRowStyle" TargetType="DataGridRow">
+            <Setter Property="Background" Value="#FF444444"/>
+            <Setter Property="Foreground" Value="White"/>
+            <Style.Triggers>
+                <Trigger Property="IsSelected" Value="True">
+                    <Setter Property="Background" Value="#FF666666"/>
+                    <Setter Property="Foreground" Value="White"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+    </UserControl.Resources>
+
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
-
             <RowDefinition Height="*"/>
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
 
-        <Border Background="#FF444444" Padding="10">
-            <TextBlock Text="Kontakti" Foreground="White" FontSize="18" FontWeight="Bold"/>
-        </Border>
+        <StackPanel>
+            <Border Background="#FF444444" Padding="10" HorizontalAlignment="Stretch">
+                <TextBlock Text="Kontakti" Foreground="White" FontSize="18" FontWeight="Bold" HorizontalAlignment="Center"/>
+            </Border>
+            <TextBlock x:Name="selectedWarning" Text="Morate odabrati kontakt!" Margin="0,20,0,0" Foreground="Red" FontWeight="Bold" FontSize="12" HorizontalAlignment="Center"/>
+            <TextBlock x:Name="deletionWarning" Text="Pogreška kod brisanja kontakta." Margin="0,-15,0,0" Foreground="Red" FontWeight="Bold" FontSize="12" HorizontalAlignment="Center"/>
+        </StackPanel>
 
-        <DataGrid x:Name="dgvContacts" Grid.Row="1" Margin="10" AutoGenerateColumns="False" IsReadOnly="True">
+        <DataGrid x:Name="dgvContacts"
+                  Grid.Row="1"
+                  Style="{StaticResource ModernDataGridStyle}"
+                  ColumnHeaderStyle="{StaticResource ModernDataGridColumnHeaderStyle}"
+                  CellStyle="{StaticResource ModernDataGridCellStyle}"
+                  RowStyle="{StaticResource ModernDataGridRowStyle}"
+                  Margin="10,20,10,10"
+                  SelectionMode="Single"
+                  SelectionUnit="FullRow">
             <DataGrid.Columns>
-                <DataGridTextColumn Header="ID" Binding="{Binding Id}" Width="Auto"/>
-                <DataGridTextColumn Header="Ime" Binding="{Binding FirstName}" Width="Auto"/>
-                <DataGridTextColumn Header="Prezime" Binding="{Binding LastName}" Width="Auto"/>
-                <DataGridTextColumn Header="OIB" Binding="{Binding Pin}" Width="Auto"/>
-                <DataGridTextColumn Header="Datum stvaranja" Binding="{Binding DateOfCreation, StringFormat=\{0:yyyy-MM-dd\}}" Width="Auto"/>
-                <DataGridTemplateColumn Header="Status" Width="Auto">
+                <DataGridTextColumn Header="ID" Binding="{Binding Id}" />
+                <DataGridTextColumn Header="Ime" Binding="{Binding FirstName}" />
+                <DataGridTextColumn Header="Prezime" Binding="{Binding LastName}" />
+                <DataGridTextColumn Header="OIB" Binding="{Binding Pin}" />
+                <DataGridTextColumn Header="Datum stvaranja" Binding="{Binding DateOfCreation, StringFormat='yyyy-MM-dd'}" />
+                <DataGridTemplateColumn Header="Status">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
                             <TextBlock>
@@ -44,18 +112,18 @@
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
                 </DataGridTemplateColumn>
-                <DataGridTextColumn Header="Država" Binding="{Binding Country}" Width="Auto"/>
-                <DataGridTextColumn Header="Grad" Binding="{Binding City}" Width="Auto"/>
-                <DataGridTextColumn Header="Adresa" Binding="{Binding Address}" Width="Auto"/>
-                <DataGridTextColumn Header="Broj telefona" Binding="{Binding TelephoneNumber}" Width="Auto"/>
-                <DataGridTextColumn Header="Broj mobitela" Binding="{Binding MobileNumber}" Width="Auto"/>
-                <DataGridTextColumn Header="Email" Binding="{Binding Email}" Width="Auto"/>
-                <DataGridTextColumn Header="Opis" Binding="{Binding Description}" Width="Auto"/>
+                <DataGridTextColumn Header="Država" Binding="{Binding Country}" />
+                <DataGridTextColumn Header="Grad" Binding="{Binding City}" />
+                <DataGridTextColumn Header="Adresa" Binding="{Binding Address}" />
+                <DataGridTextColumn Header="Broj telefona" Binding="{Binding TelephoneNumber}" />
+                <DataGridTextColumn Header="Broj mobitela" Binding="{Binding MobileNumber}" />
+                <DataGridTextColumn Header="Email" Binding="{Binding Email}" />
+                <DataGridTextColumn Header="Opis" Binding="{Binding Description}" />
             </DataGrid.Columns>
         </DataGrid>
 
         <StackPanel Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Right" Margin="10">
-            <Button Content="Dodaj kontakt" x:Name="btnAddContact" Click="btnAddContact_Click" Padding="10" Margin="5"  Foreground="White" Background="#FF444444" BorderBrush="#FF555555">
+            <Button Content="Dodaj kontakt" x:Name="btnAddContact" Click="btnAddContact_Click" Padding="10" Margin="5" Foreground="White" Background="#FF444444" BorderBrush="#FF555555">
                 <Button.Resources>
                     <Style TargetType="Border">
                         <Setter Property="CornerRadius" Value="5"/>
