@@ -59,6 +59,10 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="enums\EnumBrands.cs" />
+    <Compile Include="enums\EnumCities.cs" />
+    <Compile Include="enums\EnumCountries.cs" />
+    <Compile Include="enums\EnumModels.cs" />
     <Compile Include="LoginWindow.xaml.cs">
       <DependentUpon>LoginWindow.xaml</DependentUpon>
     </Compile>

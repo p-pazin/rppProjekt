@@ -1,4 +1,6 @@
-﻿using System;
+﻿using ServiceLayer.Network.Dto;
+using ServiceLayer.Services;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -20,9 +22,17 @@ namespace PresentationLayer.UserControls
     /// </summary>
     public partial class UCOfferCatalog : UserControl
     {
+        private OfferServices offerServices = new OfferServices();
         public UCOfferCatalog()
         {
             InitializeComponent();
+            selectedWarning.Visibility = Visibility.Hidden;
+            LoadOffersAsync();
+        }
+
+        private async void LoadOffersAsync()
+        {
+            dgvOffers.ItemsSource = await offerServices.GetOffers();
         }
 
         private void btnAddOffer_Click(object sender, RoutedEventArgs e)
@@ -35,9 +45,16 @@ namespace PresentationLayer.UserControls
 
         private void btnEditOffer_Click(object sender, RoutedEventArgs e)
         {
-            if (Application.Current.MainWindow is MainWindow mw)
+            var selectedOffer = dgvOffers.SelectedItem as OfferDto;
+            if (selectedOffer != null) {
+                if (Application.Current.MainWindow is MainWindow mw)
+                {
+                    mw.LoadUC(new UCEditOffer(selectedOffer));
+                }
+            }
+            else
             {
-                mw.LoadUC(new UCEditOffer());
+                selectedWarning.Visibility = Visibility.Visible;
             }
         }
     }
