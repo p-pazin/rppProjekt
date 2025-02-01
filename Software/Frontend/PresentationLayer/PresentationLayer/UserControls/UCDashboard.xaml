@@ -6,23 +6,42 @@
              xmlns:local="clr-namespace:PresentationLayer.UserControls"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
+
     <Grid Background="#FF444444">
-        <DockPanel HorizontalAlignment="Center" >
+        <DockPanel HorizontalAlignment="Center">
             <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center" Margin="20">
                 <TextBlock Text="Trenutni korisnik" FontSize="20" FontWeight="Bold" Foreground="White"/>
-                <TextBlock Text="{Binding user.FirstName}" FontSize="16"  Foreground="White"/>
+                <TextBlock Text="{Binding user.FirstName}" FontSize="16" Foreground="White"/>
                 <TextBlock Text="{Binding user.LastName}" FontSize="16" Foreground="White"/>
                 <TextBlock Text="{Binding user.Email}" FontSize="16" Foreground="White"/>
-                <TextBlock Text="{Binding user.Id}" FontSize="16"  Foreground="White"/>
+                <TextBlock Text="{Binding user.Id}" FontSize="16" Foreground="White"/>
+
+                <Button Content="Promijeni lozinku" Width="180" Height="40" Margin="10" Click="ChangePassword_Click"
+                        Background="#F65B43" Foreground="White" FontSize="14" FontWeight="Bold" BorderThickness="0" Cursor="Hand">
+                    <Button.Resources>
+                        <Style TargetType="Border">
+                            <Setter Property="CornerRadius" Value="5"/>
+                        </Style>
+                    </Button.Resources>
+                </Button>
             </StackPanel>
-            <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center"  Margin="20" >
+
+            <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center" Margin="20">
                 <TextBlock Text="Kompanija zaposlenika" FontSize="20" FontWeight="Bold" Foreground="White"/>
-                <TextBlock Text="{Binding company.Name}" FontSize="16"  Foreground="White"/>
+                <TextBlock Text="{Binding company.Name}" FontSize="16" Foreground="White"/>
                 <TextBlock Text="{Binding company.City}" FontSize="16" Foreground="White"/>
                 <TextBlock Text="{Binding company.Address}" FontSize="16" Foreground="White"/>
-                <TextBlock Text="{Binding company.Pin}" FontSize="16"  Foreground="White"/>
+                <TextBlock Text="{Binding company.Pin}" FontSize="16" Foreground="White"/>
+
+                <Button Content="Zaposlenici" Width="180" Height="40" Margin="10" Click="Employees_Click"
+                        Background="#4285F4" Foreground="White" FontSize="14" FontWeight="Bold" BorderThickness="0" Cursor="Hand">
+                    <Button.Resources>
+                        <Style TargetType="Border">
+                            <Setter Property="CornerRadius" Value="5"/>
+                        </Style>
+                    </Button.Resources>
+                </Button>
             </StackPanel>
         </DockPanel>
-
     </Grid>
 </UserControl>

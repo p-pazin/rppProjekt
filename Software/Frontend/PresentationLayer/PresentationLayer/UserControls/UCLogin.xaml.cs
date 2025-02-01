@@ -18,7 +18,7 @@ namespace PresentationLayer.UserControls
             _parentWindow = parentWindow;
             _tokenManager = new TokenManager();
             var httpClient = NetworkService.GetHttpClient(_tokenManager);
-            _apiService = new AuthService(httpClient);
+            _apiService = new AuthService();
         }
 
         private async void LoginButton_Click(object sender, RoutedEventArgs e)
