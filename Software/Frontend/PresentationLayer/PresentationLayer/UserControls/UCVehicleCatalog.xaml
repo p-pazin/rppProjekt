@@ -9,7 +9,6 @@
              d:DesignHeight="450" d:DesignWidth="800"
              HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
     <UserControl.Resources>
-        <!-- Style for DataGrid with rounded corners and modern look -->
         <Style x:Key="ModernDataGridStyle" TargetType="DataGrid">
             <Setter Property="Background" Value="#FF444444"/>
             <Setter Property="Foreground" Value="White"/>
@@ -53,18 +52,14 @@
                                                 <RowDefinition Height="Auto"/>
                                             </Grid.RowDefinitions>
 
-                                            <!-- Column Headers -->
                                             <DataGridColumnHeadersPresenter x:Name="PART_ColumnHeadersPresenter"
                                                                             Grid.Column="1"
                                                                             Visibility="{Binding HeadersVisibility, ConverterParameter={x:Static DataGridHeadersVisibility.Column}, Converter={x:Static DataGrid.HeadersVisibilityConverter}, RelativeSource={RelativeSource AncestorType={x:Type DataGrid}}}" />
 
-                                            <!-- DataGrid Content -->
                                             <ScrollContentPresenter x:Name="PART_ScrollContentPresenter"
                                                                     Grid.Row="1"
                                                                     Grid.Column="1"
                                                                     CanContentScroll="{TemplateBinding CanContentScroll}" />
-
-                                            <!-- Scroll Bars -->
                                             <ScrollBar x:Name="PART_VerticalScrollBar"
                                                        Grid.Row="1"
                                                        Grid.Column="2"
@@ -93,7 +88,6 @@
             </Setter>
         </Style>
 
-        <!-- Style for DataGridColumnHeader -->
         <Style x:Key="ModernDataGridColumnHeaderStyle" TargetType="DataGridColumnHeader">
             <Setter Property="Background" Value="#FF555555"/>
             <Setter Property="Foreground" Value="White"/>
@@ -104,7 +98,6 @@
             <Setter Property="BorderThickness" Value="0,0,1,1"/>
         </Style>
 
-        <!-- Style for DataGridCell -->
         <Style x:Key="ModernDataGridCellStyle" TargetType="DataGridCell">
             <Setter Property="Background" Value="Transparent"/>
             <Setter Property="Foreground" Value="White"/>
@@ -114,6 +107,17 @@
             <Setter Property="VerticalContentAlignment" Value="Center"/>
             <Setter Property="HorizontalContentAlignment" Value="Center"/>
         </Style>
+
+        <Style x:Key="ModernDataGridRowStyle" TargetType="DataGridRow">
+            <Setter Property="Background" Value="#FF444444"/>
+            <Setter Property="Foreground" Value="White"/>
+            <Style.Triggers>
+                <Trigger Property="IsSelected" Value="True">
+                    <Setter Property="Background" Value="#FF666666"/>
+                    <Setter Property="Foreground" Value="White"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
     </UserControl.Resources>
 
     <Grid>
@@ -122,38 +126,43 @@
             <RowDefinition Height="*"/>
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
+        <StackPanel>
+            <Border Background="#FF444444" Padding="10" HorizontalAlignment="Stretch">
+                <TextBlock Text="Katalog vozila" Foreground="White" FontSize="18" FontWeight="Bold" HorizontalAlignment="Center"/>
+            </Border>
+            <TextBlock x:Name="selectedWarning" Text="Morate odabrati vozilo!" Margin="0,20,0,0" Foreground="Red" FontWeight="Bold"  FontSize="12" HorizontalAlignment="Center"></TextBlock>
+            <TextBlock x:Name="deletionWarning" Text="Pogreška kod brisanja vozila." Margin="0,-15,0,0" Foreground="Red" FontWeight="Bold"  FontSize="12" HorizontalAlignment="Center"></TextBlock>
 
-        <!-- Centered Title -->
-        <Border Background="#FF444444" Padding="10" HorizontalAlignment="Stretch">
-            <TextBlock Text="Katalog vozila" Foreground="White" FontSize="18" FontWeight="Bold" HorizontalAlignment="Center"/>
-        </Border>
-
-        <!-- Modern DataGrid -->
+        </StackPanel>
         <DataGrid x:Name="dgvVehicles"
                   Grid.Row="1"
                   Style="{StaticResource ModernDataGridStyle}"
                   ColumnHeaderStyle="{StaticResource ModernDataGridColumnHeaderStyle}"
                   CellStyle="{StaticResource ModernDataGridCellStyle}"
-                  Margin="10,20,10,10">
+                  RowStyle="{StaticResource ModernDataGridRowStyle}"
+                  Margin="10,20,10,10"
+                  SelectionMode="Single"
+                  SelectionUnit="FullRow">
             <DataGrid.Columns>
-                <DataGridTextColumn Header="Registration" Binding="{Binding Registration}" />
-                <DataGridTextColumn Header="Brand" Binding="{Binding Brand}" />
+                <DataGridTextColumn Header="Registracija" Binding="{Binding Registration}" />
+                <DataGridTextColumn Header="Marka" Binding="{Binding Brand}" />
                 <DataGridTextColumn Header="Model" Binding="{Binding Model}" />
-                <DataGridTextColumn Header="Mileage" Binding="{Binding Mileage}" />
-                <DataGridTextColumn Header="Production Year" Binding="{Binding ProductionYear}" />
-                <DataGridTextColumn Header="Engine" Binding="{Binding Engine}" />
-                <DataGridTextColumn Header="Cubic Capacity" Binding="{Binding CubicCapacity}" />
-                <DataGridTextColumn Header="Engine Power (kW)" Binding="{Binding EnginePower}" />
-                <DataGridTextColumn Header="Registered To" Binding="{Binding RegisteredTo, StringFormat='dd/MM/yyyy'}" />
-                <DataGridTextColumn Header="Color" Binding="{Binding Color}" />
-                <DataGridTextColumn Header="Drive Type" Binding="{Binding DriveType}" />
-                <DataGridTextColumn Header="Price" Binding="{Binding Price}" />
-                <DataGridTextColumn Header="Transmission Type" Binding="{Binding TransmissionType}" />
+                <DataGridTextColumn Header="Kilometraža" Binding="{Binding Mileage}" />
+                <DataGridTextColumn Header="Godina proizvodnje" Binding="{Binding ProductionYear}" />
+                <DataGridTextColumn Header="Motor" Binding="{Binding Engine}" />
+                <DataGridTextColumn Header="Kubikaža" Binding="{Binding CubicCapacity}" />
+                <DataGridTextColumn Header="Snaga motora" Binding="{Binding EnginePower}" />
+                <DataGridTextColumn Header="Registriran do" Binding="{Binding RegisteredTo, StringFormat='dd/MM/yyyy'}" />
+                <DataGridTextColumn Header="Boja" Binding="{Binding Color}" />
+                <DataGridTextColumn Header="Tip" Binding="{Binding DriveType}" />
+                <DataGridTextColumn Header="Cijena" Binding="{Binding Price}" />
+                <DataGridTextColumn Header="Mijenjač" Binding="{Binding TransmissionType}" />
+                <DataGridTextColumn Header="Stanje" Binding="{Binding StateDisplay}"/>
+                <DataGridTextColumn Header="Upotreba" Binding="{Binding UsageDisplay}" />
             </DataGrid.Columns>
         </DataGrid>
-
-        <!-- Buttons -->
         <StackPanel Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Right" Margin="10">
+
             <Button x:Name="btnAddVehicle" Content="Dodaj vozilo" Padding="10" Margin="5" Click="Button_Click" Foreground="White" Background="#FF444444" BorderBrush="#FF555555">
                 <Button.Resources>
                     <Style TargetType="Border">

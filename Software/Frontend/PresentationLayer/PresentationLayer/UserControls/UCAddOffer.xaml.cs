@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ServiceLayer.Services;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -20,9 +21,11 @@ namespace PresentationLayer.UserControls
     /// </summary>
     public partial class UCAddOffer : UserControl
     {
+        private VehicleService vehicleService = new VehicleService();
         public UCAddOffer()
         {
             InitializeComponent();
+            LoadVehiclesDropDown();
         }
 
         private void btnExit_Click(object sender, RoutedEventArgs e)
@@ -31,6 +34,11 @@ namespace PresentationLayer.UserControls
             {
                 mw.LoadUC(new UCOfferCatalog());
             }
+        }
+
+        private async void LoadVehiclesDropDown()
+        {
+            cmbVehicles.ItemsSource = await vehicleService.GetVehiclesSale();
         }
     }
 }

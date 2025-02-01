@@ -1,4 +1,6 @@
-﻿using System;
+﻿using ServiceLayer.Network.Dto;
+using ServiceLayer.Services;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -20,9 +22,14 @@ namespace PresentationLayer.UserControls
     /// </summary>
     public partial class UCEditOffer : UserControl
     {
-        public UCEditOffer()
+        private VehicleService vehicleService = new VehicleService();
+        public UCEditOffer(OfferDto offer)
         {
             InitializeComponent();
+            txtTitle.Text = offer.Title;
+            txtPrice.Text = offer.Price.ToString();
+            dtpDateOfCreation.SelectedDate = offer.DateOfCreation;
+            LoadVehiclesDropDown();
         }
 
         private void btnExit_Click(object sender, RoutedEventArgs e)
@@ -31,6 +38,11 @@ namespace PresentationLayer.UserControls
             {
                 mw.LoadUC(new UCOfferCatalog());
             }
+        }
+
+        private async void LoadVehiclesDropDown()
+        {
+            cmbVehicles.ItemsSource = await vehicleService.GetVehiclesSale();
         }
     }
 }

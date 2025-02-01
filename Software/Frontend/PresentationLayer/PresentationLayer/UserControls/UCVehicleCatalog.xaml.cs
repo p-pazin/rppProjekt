@@ -1,4 +1,5 @@
-﻿using ServiceLayer.Services;
+﻿using ServiceLayer.Network.Dto;
+using ServiceLayer.Services;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -25,6 +26,8 @@ namespace PresentationLayer.UserControls
         public UCVehicleCatalog()
         {
             InitializeComponent();
+            deletionWarning.Visibility = Visibility.Hidden;
+            selectedWarning.Visibility = Visibility.Hidden;
             if (Application.Current.MainWindow is MainWindow mw)
             {
                 mw.AdjustUserControlMargin();
@@ -34,7 +37,7 @@ namespace PresentationLayer.UserControls
 
         private async void LoadVehiclesAsync()
         {
-            dgvVehicles.ItemsSource = await vehicleService.GetVehicles();
+            dgvVehicles.ItemsSource = await vehicleService.GetNotDeletedVehicles();
         }
 
         private void Button_Click(object sender, RoutedEventArgs e)
@@ -48,16 +51,42 @@ namespace PresentationLayer.UserControls
 
         private void btnEditvehicle_Click(object sender, RoutedEventArgs e)
         {
-            if (Application.Current.MainWindow is MainWindow mw)
+            var selectedVehicle = dgvVehicles.SelectedItem as VehicleDto;
+
+            if (selectedVehicle != null) {
+                if (Application.Current.MainWindow is MainWindow mw)
+                {
+                    mw.LoadUC(new UCEditVehicle(selectedVehicle));
+                    mw.AdjustUserControlMargin();
+                }
+            }
+            else
             {
-                mw.LoadUC(new UCEditVehicle());
-                mw.AdjustUserControlMargin();
+                selectedWarning.Visibility = Visibility.Visible;
             }
         }
 
-        private void btnDeleteVehicle_Click(object sender, RoutedEventArgs e)
+        private async void btnDeleteVehicle_Click(object sender, RoutedEventArgs e)
         {
-
+            deletionWarning.Visibility = Visibility.Hidden;
+            selectedWarning.Visibility = Visibility.Hidden;
+            var selectedVehicle = dgvVehicles.SelectedItem as VehicleDto;
+            if (selectedVehicle != null)
+            {
+                try
+                {
+                    await vehicleService.DeleteVehicle(selectedVehicle.Id);
+                    LoadVehiclesAsync();
+                }
+                catch (Exception ex)
+                {
+                    deletionWarning.Visibility = Visibility.Visible;
+                }
+            }
+            else
+            {
+                selectedWarning.Visibility = Visibility.Visible;
+            }
         }
     }
 }

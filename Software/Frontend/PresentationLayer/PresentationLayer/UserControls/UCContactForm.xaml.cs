@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
@@ -13,6 +15,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using CarchiveAPI.Dto;
+using PresentationLayer.enums;
 using ServiceLayer.Services;
 
 namespace PresentationLayer.UserControls
@@ -27,45 +30,16 @@ namespace PresentationLayer.UserControls
         public UCContactForm(ContactDto contact = null)
         {
             InitializeComponent();
-            var countries = new List<string>
-            {
-                "Hrvatska", "Afganistan", "Albanija", "Alžir", "Andora", "Angola", "Antigva i Barbuda", "Argentina", "Armenija",
-                "Australija", "Austrija", "Azerbajdžan", "Bahami", "Bahrein", "Bangladeš", "Barbados", "Belgija", "Belize", "Benin",
-                "Bjelorusija", "Bocvana", "Bolivija", "Bosna i Hercegovina", "Brazil", "Brunej", "Bugarska", "Burkina Faso", "Burundi",
-                "Butan", "Cipar", "Crna Gora", "Čad", "Češka", "Čile", "Danska", "Dominika", "Dominikanska Republika", "Džibuti", "Egipat",
-                "Ekvador", "Ekvatorska Gvineja", "Eritreja", "Estonija", "Eswatini", "Etiopija", "Fidži", "Filipini", "Finska", "Francuska",
-                "Gabon", "Gambija", "Gana", "Grčka", "Grenada", "Gruzija", "Gvajana", "Gvatemala", "Gvineja", "Gvineja Bisau", "Haiti",
-                "Honduras", "Indija", "Indonezija", "Irak", "Iran", "Irska", "Island", "Istočni Timor", "Italija", "Izrael", "Jamajka",
-                "Japan", "Jemen", "Jordan", "Južna Afrika", "Južni Sudan", "Kambodža", "Kamerun", "Kanada", "Katar", "Kazahstan", "Kenija",
-                "Kina", "Kirgistan", "Kiribati", "Kolumbija", "Komori", "Kongo", "Kongo (DR)", "Kosovo", "Kostarika", "Kuba", "Kuvajt",
-                "Laos", "Latvija", "Lesoto", "Liban", "Liberija", "Libija", "Lihtenštajn", "Litva", "Luksemburg", "Madagaskar", "Mađarska",
-                "Malavi", "Maldivi", "Malezija", "Mali", "Malta", "Maroko", "Maršalovi Otoci", "Mauricijus", "Mauritanija", "Meksiko",
-                "Mikronezija", "Mjanmar", "Moldavija", "Monako", "Mongolija", "Mozambik", "Namibija", "Nauru", "Nepal", "Niger", "Nigerija",
-                "Nikaragva", "Nizozemska", "Norveška", "Novi Zeland", "Njemačka", "Obala Bjelokosti", "Oman", "Pakistan", "Palau", "Panama",
-                "Papua Nova Gvineja", "Paragvaj", "Peru", "Poljska", "Portugal", "Ruanda", "Rumunjska", "Rusija", "Salvador", "Samoa",
-                "San Marino", "Saudijska Arabija", "Sjeverna Koreja", "Sjeverna Makedonija", "Sjedinjene Američke Države", "Singapur",
-                "Sirija", "Sierra Leone", "Slovačka", "Slovenija", "Solomonski Otoci", "Somalija", "Srbija", "Srednjoafrička Republika",
-                "Sudan", "Surinam", "Sveta Lucija", "Sveti Kristofor i Nevis", "Sveti Vincent i Grenadini", "Španjolska", "Šri Lanka",
-                "Švedska", "Švicarska", "Tadžikistan", "Tajland", "Tanzanija", "Togo", "Tonga", "Trinidad i Tobago", "Tunis", "Turska",
-                "Turkmenistan", "Tuvalu", "Uganda", "Ukrajina", "Ujedinjeni Arapski Emirati", "Ujedinjeno Kraljevstvo", "Urugvaj",
-                "Uzbekistan", "Vanuatu", "Vatikan", "Venezuela", "Vijetnam", "Zambija", "Zelenortska Republika", "Zimbabve"
-            };
-            var cities = new List<string>
-            {
-                "Bakar", "Beli Manastir", "Belišće", "Benkovac", "Biograd na Moru", "Bjelovar", "Buje", "Buzet", "Cres", "Crikvenica",
-                "Čabar", "Čakovec", "Čazma", "Daruvar", "Delnice", "Donja Stubica", "Donji Miholjac", "Drniš", "Dubrovnik", "Duga Resa",
-                "Dugo Selo", "Đakovo", "Đurđevac", "Garešnica", "Glina", "Gospić", "Grubišno Polje", "Hrvatska Kostajnica", "Hvar",
-                "Ilok", "Imotski", "Ivanec", "Ivanić-Grad", "Jastrebarsko", "Karlovac", "Kastav", "Kaštela", "Klanjec", "Knin", "Komiža",
-                "Koprivnica", "Korčula", "Kraljevica", "Krapina", "Križevci", "Krk", "Kutina", "Kutjevo", "Labin", "Lepoglava", "Lipik",
-                "Ludbreg", "Makarska", "Mali Lošinj", "Metković", "Mursko Središće", "Našice", "Nin", "Nova Gradiška", "Novalja", "Novi Marof",
-                "Novi Vinodolski", "Novigrad", "Novska", "Obrovac", "Ogulin", "Omiš", "Opatija", "Opuzen", "Orahovica", "Oroslavje", "Osijek",
-                "Otočac", "Otok", "Ozalj", "Pag", "Pakrac", "Pazin", "Petrinja", "Pleternica", "Ploče", "Popovača", "Poreč", "Požega",
-                "Pregrada", "Prelog", "Pula", "Rab", "Rijeka", "Rovinj", "Samobor", "Senj", "Sinj", "Sisak", "Skradin", "Slatina",
-                "Slavonski Brod", "Slunj", "Solin", "Split", "Stari Grad", "Supetar", "Sveta Nedelja", "Sveti Ivan Zelina", "Šibenik",
-                "Trilj", "Trogir", "Umag", "Valpovo", "Varaždin", "Varaždinske Toplice", "Velika Gorica", "Vinkovci", "Virovitica", "Vis",
-                "Vodice", "Vodnjan", "Vrbovec", "Vrbovsko", "Vrgorac", "Vrlika", "Vukovar", "Zabok", "Zadar", "Zagreb", "Zaprešić", "Zlatar",
-                "Županja"
-            };
+            var countries = Enum.GetValues(typeof(EnumCountries))
+            .Cast<EnumCountries>()
+            .Select(c => GetEnumDescription(c))
+            .ToList();
+
+            var cities = Enum.GetValues(typeof(EnumCities))
+            .Cast<EnumCities>()
+            .Select(c => GetEnumDescription(c))
+            .ToList();
+
             var states = new List<string> { "Aktivan kontakt", "Neaktivan kontakt"};
             cmbCountry.ItemsSource = countries;
             cmbCity.ItemsSource = cities;
@@ -157,6 +131,14 @@ namespace PresentationLayer.UserControls
                return false;
             }
             return true;
+        }
+
+        public static string GetEnumDescription(Enum value)
+        {
+            FieldInfo field = value.GetType().GetField(value.ToString());
+            DescriptionAttribute attribute = (DescriptionAttribute)field.GetCustomAttribute(typeof(DescriptionAttribute));
+
+            return attribute != null ? attribute.Description : value.ToString();
         }
     }
 }
