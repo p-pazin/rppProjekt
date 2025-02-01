@@ -35,7 +35,11 @@ namespace PresentationLayer.UserControls
 
         private void btnAddContract_Click(object sender, RoutedEventArgs e)
         {
-
+            if (Application.Current.MainWindow is MainWindow mw)
+            {
+                mw.LoadUC(new UCContractForm());
+                mw.AdjustUserControlMargin();
+            }
         }
 
         private void btnEditContract_Click(object sender, RoutedEventArgs e)
