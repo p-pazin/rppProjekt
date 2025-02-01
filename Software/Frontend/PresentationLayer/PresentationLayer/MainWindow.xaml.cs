@@ -9,6 +9,7 @@ namespace PresentationLayer
         public MainWindow()
         {
             InitializeComponent();
+            Application.Current.MainWindow = this;
             NavigationMenu.SelectionChanged += NavigationMenu_SelectionChanged;
 
             NavigationMenu.SelectedIndex = 0;

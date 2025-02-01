@@ -4,24 +4,155 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:PresentationLayer.UserControls"
-             mc:Ignorable="d"  Background="Transparent"
+             mc:Ignorable="d"  
+             Background="Transparent"
              d:DesignHeight="450" d:DesignWidth="800"
              HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+    <UserControl.Resources>
+        <!-- Style for DataGrid with rounded corners and modern look -->
+        <Style x:Key="ModernDataGridStyle" TargetType="DataGrid">
+            <Setter Property="Background" Value="#FF444444"/>
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="BorderBrush" Value="#FF555555"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="RowBackground" Value="#FF444444"/>
+            <Setter Property="AlternatingRowBackground" Value="#FF555555"/>
+            <Setter Property="GridLinesVisibility" Value="None"/>
+            <Setter Property="HeadersVisibility" Value="Column"/>
+            <Setter Property="AutoGenerateColumns" Value="False"/>
+            <Setter Property="IsReadOnly" Value="True"/>
+            <Setter Property="CanUserResizeRows" Value="False"/>
+            <Setter Property="CanUserAddRows" Value="False"/>
+            <Setter Property="CanUserDeleteRows" Value="False"/>
+            <Setter Property="SelectionUnit" Value="FullRow"/>
+            <Setter Property="SelectionMode" Value="Single"/>
+            <Setter Property="ScrollViewer.CanContentScroll" Value="True"/>
+            <Setter Property="ScrollViewer.VerticalScrollBarVisibility" Value="Auto"/>
+            <Setter Property="ScrollViewer.HorizontalScrollBarVisibility" Value="Auto"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="DataGrid">
+                        <Border x:Name="Border"
+                                Background="{TemplateBinding Background}"
+                                BorderBrush="{TemplateBinding BorderBrush}"
+                                BorderThickness="{TemplateBinding BorderThickness}"
+                                CornerRadius="10"
+                                Padding="10">
+                            <ScrollViewer x:Name="DG_ScrollViewer" Focusable="false">
+                                <ScrollViewer.Template>
+                                    <ControlTemplate TargetType="ScrollViewer">
+                                        <Grid>
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="Auto"/>
+                                                <ColumnDefinition Width="*"/>
+                                                <ColumnDefinition Width="Auto"/>
+                                            </Grid.ColumnDefinitions>
+                                            <Grid.RowDefinitions>
+                                                <RowDefinition Height="Auto"/>
+                                                <RowDefinition Height="*"/>
+                                                <RowDefinition Height="Auto"/>
+                                            </Grid.RowDefinitions>
+
+                                            <!-- Column Headers -->
+                                            <DataGridColumnHeadersPresenter x:Name="PART_ColumnHeadersPresenter"
+                                                                            Grid.Column="1"
+                                                                            Visibility="{Binding HeadersVisibility, ConverterParameter={x:Static DataGridHeadersVisibility.Column}, Converter={x:Static DataGrid.HeadersVisibilityConverter}, RelativeSource={RelativeSource AncestorType={x:Type DataGrid}}}" />
+
+                                            <!-- DataGrid Content -->
+                                            <ScrollContentPresenter x:Name="PART_ScrollContentPresenter"
+                                                                    Grid.Row="1"
+                                                                    Grid.Column="1"
+                                                                    CanContentScroll="{TemplateBinding CanContentScroll}" />
+
+                                            <!-- Scroll Bars -->
+                                            <ScrollBar x:Name="PART_VerticalScrollBar"
+                                                       Grid.Row="1"
+                                                       Grid.Column="2"
+                                                       Orientation="Vertical"
+                                                       Maximum="{TemplateBinding ScrollableHeight}"
+                                                       ViewportSize="{TemplateBinding ViewportHeight}"
+                                                       Value="{Binding VerticalOffset, Mode=OneWay, RelativeSource={RelativeSource TemplatedParent}}"
+                                                       Visibility="{TemplateBinding ComputedVerticalScrollBarVisibility}" />
+
+                                            <ScrollBar x:Name="PART_HorizontalScrollBar"
+                                                       Grid.Row="2"
+                                                       Grid.Column="1"
+                                                       Orientation="Horizontal"
+                                                       Maximum="{TemplateBinding ScrollableWidth}"
+                                                       ViewportSize="{TemplateBinding ViewportWidth}"
+                                                       Value="{Binding HorizontalOffset, Mode=OneWay, RelativeSource={RelativeSource TemplatedParent}}"
+                                                       Visibility="{TemplateBinding ComputedHorizontalScrollBarVisibility}" />
+                                        </Grid>
+                                    </ControlTemplate>
+                                </ScrollViewer.Template>
+                                <ItemsPresenter />
+                            </ScrollViewer>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <!-- Style for DataGridColumnHeader -->
+        <Style x:Key="ModernDataGridColumnHeaderStyle" TargetType="DataGridColumnHeader">
+            <Setter Property="Background" Value="#FF555555"/>
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="FontWeight" Value="Bold"/>
+            <Setter Property="Padding" Value="10"/>
+            <Setter Property="HorizontalContentAlignment" Value="Center"/>
+            <Setter Property="BorderBrush" Value="#FF444444"/>
+            <Setter Property="BorderThickness" Value="0,0,1,1"/>
+        </Style>
+
+        <!-- Style for DataGridCell -->
+        <Style x:Key="ModernDataGridCellStyle" TargetType="DataGridCell">
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="Padding" Value="10"/>
+            <Setter Property="BorderBrush" Value="#FF555555"/>
+            <Setter Property="BorderThickness" Value="0,0,1,1"/>
+            <Setter Property="VerticalContentAlignment" Value="Center"/>
+            <Setter Property="HorizontalContentAlignment" Value="Center"/>
+        </Style>
+    </UserControl.Resources>
+
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
-
             <RowDefinition Height="*"/>
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
 
-        <Border Background="#FF444444" Padding="10">
-            <TextBlock Text="Katalog vozila" Foreground="White" FontSize="18" FontWeight="Bold"/>
+        <!-- Centered Title -->
+        <Border Background="#FF444444" Padding="10" HorizontalAlignment="Stretch">
+            <TextBlock Text="Katalog vozila" Foreground="White" FontSize="18" FontWeight="Bold" HorizontalAlignment="Center"/>
         </Border>
 
-        <DataGrid x:Name="dgvVehicles" Grid.Row="1" Margin="10" AutoGenerateColumns="False" IsReadOnly="True">
+        <!-- Modern DataGrid -->
+        <DataGrid x:Name="dgvVehicles"
+                  Grid.Row="1"
+                  Style="{StaticResource ModernDataGridStyle}"
+                  ColumnHeaderStyle="{StaticResource ModernDataGridColumnHeaderStyle}"
+                  CellStyle="{StaticResource ModernDataGridCellStyle}"
+                  Margin="10,20,10,10">
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="Registration" Binding="{Binding Registration}" />
+                <DataGridTextColumn Header="Brand" Binding="{Binding Brand}" />
+                <DataGridTextColumn Header="Model" Binding="{Binding Model}" />
+                <DataGridTextColumn Header="Mileage" Binding="{Binding Mileage}" />
+                <DataGridTextColumn Header="Production Year" Binding="{Binding ProductionYear}" />
+                <DataGridTextColumn Header="Engine" Binding="{Binding Engine}" />
+                <DataGridTextColumn Header="Cubic Capacity" Binding="{Binding CubicCapacity}" />
+                <DataGridTextColumn Header="Engine Power (kW)" Binding="{Binding EnginePower}" />
+                <DataGridTextColumn Header="Registered To" Binding="{Binding RegisteredTo, StringFormat='dd/MM/yyyy'}" />
+                <DataGridTextColumn Header="Color" Binding="{Binding Color}" />
+                <DataGridTextColumn Header="Drive Type" Binding="{Binding DriveType}" />
+                <DataGridTextColumn Header="Price" Binding="{Binding Price}" />
+                <DataGridTextColumn Header="Transmission Type" Binding="{Binding TransmissionType}" />
+            </DataGrid.Columns>
         </DataGrid>
 
+        <!-- Buttons -->
         <StackPanel Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Right" Margin="10">
             <Button x:Name="btnAddVehicle" Content="Dodaj vozilo" Padding="10" Margin="5" Click="Button_Click" Foreground="White" Background="#FF444444" BorderBrush="#FF555555">
                 <Button.Resources>

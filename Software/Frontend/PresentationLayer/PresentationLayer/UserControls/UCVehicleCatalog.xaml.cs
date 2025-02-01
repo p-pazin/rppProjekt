@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ServiceLayer.Services;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -20,6 +21,7 @@ namespace PresentationLayer.UserControls
     /// </summary>
     public partial class UCVehicleCatalog : UserControl
     {
+        private VehicleService vehicleService = new VehicleService();
         public UCVehicleCatalog()
         {
             InitializeComponent();
@@ -27,6 +29,12 @@ namespace PresentationLayer.UserControls
             {
                 mw.AdjustUserControlMargin();
             }
+            LoadVehiclesAsync();
+        }
+
+        private async void LoadVehiclesAsync()
+        {
+            dgvVehicles.ItemsSource = await vehicleService.GetVehicles();
         }
 
         private void Button_Click(object sender, RoutedEventArgs e)
