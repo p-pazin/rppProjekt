@@ -93,6 +93,12 @@
     <Compile Include="UserControls\UCDashboard.xaml.cs">
       <DependentUpon>UCDashboard.xaml</DependentUpon>
     </Compile>
+    <Compile Include="UserControls\UCEditContractRent.xaml.cs">
+      <DependentUpon>UCEditContractRent.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UserControls\UCEditContractSale.xaml.cs">
+      <DependentUpon>UCEditContractSale.xaml</DependentUpon>
+    </Compile>
     <Compile Include="UserControls\UCInvoices.xaml.cs">
       <DependentUpon>UCInvoices.xaml</DependentUpon>
     </Compile>
@@ -165,6 +171,14 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="UserControls\UCContracts.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UserControls\UCEditContractRent.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UserControls\UCEditContractSale.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

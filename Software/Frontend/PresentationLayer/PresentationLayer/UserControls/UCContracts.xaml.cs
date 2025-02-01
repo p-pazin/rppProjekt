@@ -52,9 +52,19 @@ namespace PresentationLayer.UserControls
                 {
                     if (Application.Current.MainWindow is MainWindow mw)
                     {
-                        //mw.LoadUC(new UCContractForm(selectedContract));
-                        mw.AdjustUserControlMargin();
+                        if(selectedContract.Type == 1)
+                        {
+                            mw.LoadUC(new UCEditContractSale(selectedContract.Id));
+                            mw.AdjustUserControlMargin();
+
+                        }
+                        else
+                        {
+                            mw.LoadUC(new UCEditContractRent(selectedContract.Id));
+                            mw.AdjustUserControlMargin();
+                        }
                     }
+                    
                 }
                 else
                 {

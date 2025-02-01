@@ -37,7 +37,6 @@ namespace PresentationLayer.UserControls
         {
             InitializeComponent();
             addContractWarning.Visibility = Visibility.Hidden;
-            updateContractWarning.Visibility = Visibility.Hidden;
             infoWarning.Visibility = Visibility.Hidden;
             _contractType = 1;
             _contractService = new ContractService();
@@ -132,7 +131,6 @@ namespace PresentationLayer.UserControls
         {
             infoWarning.Visibility = Visibility.Hidden;
             addContractWarning.Visibility = Visibility.Hidden;
-            updateContractWarning.Visibility = Visibility.Hidden;
 
             if (_contractType == 1) {
                 bool inputsValid = ValidateInputsSale();

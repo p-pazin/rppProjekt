@@ -128,7 +128,9 @@
     <Compile Include="Network\Dto\OfferDto.cs" />
     <Compile Include="Network\Dto\NewCompanyDto.cs" />
     <Compile Include="Network\Dto\RegisterUserDto.cs" />
+    <Compile Include="Network\Dto\RentContractDto.cs" />
     <Compile Include="Network\Dto\ReservationDto.cs" />
+    <Compile Include="Network\Dto\SaleContractDto.cs" />
     <Compile Include="Network\Dto\UserDto.cs" />
     <Compile Include="Network\Dto\VehicleDto.cs" />
     <Compile Include="Network\NetworkService.cs" />

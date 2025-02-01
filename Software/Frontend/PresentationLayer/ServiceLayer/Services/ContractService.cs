@@ -37,6 +37,36 @@ namespace ServiceLayer.Services
             string json = await response.Content.ReadAsStringAsync();
             return System.Text.Json.JsonSerializer.Deserialize<List<ContractDto>>(json, new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
         }
+        public async Task<SaleContractDto> GetContractSaleAsync(int contractId)
+        {
+            string token = _tokenManager.GetToken();
+            if (string.IsNullOrEmpty(token))
+                throw new Exception("User is not logged in.");
+
+            _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
+
+            HttpResponseMessage response = await _httpClient.GetAsync($"Contract/sell/{contractId}");
+            if (!response.IsSuccessStatusCode)
+                throw new Exception("Failed to fetch sale contract.");
+
+            string json = await response.Content.ReadAsStringAsync();
+            return System.Text.Json.JsonSerializer.Deserialize<SaleContractDto>(json, new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
+        }
+        public async Task<RentContractDto> GetContractRentAsync(int contractId)
+        {
+            string token = _tokenManager.GetToken();
+            if (string.IsNullOrEmpty(token))
+                throw new Exception("User is not logged in.");
+
+            _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
+
+            HttpResponseMessage response = await _httpClient.GetAsync($"Contract/rent/{contractId}");
+            if (!response.IsSuccessStatusCode)
+                throw new Exception("Failed to fetch rent contract.");
+
+            string json = await response.Content.ReadAsStringAsync();
+            return System.Text.Json.JsonSerializer.Deserialize<RentContractDto>(json, new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
+        }
         public async Task PostContractSaleAsync(ContractDto newContract, int? contactId, int? vehicleId, int? offerId)
         {
             string token = _tokenManager.GetToken();
@@ -72,6 +102,42 @@ namespace ServiceLayer.Services
 
             if (!response.IsSuccessStatusCode)
                 throw new Exception("Failed to add contract.");
+        }
+        public async Task PutContractSaleAsync(ContractDto newContract, int? contactId, int? vehicleId, int? offerId)
+        {
+            string token = _tokenManager.GetToken();
+            if (string.IsNullOrEmpty(token))
+                throw new Exception("User is not logged in.");
+
+            _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
+
+            string jsonContent = JsonConvert.SerializeObject(newContract);
+            HttpContent content = new StringContent(jsonContent, Encoding.UTF8, "application/json");
+
+            string url = $"Contract/sell?contactId={contactId}&vehicleId={vehicleId}&offerId={offerId}";
+
+            HttpResponseMessage response = await _httpClient.PutAsync(url, content);
+
+            if (!response.IsSuccessStatusCode)
+                throw new Exception("Failed to update contract.");
+        }
+        public async Task PutContractRentAsync(ContractDto newContract, int? reservationId, int? insuranceId)
+        {
+            string token = _tokenManager.GetToken();
+            if (string.IsNullOrEmpty(token))
+                throw new Exception("User is not logged in.");
+
+            _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
+
+            string jsonContent = JsonConvert.SerializeObject(newContract);
+            HttpContent content = new StringContent(jsonContent, Encoding.UTF8, "application/json");
+
+            string url = $"Contract/rent?reservationId={reservationId}&insuranceId={insuranceId}";
+
+            HttpResponseMessage response = await _httpClient.PutAsync(url, content);
+
+            if (!response.IsSuccessStatusCode)
+                throw new Exception("Failed to update contract.");
         }
         public async Task DeleteContractAsync(int contractId)
         {
