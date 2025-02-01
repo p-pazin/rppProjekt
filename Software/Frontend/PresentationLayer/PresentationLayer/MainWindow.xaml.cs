@@ -44,6 +44,9 @@ namespace PresentationLayer
                     case "Računi":
                         MainContentFrame.Navigate(new UCInvoices());
                         break;
+                    case "Mapa vozila":
+                        MainContentFrame.Navigate(new UCVehicleLocation());
+                        break;
                     case "Odjava":
                         var loginWindow = new LoginWindow();
                         loginWindow.Show();
