@@ -67,6 +67,10 @@
 
                     <TextBlock Text="Mjesto:" Grid.Row="5" Grid.Column="0" Margin="0,10,0,25" Foreground="White" FontSize="14"/>
                     <TextBox x:Name="txtLocationSale" Grid.Row="5" Grid.Column="1" Height="30" FontSize="14" Foreground="White" Background="#FF444444" BorderBrush="#FF555555" Margin="10,0,0,20"/>
+
+                    <TextBlock Text="Potpis:" Grid.Row="6" Grid.Column="0" Margin="0,10,0,25" Foreground="White" FontSize="14"/>
+                    <ComboBox x:Name="cmbSigned" Grid.Row="6" Grid.Column="1" Height="30" FontSize="14" Foreground="White" Background="#FF444444" BorderBrush="#FF555555" Margin="10,0,0,20">
+                    </ComboBox>
                 </Grid>
             </StackPanel>
         </ScrollViewer>

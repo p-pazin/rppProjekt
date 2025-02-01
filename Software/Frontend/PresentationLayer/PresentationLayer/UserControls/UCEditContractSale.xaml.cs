@@ -30,6 +30,9 @@ namespace PresentationLayer.UserControls
         public UCEditContractSale(int contractId)
         {
             InitializeComponent();
+            cmbOffer.SelectionChanged += cmbOffer_SelectionChanged;
+            cmbVehicle.SelectionChanged += cmbVehicle_SelectionChanged;
+            cmbContact.SelectionChanged += cmbContact_SelectionChanged;
             updateContractWarning.Visibility = Visibility.Hidden;
             infoWarning.Visibility = Visibility.Hidden;
             _contractId = contractId;
@@ -47,9 +50,12 @@ namespace PresentationLayer.UserControls
             var vehicles = await _vehicleService.GetVehicles();
             var contacts = await _contactService.GetContactsAsync();
 
+            var signedStates = new List<string> { "Nepotpisan", "Potpisan" };
+
             cmbOffer.ItemsSource = offers;
             cmbVehicle.ItemsSource = vehicles;
             cmbContact.ItemsSource = contacts;
+            cmbSigned.ItemsSource = signedStates;
 
             var offerDisplayList = offers.Select(o => new
             {
@@ -101,6 +107,7 @@ namespace PresentationLayer.UserControls
                         cmbContact.SelectedItem = contactDisplayList.FirstOrDefault(c => c.Contact == selectedContact);
                 }
 
+                cmbSigned.SelectedItem = contract.Signed == 1 ? "Potpisan" : "Nepotpisan";
                 txtTitleSale.Text = contract.Title;
                 txtContentSale.Text = contract.Content;
                 txtLocationSale.Text = contract.Place;
@@ -130,7 +137,7 @@ namespace PresentationLayer.UserControls
                     Place = txtLocationSale.Text,
                     Type = 1,
                     Content = txtContentSale.Text,
-                    Signed = 0,
+                    Signed = cmbSigned.SelectedValue?.ToString() == "Potpisan" ? 1 : 0,
                     Id = _contractId,
                 };
 
@@ -162,7 +169,6 @@ namespace PresentationLayer.UserControls
                 infoWarning.Visibility = Visibility.Visible;
             }
         }
-
         private bool ValidateInputs()
         {
             if (txtTitleSale.Text.Length == 0 || txtContentSale.Text.Length == 0 || txtLocationSale.Text.Length == 0)
@@ -181,6 +187,30 @@ namespace PresentationLayer.UserControls
             }
 
             return true;
+        }
+        private void cmbOffer_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (cmbOffer.SelectedItem != null)
+            {
+                cmbVehicle.SelectedItem = null;
+                cmbContact.SelectedItem = null;
+            }
+        }
+
+        private void cmbVehicle_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (cmbVehicle.SelectedItem != null)
+            {
+                cmbOffer.SelectedItem = null;
+            }
+        }
+
+        private void cmbContact_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (cmbContact.SelectedItem != null)
+            {
+                cmbOffer.SelectedItem = null;
+            }
         }
     }
 }

@@ -49,6 +49,8 @@ namespace PresentationLayer.UserControls
             cmbStatus.ItemsSource = states;
             _contactService = new ContactService();
             _contact = contact;
+
+            cmbCountry.SelectionChanged += cmbCountry_SelectionChanged;
         }
         private void UserControl_Loaded(object sender, RoutedEventArgs e)
         {
@@ -70,7 +72,7 @@ namespace PresentationLayer.UserControls
                 cmbStatus.SelectedItem = _contact.State == 1 ? "Aktivan kontakt" : "Neaktivan kontakt";
             }
         }
-        private void btnSave_Click(object sender, RoutedEventArgs e)
+        private async void btnSave_Click(object sender, RoutedEventArgs e)
         {
             infoWarning.Visibility = Visibility.Hidden;
             addContactWarning.Visibility = Visibility.Hidden;
@@ -90,7 +92,7 @@ namespace PresentationLayer.UserControls
                     MobileNumber = txtMobileNumber.Text,
                     Address = txtAddress.Text,
                     Country = cmbCountry.SelectedItem as string,
-                    City = cmbCountry.SelectedItem == "Hrvatska" ? cmbCity.SelectedItem as string : null,
+                    City = cmbCity.SelectedItem as string,
                     State = (cmbStatus.SelectedItem as string == "Aktivan kontakt") ? 1 : 0,
                     DateOfCreation = currentDate.ToString("yyyy-MM-dd"),
                     Id = _contact?.Id ?? 0,
@@ -100,22 +102,17 @@ namespace PresentationLayer.UserControls
                 {
                     if (_contact != null)
                     {
-                        _contactService.PutContactAsync(newContact);
+                        await _contactService.PutContactAsync(newContact);
                     }
                     else
                     {
-                        _contactService.PostContactAsync(newContact);
+                        await _contactService.PostContactAsync(newContact);
                     }
                     if(Application.Current.MainWindow is MainWindow mw)
                     {
                         var ucContacts = new UCContacts();
                         mw.LoadUC(ucContacts);
                         mw.AdjustUserControlMargin();
-                        Application.Current.Dispatcher.InvokeAsync(async () =>
-                        {
-                            await Task.Delay(100);
-                            ucContacts.LoadContactsData();
-                        });
                     }
                 }
                 catch (Exception ex) {
@@ -154,13 +151,27 @@ namespace PresentationLayer.UserControls
             }
             return true;
         }
-
         public static string GetEnumDescription(Enum value)
         {
             FieldInfo field = value.GetType().GetField(value.ToString());
             DescriptionAttribute attribute = (DescriptionAttribute)field.GetCustomAttribute(typeof(DescriptionAttribute));
 
             return attribute != null ? attribute.Description : value.ToString();
+        }
+        private void cmbCountry_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            string selectedCountry = cmbCountry.SelectedItem as string;
+
+            if (selectedCountry != "Hrvatska")
+            {
+                cmbCity.SelectedItem = null;
+                cmbCity.IsEnabled = false;
+            }
+            else
+            {
+                cmbCity.SelectedIndex = 0;
+                cmbCity.IsEnabled = true;
+            }
         }
     }
 }

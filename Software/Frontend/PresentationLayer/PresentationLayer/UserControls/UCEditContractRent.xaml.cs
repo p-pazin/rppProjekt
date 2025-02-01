@@ -45,8 +45,11 @@ namespace PresentationLayer.UserControls
             var reservations = await _reservationService.GetReservationsAsync();
             var insurances = await _insuranceService.GetInsurancesAsync();
 
+            var signedStates = new List<string> { "Nepotpisan", "Potpisan" };
+
             cmbReservation.ItemsSource = reservations;
             cmbInsurance.ItemsSource = insurances;
+            cmbSigned.ItemsSource = signedStates;
 
             var reservationDisplayList = reservations.Select(r => new
             {
@@ -82,6 +85,7 @@ namespace PresentationLayer.UserControls
                         cmbInsurance.SelectedItem = insuranceDisplayList.FirstOrDefault(i => i.Insurance == selectedInsurance);
                 }
 
+                cmbSigned.SelectedItem = contract.Signed == 1 ? "Potpisan" : "Nepotpisan";
                 txtTitleRent.Text = contract.Title;
                 txtContentRent.Text = contract.Content;
                 txtLocationRent.Text = contract.Place;
@@ -110,7 +114,7 @@ namespace PresentationLayer.UserControls
                     Place = txtLocationRent.Text,
                     Type = 2,
                     Content = txtContentRent.Text,
-                    Signed = 0,
+                    Signed = cmbSigned.SelectedValue?.ToString() == "Potpisan" ? 1 : 0,
                     Id = _contractId,
                 };
 
