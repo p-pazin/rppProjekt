@@ -31,6 +31,20 @@ namespace ServiceLayer.Network.Dto
         public string DisplayText => $"{Registration} - {Brand}, {Model}";
         public string UsageDisplay => Usage == 1 ? "U prodaji" : Usage == 2 ? "U najmu" : "Unknown";
         public string StateDisplay => State == 1 ? "Aktivno" : State == 2 ? "Prodano" : State == 3 ? "Najam" : State == 4 ? "Izbrisano" : "Unkown";
+
+        public override bool Equals(object obj)
+        {
+            if (obj is VehicleDto other)
+            {
+                return this.Registration == other.Registration;
+            }
+            return false;
+        }
+
+        public override int GetHashCode()
+        {
+            return Registration?.GetHashCode() ?? 0;
+        }
     }
 
     public class VehiclePost

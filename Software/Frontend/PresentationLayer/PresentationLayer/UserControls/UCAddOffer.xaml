@@ -48,9 +48,13 @@
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
             <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
-        <TextBlock Text="Dodavanje nove ponude" FontSize="24" FontWeight="Bold" HorizontalAlignment="Center" Margin="0,0,0,20" Foreground="White"/>
-
+        <StackPanel>
+            <TextBlock Text="Dodavanje nove ponude" FontSize="24" FontWeight="Bold" HorizontalAlignment="Center" Margin="0,0,0,20" Foreground="White"/>
+            <TextBlock x:Name="warning" Text="Greška kod dodavanja ponude." Margin="0,0,0,10" Foreground="Red" FontWeight="Bold"  FontSize="12" HorizontalAlignment="Center"></TextBlock>
+            <TextBlock x:Name="infoWarning" Text="Popunite sve podatke o ponudi!" Margin="0,-25,0,10" Foreground="Red" FontWeight="Bold"  FontSize="12" HorizontalAlignment="Center"></TextBlock>
+        </StackPanel>
         <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto">
             <Grid Margin="10,10,10,10">
                 <Grid.ColumnDefinitions>
@@ -61,6 +65,7 @@
                     <ColumnDefinition Width="250"/>
                 </Grid.ColumnDefinitions>
                 <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
                     <RowDefinition Height="Auto"/>
                     <RowDefinition Height="Auto"/>
                     <RowDefinition Height="Auto"/>
@@ -87,7 +92,7 @@
                 </TextBox>
 
                 <TextBlock Text="Datum kreiranja:" Grid.Row="2" Grid.Column="0" Margin="0,10,0,25" Foreground="White" FontSize="14"/>
-                <DatePicker x:Name="dtpDateOfCreation" Grid.Row="2" Grid.Column="1" Margin="10,0,0,20" Height="30" FontSize="14" Foreground="White" Background="#FF444444" BorderBrush="#FF555555">
+                <DatePicker x:Name="dtpDateOfCreation" Grid.Row="2" Grid.Column="1" Margin="10,0,0,20" Height="30" FontSize="14" Foreground="#FF444444" Background="#FF444444" BorderBrush="#FF555555">
                     <DatePicker.Resources>
                         <Style TargetType="Border">
                             <Setter Property="CornerRadius" Value="5"/>
@@ -95,8 +100,66 @@
                     </DatePicker.Resources>
                 </DatePicker>
 
-                <TextBlock Text="Vozila:" Grid.Row="3" Grid.Column="0" Margin="0,10,0,25" Foreground="White" FontSize="14"/>
-                <ComboBox x:Name="cmbVehicles" Grid.Row="3" DisplayMemberPath="DisplayText" SelectedValuePath="Id" Grid.Column="1" Margin="10,0,0,20" Height="30" FontSize="14" Foreground="White" Background="#FF444444" BorderBrush="#FF555555">
+                <TextBlock Text="Povezani kontakt:" Grid.Row="3" Grid.Column="0" Margin="0,10,0,25" Foreground="White" FontSize="14"/>
+                <ComboBox x:Name="cmbContacts" Grid.Row="3" Grid.Column="1" DisplayMemberPath="FullName" SelectedValuePath="Id" Margin="10,0,0,20" Height="30" FontSize="14" Foreground="White" Background="#FF444444" BorderBrush="#FF555555">
+                    <ComboBox.Template>
+                        <ControlTemplate TargetType="ComboBox">
+                            <Grid>
+                                <ToggleButton Name="ToggleButton"
+                              Template="{StaticResource ComboBoxToggleButton}"
+                              Grid.Column="2"
+                              IsChecked="{Binding Path=IsDropDownOpen, Mode=TwoWay, RelativeSource={RelativeSource TemplatedParent}}"
+                              ClickMode="Press">
+                                </ToggleButton>
+                                <ContentPresenter Name="ContentSite"
+                                  IsHitTestVisible="False"
+                                  Content="{TemplateBinding SelectionBoxItem}"
+                                  ContentTemplate="{TemplateBinding SelectionBoxItemTemplate}"
+                                  ContentTemplateSelector="{TemplateBinding ItemTemplateSelector}"
+                                  Margin="3,3,23,3"
+                                  VerticalAlignment="Center"
+                                  HorizontalAlignment="Left" />
+                                <TextBox x:Name="PART_EditableTextBox"
+                         Style="{x:Null}"
+                         Template="{StaticResource ComboBoxTextBox}"
+                         HorizontalAlignment="Left"
+                         VerticalAlignment="Center"
+                         Margin="3,3,23,3"
+                         Focusable="True"
+                         Background="Transparent"
+                         Visibility="Hidden"
+                         IsReadOnly="{TemplateBinding IsReadOnly}" />
+                                <Popup Name="Popup"
+                       Placement="Bottom"
+                       IsOpen="{TemplateBinding IsDropDownOpen}"
+                       AllowsTransparency="True"
+                       Focusable="False"
+                       PopupAnimation="Slide">
+                                    <Border Name="DropDownBorder"
+                            Background="{TemplateBinding Background}"
+                            BorderBrush="#FF555555"
+                            BorderThickness="1"
+                            CornerRadius="5">
+                                        <ScrollViewer Margin="4">
+                                            <ItemsPresenter />
+                                        </ScrollViewer>
+                                    </Border>
+                                </Popup>
+                            </Grid>
+                        </ControlTemplate>
+                    </ComboBox.Template>
+                    <ComboBox.Resources>
+                        <Style TargetType="Border">
+                            <Setter Property="CornerRadius" Value="5"/>
+                        </Style>
+                    </ComboBox.Resources>
+                </ComboBox>
+
+                <TextBlock Grid.Row="3" Grid.Column="3" x:Name="contactWarning" Text="Odaberite kontakt" Foreground="Red" FontWeight="Bold" 
+                           FontSize="12" HorizontalAlignment="Left" Margin="0,5,0,0"></TextBlock>
+
+                <TextBlock Text="Vozila:" Grid.Row="4" Grid.Column="0" Margin="0,10,0,25" Foreground="White" FontSize="14"/>
+                <ComboBox x:Name="cmbVehicles" Grid.Row="4" DisplayMemberPath="DisplayText" SelectedValuePath="Id" Grid.Column="1" Margin="10,0,0,20" Height="30" FontSize="14" Foreground="White" Background="#FF444444" BorderBrush="#FF555555">
                     <ComboBox.Template>
                         <ControlTemplate TargetType="ComboBox">
                             <Grid>
@@ -150,7 +213,7 @@
                     </ComboBox.Resources>
                 </ComboBox>
 
-                <Button x:Name="btnAddVehicle" Grid.Row="3" Grid.Column="3" Padding="5,5,5,5" Content="Dodaj vozilo" Margin="10,0,0,20" Height="30" FontSize="14" Foreground="White" Background="#FF444444" BorderBrush="#FF555555">
+                <Button x:Name="btnAddVehicle" Click="btnAddVehicle_Click" Grid.Row="4" Grid.Column="3" Padding="5,5,5,5" Content="Dodaj vozilo" Margin="10,0,0,20" Height="30" FontSize="14" Foreground="White" Background="#FF444444" BorderBrush="#FF555555">
                     <Button.Resources>
                         <Style TargetType="Border">
                             <Setter Property="CornerRadius" Value="5"/>
@@ -158,17 +221,39 @@
                     </Button.Resources>
                 </Button>
 
-                <ListBox x:Name="lstSelectedVehicles" Grid.Row="4" Grid.Column="1" Grid.ColumnSpan="3" Margin="10,0,0,20" Height="100" FontSize="14" Foreground="White" Background="#FF444444" BorderBrush="#FF555555">
+                <TextBlock Grid.Row="4" Grid.Column="4" x:Name="vehicleWarning" Text="Vozilo već dodano" Foreground="Red" FontWeight="Bold" 
+                           FontSize="12" HorizontalAlignment="Left" Margin="20,5,0,0"></TextBlock>
+
+                <ListBox x:Name="lstSelectedVehicles" Grid.Row="5" Grid.Column="1" Grid.ColumnSpan="3" Margin="10,0,0,20" Height="100" FontSize="14" Foreground="White" Background="#FF444444" BorderBrush="#FF555555">
                     <ListBox.Resources>
                         <Style TargetType="Border">
                             <Setter Property="CornerRadius" Value="5"/>
                         </Style>
                     </ListBox.Resources>
+                    <ListBox.ItemTemplate>
+                        <DataTemplate>
+                            <TextBlock>
+                <Run Text="{Binding Registration}" />
+                <Run Text=" - " />
+                <Run Text="{Binding Brand}" />
+                <Run Text=", " />
+                <Run Text="{Binding Model}" />
+                            </TextBlock>
+                        </DataTemplate>
+                    </ListBox.ItemTemplate>
                 </ListBox>
+                <Button x:Name="removeVehicle" Grid.Column="4" Grid.Row="5" HorizontalAlignment="Left" Width="100" Padding="5,5,5,5" Content="Obriši vozilo" 
+                        Margin="20,0,0,20" Height="30" FontSize="14" Foreground="White" Background="#FF444444" Click="removeVehicle_Click" BorderBrush="#FF555555">
+                    <Button.Resources>
+                        <Style TargetType="Border">
+                            <Setter Property="CornerRadius" Value="5"/>
+                        </Style>
+                    </Button.Resources>
+                </Button>
             </Grid>
         </ScrollViewer>
 
-        <Button x:Name="btnSaveOffer" Grid.Row="2" Content="Spremi" HorizontalAlignment="Center" Margin="-100,20,0,0" Padding="20,10" FontSize="16" Foreground="White" Background="#FF444444" BorderBrush="#FF555555">
+        <Button x:Name="btnSaveOffer" Click="btnSaveOffer_Click" Grid.Row="2" Content="Spremi" HorizontalAlignment="Center" Margin="-100,20,0,0" Padding="20,10" FontSize="16" Foreground="White" Background="#FF444444" BorderBrush="#FF555555">
             <Button.Resources>
                 <Style TargetType="Border">
                     <Setter Property="CornerRadius" Value="5"/>
