@@ -19,6 +19,8 @@ namespace PresentationLayer.UserControls
             _tokenManager = new TokenManager();
             var httpClient = NetworkService.GetHttpClient(_tokenManager);
             _apiService = new AuthService();
+            infoWarning.Visibility = Visibility.Hidden;
+            inputsWarning.Visibility = Visibility.Hidden;
         }
 
         private async void LoginButton_Click(object sender, RoutedEventArgs e)
@@ -28,7 +30,7 @@ namespace PresentationLayer.UserControls
 
             if (string.IsNullOrWhiteSpace(email) || string.IsNullOrWhiteSpace(password))
             {
-                MessageBox.Show("Unesite email i lozinku.", "Greška", MessageBoxButton.OK, MessageBoxImage.Warning);
+                inputsWarning.Visibility = Visibility.Visible;
                 return;
             }
 
@@ -45,7 +47,7 @@ namespace PresentationLayer.UserControls
                 }
                 else
                 {
-                    MessageBox.Show("Prijava neuspješna. Provjerite podatke.", "Greška", MessageBoxButton.OK, MessageBoxImage.Error);
+                    infoWarning.Visibility = Visibility.Visible;
                 }
             }
             catch (Exception ex)

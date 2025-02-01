@@ -10,12 +10,12 @@
         <Image Source="/images/CarchiveLogo.png" Width="200" Stretch="Uniform" VerticalAlignment="Center"/>
 
         <TextBlock Text="E-mail" Foreground="White" FontSize="16" Margin="0,20,0,5"/>
-        <TextBox x:Name="EmailTextBox"  FontSize="14" Foreground="White" Background="#FF333333" 
-             BorderBrush="#F65B43" BorderThickness="1" Padding="5" Width="250"/>
+        <TextBox x:Name="EmailTextBox" FontSize="14" Foreground="White" Background="#FF333333" HorizontalAlignment="Left" 
+             BorderBrush="#F65B43" BorderThickness="1" Padding="5" Width="314"/>
 
         <TextBlock Text="Lozinka" Foreground="White" FontSize="16" Margin="0,10,0,5"/>
-        <PasswordBox x:Name="PasswordBox" FontSize="14" Foreground="White" Background="#FF333333"
-                 BorderBrush="#F65B43" BorderThickness="1" Padding="5" Width="250"/>
+        <PasswordBox x:Name="PasswordBox" FontSize="14" Foreground="White" Background="#FF333333" HorizontalAlignment="Left"
+                 BorderBrush="#F65B43" BorderThickness="1" Padding="5" Width="313"/>
 
         <Button Content="Prijavi se" Height="30" Width="150"  Margin="0,20,0,0" x:Name="LoginButton" 
             Background="#F65B43" Foreground="White" FontSize="16" FontWeight="Bold" 
@@ -26,6 +26,10 @@
                 </Style>
             </Button.Resources>
         </Button>
+        <StackPanel Margin="0,15,0,0">
+            <TextBlock x:Name="inputsWarning" Text="Unesite email i lozinku!" Margin="0,0,0,0" Foreground="Red" FontWeight="SemiBold" FontSize="18" HorizontalAlignment="Center"/>
+            <TextBlock x:Name="infoWarning" Text="Prijava neuspješna. Provjerite podatke." Margin="0,-24,0,0" Foreground="Red" FontWeight="SemiBold" FontSize="18" HorizontalAlignment="Center"/>
+        </StackPanel>
 
         <Button Content="Registriraj se" Height="30" Width="150"  Margin="0,70,0,0" x:Name="RegisterButton" 
             Background="#F65B43" Foreground="White" FontSize="16" FontWeight="Bold" 

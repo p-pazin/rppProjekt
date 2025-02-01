@@ -18,6 +18,8 @@ namespace PresentationLayer.UserControls
         {
             InitializeComponent();
             _companyService = new CompanyService();
+            infoWarning.Visibility = Visibility.Hidden;
+            addUserWarning.Visibility = Visibility.Hidden;
         }
 
         private async void AddUser_Click(object sender, RoutedEventArgs e)
@@ -27,7 +29,7 @@ namespace PresentationLayer.UserControls
                 string.IsNullOrWhiteSpace(txtEmail.Text) ||
                 string.IsNullOrWhiteSpace(txtPassword.Password))
             {
-                MessageBox.Show("Molimo popunite sva polja.", "Greška", MessageBoxButton.OK, MessageBoxImage.Warning);
+                infoWarning.Visibility = Visibility.Visible;
                 return;
             }
 
@@ -42,11 +44,13 @@ namespace PresentationLayer.UserControls
             try
             {
                 await _companyService.PostCompanyUser(newUser);
-                MessageBox.Show("Zaposlenik uspješno dodan!", "Uspjeh", MessageBoxButton.OK, MessageBoxImage.Information);
+
+                if (Application.Current.MainWindow is MainWindow mainWindow)
+                    mainWindow.LoadUC(new UCCompanyUsers(1));
             }
-            catch (Exception ex)
+            catch (Exception)
             {
-                MessageBox.Show($"Greška prilikom dodavanja zaposlenika: {ex.Message}", "Greška", MessageBoxButton.OK, MessageBoxImage.Error);
+                addUserWarning.Visibility = Visibility.Visible;
             }
         }
 

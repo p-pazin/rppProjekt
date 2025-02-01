@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Net.Http;
 using System.Net.Http.Headers;
+using System.Text;
 using System.Text.Json;
 using System.Threading.Tasks;
 using ServiceLayer.Network.Dto;
@@ -32,6 +33,46 @@ namespace ServiceLayer.Services
 
             string json = await response.Content.ReadAsStringAsync();
             return JsonSerializer.Deserialize<UserDto>(json, new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
+        }
+
+        public async Task PutCompanyUser(UserDto companyUserInfo)
+        {
+            string token = _tokenManager.GetToken();
+            if (string.IsNullOrEmpty(token))
+                throw new Exception("User is not logged in.");
+
+            _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
+
+            var url = "User/update";
+
+            string jsonContent = JsonSerializer.Serialize(companyUserInfo);
+            HttpContent content = new StringContent(jsonContent, Encoding.UTF8, "application/json");
+
+            HttpResponseMessage response = await _httpClient.PutAsync(url, content);
+
+            if (!response.IsSuccessStatusCode)
+            {
+                Console.WriteLine(response.StatusCode);
+                throw new Exception("Failed to add new company user.");
+            }
+        }
+
+        public async Task DeleteCompanyUser(int userId)
+        {
+            string token = _tokenManager.GetToken();
+            if (string.IsNullOrEmpty(token))
+                throw new Exception("User is not logged in.");
+
+            _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
+
+            string jsonContent = JsonSerializer.Serialize(userId);
+            HttpResponseMessage response = await _httpClient.DeleteAsync($"User/delete/{userId}");
+
+            if (!response.IsSuccessStatusCode)
+            {
+                Console.WriteLine(response.StatusCode);
+                throw new Exception("Failed to add new company user.");
+            }
         }
     }
 }
