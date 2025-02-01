@@ -74,8 +74,10 @@
             <Border Background="#FF444444" Padding="10" HorizontalAlignment="Stretch">
                 <TextBlock Text="Zaposlenici kompanije" Foreground="White" FontSize="18" FontWeight="Bold" HorizontalAlignment="Center"/>
             </Border>
-            <TextBlock x:Name="selectedWarning" Text="Morate odabrati zaposlenika!" Margin="0,20,0,0" Foreground="Red" FontWeight="Bold" FontSize="12" HorizontalAlignment="Center"/>
-            <TextBlock x:Name="deletionWarning" Text="Pogreška kod brisanja zaposlenika." Margin="0,-15,0,0" Foreground="Red" FontWeight="Bold" FontSize="12" HorizontalAlignment="Center"/>
+            <TextBlock x:Name="selectedWarning" Text="Morate odabrati zaposlenika!" Margin="0,0,0,0" Foreground="Red" FontWeight="SemiBold" FontSize="18" HorizontalAlignment="Center"/>
+            <TextBlock x:Name="deletionWarning" Text="Pogreška kod brisanja zaposlenika." Margin="0,-24,0,0" Foreground="Red" FontWeight="SemiBold" FontSize="18" HorizontalAlignment="Center"/>
+            <TextBlock x:Name="addSuccess" Text="Uspješno dodan zaposlenik." Margin="0,-24,0,0" Foreground="GreenYellow" FontWeight="SemiBold" FontSize="18" HorizontalAlignment="Center"/>
+            <TextBlock x:Name="updateSuccess" Text="Uspješno ažuriran zaposlenik." Margin="0,-24,0,0" Foreground="GreenYellow" FontWeight="SemiBold" FontSize="18" HorizontalAlignment="Center"/>
         </StackPanel>
 
         <DataGrid x:Name="dgvUsers"

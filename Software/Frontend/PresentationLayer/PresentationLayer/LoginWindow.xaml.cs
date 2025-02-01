@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using PresentationLayer.UserControls;
@@ -15,7 +16,17 @@ namespace PresentationLayer
         {
             InitializeComponent();
             Application.Current.MainWindow = this;
+
+            var tokenManager = new TokenManager();
+            string token = tokenManager.GetToken();
             LoginContentFrame.Content = new UCLogin(this);
+            if (!string.IsNullOrEmpty(token))
+            {
+                MainWindow mainWindow = new MainWindow();
+                mainWindow.Show();
+                this.Close();
+            }
+
         }
 
         public void LoadUC(UserControl uc)

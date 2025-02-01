@@ -48,11 +48,16 @@ namespace PresentationLayer
                         MainContentFrame.Navigate(new UCVehicleLocation());
                         break;
                     case "Odjava":
-                        var loginWindow = new LoginWindow();
-                        loginWindow.Show();
-                        Close();
                         var token = new TokenManager();
                         token.ClearToken();
+                        Application.Current.Dispatcher.InvokeAsync(() =>
+                        {
+                            var loginWindow = new LoginWindow();
+                            loginWindow.Show();
+                        });
+                        this.Hide();
+                        Application.Current.ShutdownMode = ShutdownMode.OnExplicitShutdown;
+                        this.Close();
                         break;
                     default:
                         MainContentFrame.Content = null;

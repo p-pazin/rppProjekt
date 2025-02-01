@@ -129,7 +129,6 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Environment.cs" />
-    <Compile Include="Network\AuthHandler.cs" />
     <Compile Include="Network\Dto\CompanyDto.cs" />
     <Compile Include="Network\Dto\ContactDto.cs" />
     <Compile Include="Network\Dto\InsuranceDto.cs" />

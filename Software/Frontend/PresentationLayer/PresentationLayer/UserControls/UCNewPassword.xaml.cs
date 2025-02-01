@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using ServiceLayer.Network.Dto;
@@ -18,6 +19,9 @@ namespace PresentationLayer.UserControls
         {
             InitializeComponent();
             _userEmail = userEmail;
+            infoWarning.Visibility = Visibility.Hidden;
+            passwordWarning.Visibility = Visibility.Hidden;
+            inputWarning.Visibility = Visibility.Hidden;
         }
 
         private async void ChangePassword_Click(object sender, RoutedEventArgs e)
@@ -30,13 +34,21 @@ namespace PresentationLayer.UserControls
                 string.IsNullOrWhiteSpace(newPassword) ||
                 string.IsNullOrWhiteSpace(confirmPassword))
             {
-                MessageBox.Show("Sva polja moraju biti ispunjena!", "Greška", MessageBoxButton.OK, MessageBoxImage.Warning);
+                inputWarning.Visibility = Visibility.Visible;
+                Task.Delay(3000).ContinueWith(_ =>
+                {
+                    Dispatcher.Invoke(() => inputWarning.Visibility = Visibility.Hidden);
+                });
                 return;
             }
 
             if (newPassword != confirmPassword)
             {
-                MessageBox.Show("Nova lozinka i potvrda lozinke se ne podudaraju!", "Greška", MessageBoxButton.OK, MessageBoxImage.Warning);
+                passwordWarning.Visibility = Visibility.Visible;
+                Task.Delay(3000).ContinueWith(_ =>
+                {
+                    Dispatcher.Invoke(() => passwordWarning.Visibility = Visibility.Hidden);
+                });
                 return;
             }
 
@@ -53,16 +65,33 @@ namespace PresentationLayer.UserControls
 
                 if (isSuccess)
                 {
-                    MessageBox.Show("Lozinka uspješno promijenjena!", "Uspjeh", MessageBoxButton.OK, MessageBoxImage.Information);
+                    if (Application.Current.MainWindow is MainWindow mw)
+                    {
+                        mw.LoadUC(new UCDashboard(1));
+                        mw.AdjustUserControlMargin();
+                    }
                 }
                 else
                 {
-                    MessageBox.Show("Neuspjela promjena lozinke. Provjerite unesene podatke.", "Greška", MessageBoxButton.OK, MessageBoxImage.Error);
+                    infoWarning.Visibility = Visibility.Visible;
+                    Task.Delay(3000).ContinueWith(_ =>
+                    {
+                        Dispatcher.Invoke(() => infoWarning.Visibility = Visibility.Hidden);
+                    });
                 }
             }
             catch (Exception ex)
             {
                 MessageBox.Show($"Došlo je do pogreške: {ex.Message}", "Greška", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+        }
+
+        private void btnExit_Click(object sender, RoutedEventArgs e)
+        {
+            if (Application.Current.MainWindow is MainWindow mw)
+            {
+                mw.LoadUC(new UCDashboard());
+                mw.AdjustUserControlMargin();
             }
         }
     }
