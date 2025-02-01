@@ -11,11 +11,10 @@ namespace ServiceLayer.Services
     {
         private readonly HttpClient _httpClient;
         private readonly TokenManager _tokenManager;
-        private const string BASE_URL = "https://carchive.online/api/";
 
         public CompanyService()
         {
-            _httpClient = new HttpClient { BaseAddress = new Uri(BASE_URL) };
+            _httpClient = new HttpClient { BaseAddress = new Uri(Environment.BASE_URL) };
             _tokenManager = new TokenManager();
         }
 

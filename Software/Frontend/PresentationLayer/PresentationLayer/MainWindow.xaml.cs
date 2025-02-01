@@ -11,7 +11,7 @@ namespace PresentationLayer
             InitializeComponent();
             Application.Current.MainWindow = this;
             NavigationMenu.SelectionChanged += NavigationMenu_SelectionChanged;
-
+            Application.Current.MainWindow = this;
             NavigationMenu.SelectedIndex = 0;
             ToggleDrawerButton.Content = "✕";
 
@@ -40,6 +40,9 @@ namespace PresentationLayer
                         break;
                     case "Ugovori":
                         MainContentFrame.Navigate(new UCContracts());
+                        break;
+                    case "Računi":
+                        MainContentFrame.Navigate(new UCInvoices());
                         break;
                     case "Odjava":
                         var loginWindow = new LoginWindow();
