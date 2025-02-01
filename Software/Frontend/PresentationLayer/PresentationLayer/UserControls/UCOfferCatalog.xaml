@@ -163,7 +163,7 @@
                     </Style>
                 </Button.Resources>
             </Button>
-            <Button x:Name="btnDeleteOffer" Content="Obriši ponudu" Padding="10" Margin="5" Foreground="White" Background="#FF444444" BorderBrush="#FF555555">
+            <Button x:Name="btnDeleteOffer" Click="btnDeleteOffer_Click" Content="Obriši ponudu" Padding="10" Margin="5" Foreground="White" Background="#FF444444" BorderBrush="#FF555555">
                 <Button.Resources>
                     <Style TargetType="Border">
                         <Setter Property="CornerRadius" Value="5"/>

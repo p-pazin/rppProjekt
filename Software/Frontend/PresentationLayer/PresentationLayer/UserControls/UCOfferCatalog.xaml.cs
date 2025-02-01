@@ -23,6 +23,8 @@ namespace PresentationLayer.UserControls
     public partial class UCOfferCatalog : UserControl
     {
         private OfferServices offerServices = new OfferServices();
+        private ContactService contactService = new ContactService();
+        private VehicleService vehicleService = new VehicleService();
         public UCOfferCatalog()
         {
             InitializeComponent();
@@ -51,6 +53,20 @@ namespace PresentationLayer.UserControls
                 {
                     mw.LoadUC(new UCEditOffer(selectedOffer));
                 }
+            }
+            else
+            {
+                selectedWarning.Visibility = Visibility.Visible;
+            }
+        }
+
+        private void btnDeleteOffer_Click(object sender, RoutedEventArgs e)
+        {
+            var selectedOffer = dgvOffers.SelectedItem as OfferDto;
+            if (selectedOffer != null)
+            {
+                offerServices.DeleteOffer(selectedOffer.Id);
+                LoadOffersAsync();
             }
             else
             {

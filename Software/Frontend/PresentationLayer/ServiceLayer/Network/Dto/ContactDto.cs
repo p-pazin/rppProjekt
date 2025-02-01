@@ -17,5 +17,7 @@ namespace CarchiveAPI.Dto
         public string MobileNumber { get; set; }
         public string Email { get; set; }
         public string Description { get; set; }
+
+        public string FullName => $"{FirstName} {LastName}";
     }
 }

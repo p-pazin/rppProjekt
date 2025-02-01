@@ -84,6 +84,9 @@
     <Compile Include="UserControls\UCContacts.xaml.cs">
       <DependentUpon>UCContacts.xaml</DependentUpon>
     </Compile>
+    <Compile Include="UserControls\UCContractForm.xaml.cs">
+      <DependentUpon>UCContractForm.xaml</DependentUpon>
+    </Compile>
     <Compile Include="UserControls\UCContracts.xaml.cs">
       <DependentUpon>UCContracts.xaml</DependentUpon>
     </Compile>
@@ -157,6 +160,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="UserControls\UCContacts.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UserControls\UCContractForm.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -236,12 +243,6 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\ServiceLayer\ServiceLayer.csproj">
-      <Project>{2b7600fb-b105-4b71-9d50-f194cebe638c}</Project>
-      <Name>ServiceLayer</Name>
-    </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
     <Resource Include="images\CarchiveSmallLogo.ico" />
   </ItemGroup>
   <ItemGroup>
@@ -249,6 +250,12 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="images\CarchiveLogo.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\ServiceLayer\ServiceLayer.csproj">
+      <Project>{2b7600fb-b105-4b71-9d50-f194cebe638c}</Project>
+      <Name>ServiceLayer</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
