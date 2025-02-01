@@ -121,6 +121,7 @@
     <Compile Include="Network\AuthHandler.cs" />
     <Compile Include="Network\Dto\CompanyDto.cs" />
     <Compile Include="Network\Dto\ContactDto.cs" />
+    <Compile Include="Network\Dto\InvoiceDto.cs" />
     <Compile Include="Network\Dto\NewPasswordDto.cs" />
     <Compile Include="Network\Dto\ContractDto.cs" />
     <Compile Include="Network\Dto\OfferDto.cs" />
@@ -132,6 +133,7 @@
     <Compile Include="Services\CompanyService.cs" />
     <Compile Include="Services\ContactService.cs" />
     <Compile Include="Services\ContractService.cs" />
+    <Compile Include="Services\InvoiceService.cs" />
     <Compile Include="Services\OfferServices.cs" />
     <Compile Include="Services\TokenManager.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
