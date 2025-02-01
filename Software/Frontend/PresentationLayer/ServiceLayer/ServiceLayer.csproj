@@ -121,8 +121,10 @@
     <Compile Include="Network\AuthHandler.cs" />
     <Compile Include="Network\Dto\CompanyDto.cs" />
     <Compile Include="Network\Dto\ContactDto.cs" />
+    <Compile Include="Network\Dto\NewPasswordDto.cs" />
     <Compile Include="Network\Dto\OfferDto.cs" />
     <Compile Include="Network\Dto\NewCompanyDto.cs" />
+    <Compile Include="Network\Dto\RegisterUserDto.cs" />
     <Compile Include="Network\Dto\UserDto.cs" />
     <Compile Include="Network\Dto\VehicleDto.cs" />
     <Compile Include="Network\NetworkService.cs" />

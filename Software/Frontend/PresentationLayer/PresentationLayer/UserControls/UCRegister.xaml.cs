@@ -15,7 +15,7 @@ namespace PresentationLayer.UserControls
         {
             InitializeComponent();
             var httpClient = NetworkService.GetHttpClient(new TokenManager());
-            _apiService = new AuthService(httpClient);
+            _apiService = new AuthService();
         }
 
         private async void RegisterButton_Click(object sender, RoutedEventArgs e)
