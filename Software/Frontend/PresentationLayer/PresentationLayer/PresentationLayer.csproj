@@ -34,6 +34,10 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationIcon>
+    </ApplicationIcon>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Data" />
@@ -85,8 +89,14 @@
     <Compile Include="UserControls\UCEditVehicle.xaml.cs">
       <DependentUpon>UCEditVehicle.xaml</DependentUpon>
     </Compile>
+    <Compile Include="UserControls\UCLogin.xaml.cs">
+      <DependentUpon>UCLogin.xaml</DependentUpon>
+    </Compile>
     <Compile Include="UserControls\UCOfferCatalog.xaml.cs">
       <DependentUpon>UCOfferCatalog.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UserControls\UCRegister.xaml.cs">
+      <DependentUpon>UCRegister.xaml</DependentUpon>
     </Compile>
     <Compile Include="UserControls\UCVehicleCatalog.xaml.cs">
       <DependentUpon>UCVehicleCatalog.xaml</DependentUpon>
@@ -146,7 +156,15 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="UserControls\UCLogin.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="UserControls\UCOfferCatalog.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UserControls\UCRegister.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -186,13 +204,19 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="images\CarchiveLogo.png" />
-  </ItemGroup>
-  <ItemGroup>
     <ProjectReference Include="..\ServiceLayer\ServiceLayer.csproj">
       <Project>{2b7600fb-b105-4b71-9d50-f194cebe638c}</Project>
       <Name>ServiceLayer</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="images\CarchiveSmallLogo.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="images\car_illustration.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="images\CarchiveLogo.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

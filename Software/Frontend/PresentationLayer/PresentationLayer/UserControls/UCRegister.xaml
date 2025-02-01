@@ -1,0 +1,64 @@
+﻿<UserControl x:Class="PresentationLayer.UserControls.UCRegister"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             mc:Ignorable="d">
+    <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
+
+        <Image Source="/images/CarchiveLogo.png" Width="200" Stretch="Uniform" VerticalAlignment="Center"/>
+
+        <TextBlock Text="Naziv kompanije" Foreground="White" FontSize="16" Margin="0,10,0,5"/>
+        <TextBox x:Name="CompanyNameTextBox" FontSize="14" Foreground="White" Background="#FF333333" 
+                 BorderBrush="#F65B43" BorderThickness="1" Padding="5" Width="250"/>
+
+        <TextBlock Text="Grad" Foreground="White" FontSize="16" Margin="0,10,0,5"/>
+        <TextBox x:Name="CityTextBox" FontSize="14" Foreground="White" Background="#FF333333" 
+                 BorderBrush="#F65B43" BorderThickness="1" Padding="5" Width="250"/>
+
+        <TextBlock Text="Adresa" Foreground="White" FontSize="16" Margin="0,10,0,5"/>
+        <TextBox x:Name="AddressTextBox" FontSize="14" Foreground="White" Background="#FF333333" 
+                 BorderBrush="#F65B43" BorderThickness="1" Padding="5" Width="250"/>
+
+        <TextBlock Text="PIN" Foreground="White" FontSize="16" Margin="0,10,0,5"/>
+        <TextBox x:Name="PinTextBox" FontSize="14" Foreground="White" Background="#FF333333" 
+                 BorderBrush="#F65B43" BorderThickness="1" Padding="5" Width="250"/>
+
+        <TextBlock Text="Ime" Foreground="White" FontSize="16" Margin="0,10,0,5"/>
+        <TextBox x:Name="FirstNameTextBox" FontSize="14" Foreground="White" Background="#FF333333" 
+                 BorderBrush="#F65B43" BorderThickness="1" Padding="5" Width="250"/>
+
+        <TextBlock Text="Prezime" Foreground="White" FontSize="16" Margin="0,10,0,5"/>
+        <TextBox x:Name="LastNameTextBox" FontSize="14" Foreground="White" Background="#FF333333" 
+                 BorderBrush="#F65B43" BorderThickness="1" Padding="5" Width="250"/>
+
+        <TextBlock Text="E-mail" Foreground="White" FontSize="16" Margin="0,10,0,5"/>
+        <TextBox x:Name="EmailTextBox" FontSize="14" Foreground="White" Background="#FF333333" 
+                 BorderBrush="#F65B43" BorderThickness="1" Padding="5" Width="250"/>
+
+        <TextBlock Text="Lozinka" Foreground="White" FontSize="16" Margin="0,10,0,5"/>
+        <PasswordBox x:Name="PasswordBox" FontSize="14" Foreground="White" Background="#FF333333" 
+                     BorderBrush="#F65B43" BorderThickness="1" Padding="5" Width="250"/>
+
+        <Button Content="Registriraj se" Height="30" Width="150"  Margin="0,20,0,0" x:Name="RegisterButton" 
+    Background="#F65B43" Foreground="White" FontSize="16" FontWeight="Bold" 
+    BorderThickness="0" Cursor="Hand" Click="RegisterButton_Click">
+            <Button.Resources>
+                <Style TargetType="Border">
+                    <Setter Property="CornerRadius" Value="5"/>
+                </Style>
+            </Button.Resources>
+        </Button>
+
+        <Button Content="Prijavite se" Height="30" Width="150"  Margin="0,70,0,0" x:Name="LoginButton" 
+    Background="#F65B43" Foreground="White" FontSize="16" FontWeight="Bold" 
+    BorderThickness="0" Cursor="Hand" Click="LoginButton_Click">
+            <Button.Resources>
+                <Style TargetType="Border">
+                    <Setter Property="CornerRadius" Value="5"/>
+                </Style>
+            </Button.Resources>
+        </Button>
+
+    </StackPanel>
+</UserControl>

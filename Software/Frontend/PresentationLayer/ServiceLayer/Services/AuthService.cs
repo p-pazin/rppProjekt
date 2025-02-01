@@ -2,6 +2,7 @@
 using System.Text;
 using System.Text.Json;
 using System.Threading.Tasks;
+using ServiceLayer.Network.Dto;
 
 namespace ServiceLayer.Services
 {
@@ -30,6 +31,17 @@ namespace ServiceLayer.Services
                 return responseJson?.token ?? string.Empty;
             }
             return string.Empty;
+        }
+
+        public async Task<bool> RegisterAsync(NewCompanyDto newCompany)
+        {
+            var url = "Company";
+            var json = JsonSerializer.Serialize(newCompany, new JsonSerializerOptions { PropertyNamingPolicy = JsonNamingPolicy.CamelCase });
+            var content = new StringContent(json, Encoding.UTF8, "application/json");
+
+            var response = await _httpClient.PostAsync(url, content);
+
+            return response.IsSuccessStatusCode;
         }
     }
 
