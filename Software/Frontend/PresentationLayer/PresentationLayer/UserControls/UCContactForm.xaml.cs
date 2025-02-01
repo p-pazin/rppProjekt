@@ -30,6 +30,9 @@ namespace PresentationLayer.UserControls
         public UCContactForm(ContactDto contact = null)
         {
             InitializeComponent();
+            addContactWarning.Visibility = Visibility.Hidden;
+            updateContactWarning.Visibility = Visibility.Hidden;
+            infoWarning.Visibility = Visibility.Hidden;
             var countries = Enum.GetValues(typeof(EnumCountries))
             .Cast<EnumCountries>()
             .Select(c => GetEnumDescription(c))
@@ -69,6 +72,9 @@ namespace PresentationLayer.UserControls
         }
         private void btnSave_Click(object sender, RoutedEventArgs e)
         {
+            infoWarning.Visibility = Visibility.Hidden;
+            addContactWarning.Visibility = Visibility.Hidden;
+            updateContactWarning.Visibility = Visibility.Hidden;
             bool inputsValid = ValidateInputs();
 
             if(inputsValid) {
@@ -113,12 +119,28 @@ namespace PresentationLayer.UserControls
                     }
                 }
                 catch (Exception ex) {
-                    MessageBox.Show($"Greška pri dodavanju kontakta: {ex.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                    if(_contact != null)
+                    {
+                        updateContactWarning.Visibility = Visibility.Hidden;
+                    }
+                    else
+                    {
+                        addContactWarning.Visibility = Visibility.Visible;
+
+                    }
                 }
             }
             else
             {
-                MessageBox.Show("Potrebno je popuniti sva polja!", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                infoWarning.Visibility = Visibility.Visible;
+            }
+        }
+
+        private void btnExit_Click(object sender, RoutedEventArgs e)
+        {
+            if(Application.Current.MainWindow is MainWindow mw)
+            {
+                mw.LoadUC(new UCContacts());
             }
         }
 
