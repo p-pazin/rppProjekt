@@ -5,48 +5,157 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:PresentationLayer.UserControls"
              mc:Ignorable="d" 
-             d:DesignHeight="450" d:DesignWidth="800">
+             d:DesignHeight="450" d:DesignWidth="800"
+             HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Loaded="UserControl_Loaded">
+
+    <UserControl.Resources>
+        <Style x:Key="ModernDataGridStyle" TargetType="DataGrid">
+            <Setter Property="Background" Value="#FF444444"/>
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="BorderBrush" Value="#FF555555"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="RowBackground" Value="#FF444444"/>
+            <Setter Property="AlternatingRowBackground" Value="#FF555555"/>
+            <Setter Property="GridLinesVisibility" Value="None"/>
+            <Setter Property="HeadersVisibility" Value="Column"/>
+            <Setter Property="AutoGenerateColumns" Value="False"/>
+            <Setter Property="IsReadOnly" Value="True"/>
+            <Setter Property="CanUserResizeRows" Value="False"/>
+            <Setter Property="CanUserAddRows" Value="False"/>
+            <Setter Property="CanUserDeleteRows" Value="False"/>
+            <Setter Property="SelectionUnit" Value="FullRow"/>
+            <Setter Property="SelectionMode" Value="Single"/>
+            <Setter Property="ScrollViewer.CanContentScroll" Value="True"/>
+            <Setter Property="ScrollViewer.VerticalScrollBarVisibility" Value="Auto"/>
+            <Setter Property="ScrollViewer.HorizontalScrollBarVisibility" Value="Auto"/>
+        </Style>
+
+        <Style x:Key="ModernDataGridColumnHeaderStyle" TargetType="DataGridColumnHeader">
+            <Setter Property="Background" Value="#FF555555"/>
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="FontWeight" Value="Bold"/>
+            <Setter Property="Padding" Value="10"/>
+            <Setter Property="HorizontalContentAlignment" Value="Center"/>
+            <Setter Property="BorderBrush" Value="#FF444444"/>
+            <Setter Property="BorderThickness" Value="0,0,1,1"/>
+        </Style>
+
+        <Style x:Key="ModernDataGridCellStyle" TargetType="DataGridCell">
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="Padding" Value="10"/>
+            <Setter Property="BorderBrush" Value="#FF555555"/>
+            <Setter Property="BorderThickness" Value="0,0,1,1"/>
+            <Setter Property="VerticalContentAlignment" Value="Center"/>
+            <Setter Property="HorizontalContentAlignment" Value="Center"/>
+        </Style>
+
+        <Style x:Key="ModernDataGridRowStyle" TargetType="DataGridRow">
+            <Setter Property="Background" Value="#FF444444"/>
+            <Setter Property="Foreground" Value="White"/>
+            <Style.Triggers>
+                <Trigger Property="IsSelected" Value="True">
+                    <Setter Property="Background" Value="#FF666666"/>
+                    <Setter Property="Foreground" Value="White"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+    </UserControl.Resources>
+
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
-
             <RowDefinition Height="*"/>
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
 
-        <Border Background="#FF444444" Padding="10">
-            <TextBlock Text="Ugovori" Foreground="White" FontSize="18" FontWeight="Bold"/>
-        </Border>
+        <StackPanel>
+            <Border Background="#FF444444" Padding="10" HorizontalAlignment="Stretch">
+                <TextBlock Text="Ugovori" Foreground="White" FontSize="18" FontWeight="Bold" HorizontalAlignment="Center"/>
+            </Border>
+            <TextBlock x:Name="signedWarning" Text="Odabrani ugovor je potpisan!" Margin="0,20,0,0" Foreground="Red" FontWeight="Bold" FontSize="12" HorizontalAlignment="Center"/>
+            <TextBlock x:Name="selectedWarning" Text="Morate odabrati ugovor!" Margin="0,20,0,0" Foreground="Red" FontWeight="Bold" FontSize="12" HorizontalAlignment="Center"/>
+            <TextBlock x:Name="deletionWarning" Text="Pogreška kod brisanja ugovora." Margin="0,-15,0,0" Foreground="Red" FontWeight="Bold" FontSize="12" HorizontalAlignment="Center"/>
+        </StackPanel>
 
-        <DataGrid x:Name="dgvContracts" Grid.Row="1" Margin="10" AutoGenerateColumns="False" IsReadOnly="True">
+        <DataGrid x:Name="dgvContracts"
+                  Grid.Row="1"
+                  Style="{StaticResource ModernDataGridStyle}"
+                  ColumnHeaderStyle="{StaticResource ModernDataGridColumnHeaderStyle}"
+                  CellStyle="{StaticResource ModernDataGridCellStyle}"
+                  RowStyle="{StaticResource ModernDataGridRowStyle}"
+                  Margin="10,20,10,10"
+                  SelectionMode="Single"
+                  SelectionUnit="FullRow">
             <DataGrid.Columns>
-                <DataGridTextColumn Header="ID" Binding="{Binding Id}" Width="Auto"/>
+                <DataGridTextColumn Header="ID" Binding="{Binding Id}" />
+                <DataGridTextColumn Header="Naziv" Binding="{Binding Title}" />
+                <DataGridTextColumn Header="Mjesto" Binding="{Binding Place}" />
+                <DataGridTextColumn Header="Kontakt" Binding="{Binding ContactName}" />
+                <DataGridTextColumn Header="Datum stvaranja" Binding="{Binding DateOfCreation}" />
+                <DataGridTemplateColumn Header="Tip">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <TextBlock>
+                                <TextBlock.Style>
+                                    <Style TargetType="TextBlock">
+                                        <Setter Property="Text" Value="Najmodavni" />
+                                        <Style.Triggers>
+                                            <DataTrigger Binding="{Binding Type}" Value="1">
+                                                <Setter Property="Text" Value="Kupoprodajni" />
+                                            </DataTrigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </TextBlock.Style>
+                            </TextBlock>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+                <DataGridTemplateColumn Header="Stanje">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <TextBlock>
+                                <TextBlock.Style>
+                                    <Style TargetType="TextBlock">
+                                        <Setter Property="Text" Value="Nepotpisan" />
+                                        <Style.Triggers>
+                                            <DataTrigger Binding="{Binding Signed}" Value="1">
+                                                <Setter Property="Text" Value="Potpisan" />
+                                            </DataTrigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </TextBlock.Style>
+                            </TextBlock>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+                <DataGridTextColumn Header="Opis" Binding="{Binding Content}" />
             </DataGrid.Columns>
         </DataGrid>
 
         <StackPanel Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Right" Margin="10">
-            <Button Content="Skini PDF" x:Name="btnPrintContract" Padding="10" Margin="5"  Foreground="White" Background="#FF444444" BorderBrush="#FF555555">
+            <Button Content="Skini PDF" x:Name="btnPrintContract" Padding="10" Margin="5" Foreground="White" Background="#FF444444" BorderBrush="#FF555555">
                 <Button.Resources>
                     <Style TargetType="Border">
                         <Setter Property="CornerRadius" Value="5"/>
                     </Style>
                 </Button.Resources>
             </Button>
-            <Button Content="Dodaj ugovor" x:Name="btnAddContract" Padding="10" Margin="5"  Foreground="White" Background="#FF444444" BorderBrush="#FF555555">
+            <Button Content="Dodaj ugovor" x:Name="btnAddContract" Click="btnAddContract_Click" Padding="10" Margin="5" Foreground="White" Background="#FF444444" BorderBrush="#FF555555">
                 <Button.Resources>
                     <Style TargetType="Border">
                         <Setter Property="CornerRadius" Value="5"/>
                     </Style>
                 </Button.Resources>
             </Button>
-            <Button Content="Uredi ugovor" x:Name="btnEditContract" Padding="10" Margin="5" Foreground="White" Background="#FF444444" BorderBrush="#FF555555">
+            <Button Content="Uredi ugovor" x:Name="btnEditContract" Click="btnEditContract_Click" Padding="10" Margin="5" Foreground="White" Background="#FF444444" BorderBrush="#FF555555">
                 <Button.Resources>
                     <Style TargetType="Border">
                         <Setter Property="CornerRadius" Value="5"/>
                     </Style>
                 </Button.Resources>
             </Button>
-            <Button Content="Obriši ugovor" x:Name="btnDeleteContract" Padding="10" Margin="5" Foreground="White" Background="#FF444444" BorderBrush="#FF555555">
+            <Button Content="Obriši ugovor" x:Name="btnDeleteContract" Click="btnDeleteContract_Click" Padding="10" Margin="5" Foreground="White" Background="#FF444444" BorderBrush="#FF555555">
                 <Button.Resources>
                     <Style TargetType="Border">
                         <Setter Property="CornerRadius" Value="5"/>

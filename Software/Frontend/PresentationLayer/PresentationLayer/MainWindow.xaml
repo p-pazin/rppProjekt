@@ -5,13 +5,14 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:PresentationLayer"
         mc:Ignorable="d"
-        Title="Carchive" Height="600" Width="1000"
+        Icon="/images/CarchiveSmallLogo.ico"
+        Title="Carchive" Height="600" Width="1000" MinHeight="600" MinWidth="1000"
         WindowState="Maximized"
         WindowStartupLocation="CenterScreen">
     <Grid Background="#FF555555">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="Auto" MinWidth="220"/>
-            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="*" MinWidth="420"/>
         </Grid.ColumnDefinitions>
 
         <Border Grid.Column="0" Background="#FF333333" x:Name="Drawer">

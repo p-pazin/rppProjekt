@@ -34,6 +34,10 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationIcon>
+    </ApplicationIcon>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Data" />
@@ -62,11 +66,17 @@
     <Compile Include="LoginWindow.xaml.cs">
       <DependentUpon>LoginWindow.xaml</DependentUpon>
     </Compile>
+    <Compile Include="UserControls\UCAddCompanyUser.xaml.cs">
+      <DependentUpon>UCAddCompanyUser.xaml</DependentUpon>
+    </Compile>
     <Compile Include="UserControls\UCAddOffer.xaml.cs">
       <DependentUpon>UCAddOffer.xaml</DependentUpon>
     </Compile>
     <Compile Include="UserControls\UCAddVehicle.xaml.cs">
       <DependentUpon>UCAddVehicle.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UserControls\UCCompanyUsers.xaml.cs">
+      <DependentUpon>UCCompanyUsers.xaml</DependentUpon>
     </Compile>
     <Compile Include="UserControls\UCContactForm.xaml.cs">
       <DependentUpon>UCContactForm.xaml</DependentUpon>
@@ -89,8 +99,17 @@
     <Compile Include="UserControls\UCEditVehicle.xaml.cs">
       <DependentUpon>UCEditVehicle.xaml</DependentUpon>
     </Compile>
+    <Compile Include="UserControls\UCLogin.xaml.cs">
+      <DependentUpon>UCLogin.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UserControls\UCNewPassword.xaml.cs">
+      <DependentUpon>UCNewPassword.xaml</DependentUpon>
+    </Compile>
     <Compile Include="UserControls\UCOfferCatalog.xaml.cs">
       <DependentUpon>UCOfferCatalog.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UserControls\UCRegister.xaml.cs">
+      <DependentUpon>UCRegister.xaml</DependentUpon>
     </Compile>
     <Compile Include="UserControls\UCVehicleCatalog.xaml.cs">
       <DependentUpon>UCVehicleCatalog.xaml</DependentUpon>
@@ -114,11 +133,19 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Page Include="UserControls\UCAddCompanyUser.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="UserControls\UCAddOffer.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="UserControls\UCAddVehicle.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UserControls\UCCompanyUsers.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -150,7 +177,19 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="UserControls\UCLogin.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UserControls\UCNewPassword.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="UserControls\UCOfferCatalog.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UserControls\UCRegister.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -188,6 +227,12 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="images\CarchiveSmallLogo.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="images\car_illustration.png" />
   </ItemGroup>
   <ItemGroup>
     <Resource Include="images\CarchiveLogo.png" />
