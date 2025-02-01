@@ -90,7 +90,7 @@ namespace PresentationLayer.UserControls
                     MobileNumber = txtMobileNumber.Text,
                     Address = txtAddress.Text,
                     Country = cmbCountry.SelectedItem as string,
-                    City = cmbCity.SelectedItem as string,
+                    City = cmbCountry.SelectedItem == "Hrvatska" ? cmbCity.SelectedItem as string : null,
                     State = (cmbStatus.SelectedItem as string == "Aktivan kontakt") ? 1 : 0,
                     DateOfCreation = currentDate.ToString("yyyy-MM-dd"),
                     Id = _contact?.Id ?? 0,
