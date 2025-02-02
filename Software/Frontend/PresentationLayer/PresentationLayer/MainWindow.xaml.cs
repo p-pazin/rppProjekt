@@ -1,6 +1,9 @@
 ﻿using PresentationLayer.UserControls;
+using System;
+using System.IO;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Input;
 
 namespace PresentationLayer
 {
@@ -53,6 +56,9 @@ namespace PresentationLayer
                     case "Mapa vozila":
                         MainContentFrame.Navigate(new UCVehicleLocation());
                         break;
+                    case "Pomoć":
+                        ShowHelp();
+                        break;
                     case "Oglasi":
                         MainContentFrame.Navigate(new UCAds());
                         break;
@@ -73,6 +79,12 @@ namespace PresentationLayer
                         break;
                 }
             }
+        }
+
+        private void ShowHelp()
+        {
+            var helpWindow = new HelpWindow();
+            helpWindow.ShowDialog();
         }
 
         private void ToggleDrawerButton_Click(object sender, RoutedEventArgs e)
@@ -122,6 +134,14 @@ namespace PresentationLayer
         {
             MainContentFrame.Content = uc;
             AdjustUserControlMargin();
+        }
+
+        private void Window_PreviewKeyDown(object sender, System.Windows.Input.KeyEventArgs e)
+        {
+            if (e.Key == Key.F1)
+            {
+                ShowHelp();
+            }
         }
     }
 }
