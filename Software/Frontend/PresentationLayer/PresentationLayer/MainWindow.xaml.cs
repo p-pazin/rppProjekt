@@ -47,6 +47,9 @@ namespace PresentationLayer
                     case "Rezervacije":
                         MainContentFrame.Navigate(new UCReservations());
                         break;
+                    case "Mapa vozila":
+                        MainContentFrame.Navigate(new UCVehicleLocation());
+                        break;
                     case "Odjava":
                         var token = new TokenManager();
                         token.ClearToken();

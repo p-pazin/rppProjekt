@@ -33,6 +33,7 @@ namespace PresentationLayer.UserControls
             infoWarning.Visibility = Visibility.Hidden;
             contactWarning.Visibility = Visibility.Hidden;
             vehicleWarning.Visibility = Visibility.Hidden;
+            warning.Visibility = Visibility.Hidden;
             LoadVehiclesDropDown();
             LoadContactsDropDown();
             vehicleWarning.Visibility = Visibility.Hidden;

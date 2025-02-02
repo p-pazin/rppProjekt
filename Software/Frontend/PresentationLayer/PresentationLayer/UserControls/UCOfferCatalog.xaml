@@ -132,6 +132,7 @@
                 <TextBlock Text="Katalog ponuda" Foreground="White" FontSize="18" FontWeight="Bold" HorizontalAlignment="Center"/>
             </Border>
             <TextBlock x:Name="selectedWarning" Text="Morate odabrati ponudu!" Margin="0,20,0,0" Foreground="Red" FontWeight="Bold"  FontSize="12" HorizontalAlignment="Center"></TextBlock>
+            <TextBlock x:Name="warning" Text="Greška kod brisanja ponude." Margin="0,-15,0,0" Foreground="Red" FontWeight="Bold"  FontSize="12" HorizontalAlignment="Center"></TextBlock>
         </StackPanel>
 
         <DataGrid x:Name="dgvOffers"

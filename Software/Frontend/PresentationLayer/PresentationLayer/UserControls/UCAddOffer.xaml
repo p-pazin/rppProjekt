@@ -74,7 +74,7 @@
                 </Grid.RowDefinitions>
 
                 <TextBlock Text="Naslov:" Grid.Row="0" Grid.Column="0" Margin="0,10,0,25" Foreground="White" FontSize="14"/>
-                <TextBox x:Name="txtTitle" Margin="10,0,0,20" Grid.Row="0" Grid.Column="1" Height="30" FontSize="14" Foreground="White" Background="#FF444444" BorderBrush="#FF555555">
+                <TextBox x:Name="txtTitle" Margin="10,0,0,20" Grid.Row="0" Grid.Column="1" Height="30" BorderBrush="#F65B43" FontSize="14" Foreground="White" Background="#FF444444">
                     <TextBox.Resources>
                         <Style TargetType="Border">
                             <Setter Property="CornerRadius" Value="5"/>
@@ -83,7 +83,7 @@
                 </TextBox>
 
                 <TextBlock Text="Cijena:" Grid.Row="1" Grid.Column="0" Margin="0,10,0,25" Foreground="White" FontSize="14"/>
-                <TextBox x:Name="txtPrice" Grid.Row="1" Margin="10,0,0,20" Grid.Column="1" Height="30" FontSize="14" Foreground="White" Background="#FF444444" BorderBrush="#FF555555">
+                <TextBox x:Name="txtPrice" Grid.Row="1" Margin="10,0,0,20" Grid.Column="1" Height="30" FontSize="14" Foreground="White" Background="#FF444444" BorderBrush="#F65B43">
                     <TextBox.Resources>
                         <Style TargetType="Border">
                             <Setter Property="CornerRadius" Value="5"/>
@@ -92,7 +92,7 @@
                 </TextBox>
 
                 <TextBlock Text="Datum kreiranja:" Grid.Row="2" Grid.Column="0" Margin="0,10,0,25" Foreground="White" FontSize="14"/>
-                <DatePicker x:Name="dtpDateOfCreation" Grid.Row="2" Grid.Column="1" Margin="10,0,0,20" Height="30" FontSize="14" Foreground="#FF444444" Background="#FF444444" BorderBrush="#FF555555">
+                <DatePicker x:Name="dtpDateOfCreation" Grid.Row="2" Grid.Column="1" Margin="10,0,0,20" Height="30" FontSize="14" Foreground="#FF444444" Background="#FF444444" BorderBrush="#F65B43">
                     <DatePicker.Resources>
                         <Style TargetType="Border">
                             <Setter Property="CornerRadius" Value="5"/>
@@ -101,7 +101,8 @@
                 </DatePicker>
 
                 <TextBlock Text="Povezani kontakt:" Grid.Row="3" Grid.Column="0" Margin="0,10,0,25" Foreground="White" FontSize="14"/>
-                <ComboBox x:Name="cmbContacts" Grid.Row="3" Grid.Column="1" DisplayMemberPath="FullName" SelectedValuePath="Id" Margin="10,0,0,20" Height="30" FontSize="14" Foreground="White" Background="#FF444444" BorderBrush="#FF555555">
+                <ComboBox x:Name="cmbContacts" Grid.Row="3" Grid.Column="1" DisplayMemberPath="FullName" SelectedValuePath="Id" Margin="10,0,0,20" Height="30" FontSize="14" Foreground="White"
+                          Background="#FF444444" BorderBrush="#F65B43">
                     <ComboBox.Template>
                         <ControlTemplate TargetType="ComboBox">
                             <Grid>
@@ -224,7 +225,8 @@
                 <TextBlock Grid.Row="4" Grid.Column="4" x:Name="vehicleWarning" Text="Vozilo već dodano" Foreground="Red" FontWeight="Bold" 
                            FontSize="12" HorizontalAlignment="Left" Margin="20,5,0,0"></TextBlock>
 
-                <ListBox x:Name="lstSelectedVehicles" Grid.Row="5" Grid.Column="1" Grid.ColumnSpan="3" Margin="10,0,0,20" Height="100" FontSize="14" Foreground="White" Background="#FF444444" BorderBrush="#FF555555">
+                <ListBox x:Name="lstSelectedVehicles" Grid.Row="5" Grid.Column="1" Grid.ColumnSpan="3" Margin="10,0,0,20" Height="100" FontSize="14" 
+                         Foreground="White" Background="#FF444444" BorderBrush="#F65B43">
                     <ListBox.Resources>
                         <Style TargetType="Border">
                             <Setter Property="CornerRadius" Value="5"/>
@@ -243,7 +245,7 @@
                     </ListBox.ItemTemplate>
                 </ListBox>
                 <Button x:Name="removeVehicle" Grid.Column="4" Grid.Row="5" HorizontalAlignment="Left" Width="100" Padding="5,5,5,5" Content="Obriši vozilo" 
-                        Margin="20,0,0,20" Height="30" FontSize="14" Foreground="White" Background="#FF444444" Click="removeVehicle_Click" BorderBrush="#FF555555">
+                        Margin="20,0,0,20" Height="30" FontSize="14" Foreground="White"  Background="#F65B43" Click="removeVehicle_Click" BorderBrush="#F65B43">
                     <Button.Resources>
                         <Style TargetType="Border">
                             <Setter Property="CornerRadius" Value="5"/>

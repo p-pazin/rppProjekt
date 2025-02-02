@@ -36,8 +36,10 @@ namespace PresentationLayer.UserControls
         public UCContractForm()
         {
             InitializeComponent();
+            cmbOffer.SelectionChanged += cmbOffer_SelectionChanged;
+            cmbVehicle.SelectionChanged += cmbVehicle_SelectionChanged;
+            cmbContact.SelectionChanged += cmbContact_SelectionChanged;
             addContractWarning.Visibility = Visibility.Hidden;
-            updateContractWarning.Visibility = Visibility.Hidden;
             infoWarning.Visibility = Visibility.Hidden;
             _contractType = 1;
             _contractService = new ContractService();
@@ -111,6 +113,7 @@ namespace PresentationLayer.UserControls
             grdContractRentForm.Visibility = Visibility.Collapsed;
             grdContractSaleForm.Visibility = Visibility.Visible;
             _contractType = 1;
+            ResetInputs();
         }
 
         private void btnRent_Click(object sender, RoutedEventArgs e)
@@ -118,6 +121,7 @@ namespace PresentationLayer.UserControls
             grdContractRentForm.Visibility = Visibility.Visible;
             grdContractSaleForm.Visibility = Visibility.Collapsed;
             _contractType = 2;
+            ResetInputs();
         }
 
         private void btnExit_Click(object sender, RoutedEventArgs e)
@@ -132,7 +136,6 @@ namespace PresentationLayer.UserControls
         {
             infoWarning.Visibility = Visibility.Hidden;
             addContractWarning.Visibility = Visibility.Hidden;
-            updateContractWarning.Visibility = Visibility.Hidden;
 
             if (_contractType == 1) {
                 bool inputsValid = ValidateInputsSale();
@@ -249,6 +252,44 @@ namespace PresentationLayer.UserControls
                 return false;
             }
             return true;
+        }
+        private void ResetInputs()
+        {
+            cmbOffer.SelectedValue = null;
+            cmbContact.SelectedValue = null;
+            cmbVehicle.SelectedValue = null;
+            cmbInsurance.SelectedValue = null;
+            cmbReservation.SelectedValue= null;
+            txtTitleSale.Text = null;
+            txtContentSale.Text = null;
+            txtLocationSale.Text = null;
+            txtTitleRent.Text = null;
+            txtContentRent.Text= null;
+            txtLocationRent.Text = null;
+        }
+        private void cmbOffer_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (cmbOffer.SelectedItem != null)
+            {
+                cmbVehicle.SelectedItem = null;
+                cmbContact.SelectedItem = null;
+            }
+        }
+
+        private void cmbVehicle_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (cmbVehicle.SelectedItem != null)
+            {
+                cmbOffer.SelectedItem = null;
+            }
+        }
+
+        private void cmbContact_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (cmbContact.SelectedItem != null)
+            {
+                cmbOffer.SelectedItem = null;
+            }
         }
     }
 }

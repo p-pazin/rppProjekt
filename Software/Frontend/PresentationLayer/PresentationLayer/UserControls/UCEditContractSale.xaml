@@ -1,4 +1,4 @@
-﻿<UserControl x:Class="PresentationLayer.UserControls.UCContractForm"
+﻿<UserControl x:Class="PresentationLayer.UserControls.UCEditContractSale"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
@@ -18,27 +18,10 @@
         </Grid.RowDefinitions>
 
         <StackPanel Grid.Row="0">
-            <TextBlock Text="Dodavanje ugovora" x:Name="txtTitle" FontSize="24" FontWeight="Bold" 
+            <TextBlock Text="Ažuriranje ugovora" x:Name="txtTitle" FontSize="24" FontWeight="Bold" 
                        HorizontalAlignment="Center" Margin="0,0,0,20" Foreground="White"/>
-            <TextBlock x:Name="addContractWarning" Text="Greška prilikom dodavanja ugovora!" Margin="0,0,0,10" Foreground="Red" FontWeight="Bold"  FontSize="12" HorizontalAlignment="Center"/>
+            <TextBlock x:Name="updateContractWarning" Text="Greška prilikom ažuriranja ugovora!" Margin="0,0,0,10" Foreground="Red" FontWeight="Bold"  FontSize="12" HorizontalAlignment="Center"/>
             <TextBlock x:Name="infoWarning" Text="Popunite sve podatke o ugovoru!" Margin="0,-25,0,10" Foreground="Red" FontWeight="Bold"  FontSize="12" HorizontalAlignment="Center"/>
-        </StackPanel>
-
-        <StackPanel Grid.Row="1" Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,10,0,20">
-            <Button x:Name="btnSale" Content="KUPNJA" Click="btnSale_Click" Padding="20,10" FontSize="16" Foreground="White" Background="#FF444444" BorderBrush="#FF555555" Margin="10,0">
-                <Button.Resources>
-                    <Style TargetType="Border">
-                        <Setter Property="CornerRadius" Value="5"/>
-                    </Style>
-                </Button.Resources>
-            </Button>
-            <Button x:Name="btnRent" Content="NAJAM" Click="btnRent_Click" Padding="20,10" FontSize="16" Foreground="White" Background="#FF444444" BorderBrush="#FF555555" Margin="10,0">
-                <Button.Resources>
-                    <Style TargetType="Border">
-                        <Setter Property="CornerRadius" Value="5"/>
-                    </Style>
-                </Button.Resources>
-            </Button>
         </StackPanel>
 
         <ScrollViewer Grid.Row="2" VerticalScrollBarVisibility="Auto">
@@ -63,7 +46,7 @@
                         <ComboBox.DisplayMemberPath>DisplayText</ComboBox.DisplayMemberPath>
                         <ComboBox.SelectedValuePath>Offer</ComboBox.SelectedValuePath>
                     </ComboBox>
-                    
+
                     <TextBlock Text="Vozilo:" Grid.Row="1" Grid.Column="0" Margin="0,10,0,25" Foreground="White" FontSize="14"/>
                     <ComboBox x:Name="cmbVehicle" Grid.Row="1" Grid.Column="1" Height="30" FontSize="14" Foreground="White" Background="#FF444444" BorderBrush="#FF555555" Margin="10,0,0,20">
                         <ComboBox.DisplayMemberPath>DisplayText</ComboBox.DisplayMemberPath>
@@ -84,41 +67,10 @@
 
                     <TextBlock Text="Mjesto:" Grid.Row="5" Grid.Column="0" Margin="0,10,0,25" Foreground="White" FontSize="14"/>
                     <TextBox x:Name="txtLocationSale" Grid.Row="5" Grid.Column="1" Height="30" FontSize="14" Foreground="White" Background="#FF444444" BorderBrush="#FF555555" Margin="10,0,0,20"/>
-                </Grid>
-                <Grid x:Name="grdContractRentForm" Margin="10,10,10,10" Visibility="Collapsed" HorizontalAlignment="Center">
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="Auto"/>
-                        <ColumnDefinition Width="250"/>
-                    </Grid.ColumnDefinitions>
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="Auto"/>
-                        <RowDefinition Height="Auto"/>
-                        <RowDefinition Height="Auto"/>
-                        <RowDefinition Height="Auto"/>
-                        <RowDefinition Height="Auto"/>
-                        <RowDefinition Height="Auto"/>
-                    </Grid.RowDefinitions>
 
-                    <TextBlock Text="Rezervacija:" Grid.Row="0" Grid.Column="0" Margin="0,10,0,25" Foreground="White" FontSize="14"/>
-                    <ComboBox x:Name="cmbReservation" Grid.Row="0" Grid.Column="1" Height="30" FontSize="14" Foreground="White" Background="#FF444444" BorderBrush="#FF555555" Margin="10,0,0,20">
-                        <ComboBox.DisplayMemberPath>DisplayText</ComboBox.DisplayMemberPath>
-                        <ComboBox.SelectedValuePath>Reservation</ComboBox.SelectedValuePath>
+                    <TextBlock Text="Potpis:" Grid.Row="6" Grid.Column="0" Margin="0,10,0,25" Foreground="White" FontSize="14"/>
+                    <ComboBox x:Name="cmbSigned" Grid.Row="6" Grid.Column="1" Height="30" FontSize="14" Foreground="White" Background="#FF444444" BorderBrush="#FF555555" Margin="10,0,0,20">
                     </ComboBox>
-
-                    <TextBlock Text="Osiguranje:" Grid.Row="1" Grid.Column="0" Margin="0,10,0,25" Foreground="White" FontSize="14"/>
-                    <ComboBox x:Name="cmbInsurance" Grid.Row="1" Grid.Column="1" Height="30" FontSize="14" Foreground="White" Background="#FF444444" BorderBrush="#FF555555" Margin="10,0,0,20">
-                        <ComboBox.DisplayMemberPath>DisplayText</ComboBox.DisplayMemberPath>
-                        <ComboBox.SelectedValuePath>Insurance</ComboBox.SelectedValuePath>
-                    </ComboBox>
-
-                    <TextBlock Text="Naziv:" Grid.Row="2" Grid.Column="0" Margin="0,10,0,25" Foreground="White" FontSize="14"/>
-                    <TextBox x:Name="txtTitleRent" Grid.Row="2" Grid.Column="1" Height="30" FontSize="14" Foreground="White" Background="#FF444444" BorderBrush="#FF555555" Margin="10,0,0,20"/>
-
-                    <TextBlock Text="Opis:" Grid.Row="3" Grid.Column="0" Margin="0,10,0,25" Foreground="White" FontSize="14"/>
-                    <TextBox x:Name="txtContentRent" Grid.Row="3" Grid.Column="1" Height="60" FontSize="14" Foreground="White" Background="#FF444444" BorderBrush="#FF555555" Margin="10,0,0,20" TextWrapping="Wrap" AcceptsReturn="True"/>
-
-                    <TextBlock Text="Mjesto:" Grid.Row="4" Grid.Column="0" Margin="0,10,0,25" Foreground="White" FontSize="14"/>
-                    <TextBox x:Name="txtLocationRent" Grid.Row="4" Grid.Column="1" Height="30" FontSize="14" Foreground="White" Background="#FF444444" BorderBrush="#FF555555" Margin="10,0,0,20"/>
                 </Grid>
             </StackPanel>
         </ScrollViewer>
