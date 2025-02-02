@@ -2,6 +2,7 @@
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Input;
 using PresentationLayer.UserControls;
 
 namespace PresentationLayer
@@ -32,6 +33,20 @@ namespace PresentationLayer
         public void LoadUC(UserControl uc)
         {
             LoginContentFrame.Content = uc;
+        }
+
+        private void Window_PreviewKeyDown(object sender, System.Windows.Input.KeyEventArgs e)
+        {
+            if (e.Key == Key.F1)
+            {
+                ShowHelp();
+            }
+        }
+
+        private void ShowHelp()
+        {
+            var helpWindow = new HelpWindow();
+            helpWindow.ShowDialog();
         }
     }
 }

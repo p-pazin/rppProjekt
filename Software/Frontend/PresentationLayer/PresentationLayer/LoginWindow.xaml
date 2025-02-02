@@ -6,7 +6,8 @@
         xmlns:local="clr-namespace:PresentationLayer"
         mc:Ignorable="d"
         Icon="/images/CarchiveSmallLogo.ico"
-        Title="Prijava" Height="850" Width="900" WindowStartupLocation="CenterScreen" ResizeMode="NoResize" Background="#FF444444">
+        Title="Prijava" Height="850" Width="900" WindowStartupLocation="CenterScreen" ResizeMode="NoResize" Background="#FF444444"
+        PreviewKeyDown="Window_PreviewKeyDown">
 
     <Grid>
         <Grid.ColumnDefinitions>

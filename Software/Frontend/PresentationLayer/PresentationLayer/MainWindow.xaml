@@ -8,7 +8,8 @@
         Icon="/images/CarchiveSmallLogo.ico"
         Title="Carchive" Height="600" Width="1000" MinHeight="600" MinWidth="1000"
         WindowState="Maximized"
-        WindowStartupLocation="CenterScreen">
+        WindowStartupLocation="CenterScreen"
+        PreviewKeyDown="Window_PreviewKeyDown">
     <Grid Background="#FF555555">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="Auto" MinWidth="220"/>
@@ -83,6 +84,7 @@
 
             <Border x:Name="ContentArea" Margin="20,50,20,20" Background="Transparent">
                 <Frame x:Name="MainContentFrame" NavigationUIVisibility="Hidden"/>
+
             </Border>
         </Grid>
     </Grid>

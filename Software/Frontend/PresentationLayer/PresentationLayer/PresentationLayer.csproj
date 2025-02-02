@@ -242,6 +242,9 @@
     <Compile Include="enums\EnumCountries.cs" />
     <Compile Include="enums\EnumModels.cs" />
     <Compile Include="helpers\PdfHelper.cs" />
+    <Compile Include="HelpWindow.xaml.cs">
+      <DependentUpon>HelpWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="LoginWindow.xaml.cs">
       <DependentUpon>LoginWindow.xaml</DependentUpon>
     </Compile>
@@ -321,6 +324,10 @@
       <DependentUpon>UCVehicleCatalog.xaml</DependentUpon>
     </Compile>
     <Page Include="DeletionWarningWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="HelpWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -493,7 +500,23 @@
       <Name>ServiceLayer</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Content Include="help\features.html">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="help\getting-started.html">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="help\index.html">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="help\styles.css">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="help\troubleshooting.html">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="..\packages\Esri.ArcGISRuntime.runtimes.win.200.6.0\build\net472\Esri.ArcGISRuntime.runtimes.win.targets" Condition="Exists('..\packages\Esri.ArcGISRuntime.runtimes.win.200.6.0\build\net472\Esri.ArcGISRuntime.runtimes.win.targets')" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
