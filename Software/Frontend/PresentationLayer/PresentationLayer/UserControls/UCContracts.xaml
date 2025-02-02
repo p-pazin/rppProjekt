@@ -192,7 +192,7 @@
         </DataGrid>
 
         <StackPanel Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Right" Margin="10">
-            <Button Content="Skini PDF" x:Name="btnPrintContract" Padding="10" Margin="5" Foreground="White" Background="#FF444444" BorderBrush="#FF555555">
+            <Button Content="Skini PDF" x:Name="btnPrintContract" Click="btnPrintContract_Click" Padding="10" Margin="5" Foreground="White" Background="#FF444444" BorderBrush="#FF555555">
                 <Button.Resources>
                     <Style TargetType="Border">
                         <Setter Property="CornerRadius" Value="5"/>

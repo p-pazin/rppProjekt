@@ -37,6 +37,21 @@ namespace ServiceLayer.Services
             string json = await response.Content.ReadAsStringAsync();
             return System.Text.Json.JsonSerializer.Deserialize<List<ContractDto>>(json, new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
         }
+        public async Task<ContractDto> GetContractAsync(int contractId)
+        {
+            string token = _tokenManager.GetToken();
+            if (string.IsNullOrEmpty(token))
+                throw new Exception("User is not logged in.");
+
+            _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
+
+            HttpResponseMessage response = await _httpClient.GetAsync($"Contract/{contractId}");
+            if (!response.IsSuccessStatusCode)
+                throw new Exception("Failed to fetch contract.");
+
+            string json = await response.Content.ReadAsStringAsync();
+            return System.Text.Json.JsonSerializer.Deserialize<ContractDto>(json, new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
+        }
         public async Task<SaleContractDto> GetContractSaleAsync(int contractId)
         {
             string token = _tokenManager.GetToken();

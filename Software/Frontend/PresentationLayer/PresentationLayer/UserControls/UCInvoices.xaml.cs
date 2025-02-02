@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -13,6 +14,8 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using CarchiveAPI.Dto;
+using Microsoft.Win32;
+using PresentationLayer.helpers;
 using ServiceLayer.Services;
 
 namespace PresentationLayer.UserControls
@@ -23,12 +26,15 @@ namespace PresentationLayer.UserControls
     public partial class UCInvoices : UserControl
     {
         private readonly InvoiceService _invoiceService;
-
+        private readonly ContractService _contractService;
+        private readonly PdfHelper _pdfHelper;
         public UCInvoices()
         {
             InitializeComponent();
             selectedWarning.Visibility = Visibility.Hidden;
             _invoiceService = new InvoiceService();
+            _contractService = new ContractService();
+            _pdfHelper = new PdfHelper();
         }
 
         private void btnAddInvoice_Click(object sender, RoutedEventArgs e)
@@ -36,13 +42,34 @@ namespace PresentationLayer.UserControls
 
         }
 
-        private void btnPrintInvoice_Click(object sender, RoutedEventArgs e)
+        private async void btnPrintInvoice_Click(object sender, RoutedEventArgs e)
         {
+            selectedWarning.Visibility = Visibility.Hidden;
             var selectedInvoice = dgvInvoices.SelectedItem as InvoiceDto;
 
             if (selectedInvoice != null)
             {
-                
+                if (Application.Current.MainWindow is MainWindow mw)
+                {
+                    var linkedContract = await _contractService.GetContractAsync(selectedInvoice.ContractId);
+
+                    if(linkedContract.Type == 1)
+                    {
+                        var contractDetails = await _contractService.GetContractSaleAsync(linkedContract.Id);
+                        var generatedDocument = _pdfHelper.GenerateSaleInvoicePdf(contractDetails, selectedInvoice);
+
+                        SaveFileDialog saveFileDialog = new SaveFileDialog
+                        {
+                            Filter = "PDF Files|*.pdf",
+                            FileName = $"Prodajni račun {linkedContract.ContactName} {selectedInvoice.DateOfCreation}.pdf"
+                        };
+
+                        if (saveFileDialog.ShowDialog() == true)
+                        {
+                            File.WriteAllBytes(saveFileDialog.FileName, generatedDocument);
+                        }
+                    }
+                }
             }
             else
             {
