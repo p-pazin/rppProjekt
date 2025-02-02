@@ -1,4 +1,4 @@
-﻿<UserControl x:Class="PresentationLayer.UserControls.UCContacts"
+﻿<UserControl x:Class="PresentationLayer.UserControls.UCReservations"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
@@ -6,9 +6,8 @@
              xmlns:local="clr-namespace:PresentationLayer.UserControls"
              mc:Ignorable="d"  
              Background="Transparent"
-             d:DesignHeight="450" d:DesignWidth="800"
-             HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
-             Loaded="UserControl_Loaded">
+             d:DesignHeight="450" d:DesignWidth="867.641"
+             HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
 
     <UserControl.Resources>
         <Style x:Key="ModernDataGridStyle" TargetType="DataGrid">
@@ -131,13 +130,13 @@
 
         <StackPanel>
             <Border Background="#FF444444" Padding="10" HorizontalAlignment="Stretch">
-                <TextBlock Text="Kontakti" Foreground="White" FontSize="18" FontWeight="Bold" HorizontalAlignment="Center"/>
+                <TextBlock Text="Rezervacije" Foreground="White" FontSize="18" FontWeight="Bold" HorizontalAlignment="Center"/>
             </Border>
-            <TextBlock x:Name="selectedWarning" Text="Morate odabrati kontakt!" Margin="0,20,0,0" Foreground="Red" FontWeight="Bold" FontSize="12" HorizontalAlignment="Center"/>
-            <TextBlock x:Name="deletionWarning" Text="Pogreška kod brisanja kontakta." Margin="0,-15,0,0" Foreground="Red" FontWeight="Bold" FontSize="12" HorizontalAlignment="Center"/>
+            <TextBlock x:Name="selectedWarning" Text="Morate odabrati rezervaciju!" Margin="0,0,0,0" Foreground="Red" FontWeight="SemiBold" FontSize="18" HorizontalAlignment="Center"/>
+            <TextBlock x:Name="deletionWarning" Text="Pogreška kod brisanja rezervacije." Margin="0,-24,0,0" Foreground="Red" FontWeight="SemiBold" FontSize="18" HorizontalAlignment="Center"/>
         </StackPanel>
 
-        <DataGrid x:Name="dgvContacts"
+        <DataGrid x:Name="dgvReservations"
                   Grid.Row="1"
                   Style="{StaticResource ModernDataGridStyle}"
                   ColumnHeaderStyle="{StaticResource ModernDataGridColumnHeaderStyle}"
@@ -148,20 +147,23 @@
                   SelectionUnit="FullRow">
             <DataGrid.Columns>
                 <DataGridTextColumn Header="ID" Binding="{Binding Id}" />
-                <DataGridTextColumn Header="Ime" Binding="{Binding FirstName}" />
-                <DataGridTextColumn Header="Prezime" Binding="{Binding LastName}" />
-                <DataGridTextColumn Header="OIB" Binding="{Binding Pin}" />
-                <DataGridTextColumn Header="Datum stvaranja" Binding="{Binding DateOfCreation, StringFormat='yyyy-MM-dd'}" />
+                <DataGridTextColumn Header="Početni datum" Binding="{Binding StartDate, StringFormat='yyyy-MM-dd'}" />
+                <DataGridTextColumn Header="Krajnji datum" Binding="{Binding EndDate, StringFormat='yyyy-MM-dd'}" />
+                <DataGridTextColumn Header="Datum kreiranja" Binding="{Binding DateOfCreation, StringFormat='yyyy-MM-dd'}" />
+                <DataGridTextColumn Header="Maksimalna kilometraža" Binding="{Binding MaxMileage}" />
+                <DataGridTextColumn Header="Vozilo ID" Binding="{Binding VehicleId}" />
+                <DataGridTextColumn Header="Kontakt ID" Binding="{Binding ContactId}" />
+                <DataGridTextColumn Header="Cijena" Binding="{Binding Price, StringFormat='F2'}" />
                 <DataGridTemplateColumn Header="Status">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
                             <TextBlock>
                                 <TextBlock.Style>
                                     <Style TargetType="TextBlock">
-                                        <Setter Property="Text" Value="Neaktivan" />
+                                        <Setter Property="Text" Value="Neaktivna" />
                                         <Style.Triggers>
                                             <DataTrigger Binding="{Binding State}" Value="1">
-                                                <Setter Property="Text" Value="Aktivan" />
+                                                <Setter Property="Text" Value="Aktivna" />
                                             </DataTrigger>
                                         </Style.Triggers>
                                     </Style>
@@ -170,32 +172,25 @@
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
                 </DataGridTemplateColumn>
-                <DataGridTextColumn Header="Država" Binding="{Binding Country}" />
-                <DataGridTextColumn Header="Grad" Binding="{Binding City}" />
-                <DataGridTextColumn Header="Adresa" Binding="{Binding Address}" />
-                <DataGridTextColumn Header="Broj telefona" Binding="{Binding TelephoneNumber}" />
-                <DataGridTextColumn Header="Broj mobitela" Binding="{Binding MobileNumber}" />
-                <DataGridTextColumn Header="Email" Binding="{Binding Email}" />
-                <DataGridTextColumn Header="Opis" Binding="{Binding Description}" />
             </DataGrid.Columns>
         </DataGrid>
 
         <StackPanel Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Right" Margin="10">
-            <Button Content="Dodaj kontakt" x:Name="btnAddContact" Click="btnAddContact_Click" Padding="10" Margin="5" Foreground="White" Background="#FF444444" BorderBrush="#FF555555">
+            <Button Content="Dodaj rezervaciju" x:Name="btnAddReservation" Click="btnAddReservation_Click" Padding="10" Margin="5" Foreground="White" Background="#FF444444" BorderBrush="#FF555555">
                 <Button.Resources>
                     <Style TargetType="Border">
                         <Setter Property="CornerRadius" Value="5"/>
                     </Style>
                 </Button.Resources>
             </Button>
-            <Button Content="Uredi kontakt" x:Name="btnEditContact" Click="btnEditContact_Click" Padding="10" Margin="5" Foreground="White" Background="#FF444444" BorderBrush="#FF555555">
+            <Button Content="Uredi rezervaciju" x:Name="btnEditReservation" Click="btnEditReservation_Click" Padding="10" Margin="5" Foreground="White" Background="#FF444444" BorderBrush="#FF555555">
                 <Button.Resources>
                     <Style TargetType="Border">
                         <Setter Property="CornerRadius" Value="5"/>
                     </Style>
                 </Button.Resources>
             </Button>
-            <Button Content="Obriši kontakt" x:Name="btnDeleteContact" Click="btnDeleteContact_Click" Padding="10" Margin="5" Foreground="White" Background="#FF444444" BorderBrush="#FF555555">
+            <Button Content="Obriši rezervaciju" x:Name="btnDeleteReservation" Click="btnDeleteReservation_Click" Padding="10" Margin="5" Foreground="White" Background="#FF444444" BorderBrush="#FF555555">
                 <Button.Resources>
                     <Style TargetType="Border">
                         <Setter Property="CornerRadius" Value="5"/>

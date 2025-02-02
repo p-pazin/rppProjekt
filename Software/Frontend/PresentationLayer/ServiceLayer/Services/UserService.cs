@@ -65,7 +65,6 @@ namespace ServiceLayer.Services
 
             _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
 
-            string jsonContent = JsonSerializer.Serialize(userId);
             HttpResponseMessage response = await _httpClient.DeleteAsync($"User/delete/{userId}");
 
             if (!response.IsSuccessStatusCode)

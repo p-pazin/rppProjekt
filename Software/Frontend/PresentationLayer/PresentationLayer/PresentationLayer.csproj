@@ -72,6 +72,9 @@
     <Compile Include="UserControls\UCAddOffer.xaml.cs">
       <DependentUpon>UCAddOffer.xaml</DependentUpon>
     </Compile>
+    <Compile Include="UserControls\UCAddReservation.xaml.cs">
+      <DependentUpon>UCAddReservation.xaml</DependentUpon>
+    </Compile>
     <Compile Include="UserControls\UCAddVehicle.xaml.cs">
       <DependentUpon>UCAddVehicle.xaml</DependentUpon>
     </Compile>
@@ -96,6 +99,9 @@
     <Compile Include="UserControls\UCEditCompanyUser.xaml.cs">
       <DependentUpon>UCEditCompanyUser.xaml</DependentUpon>
     </Compile>
+    <Compile Include="UserControls\UCEditReservation.xaml.cs">
+      <DependentUpon>UCEditReservation.xaml</DependentUpon>
+    </Compile>
     <Compile Include="UserControls\UCInvoices.xaml.cs">
       <DependentUpon>UCInvoices.xaml</DependentUpon>
     </Compile>
@@ -116,6 +122,9 @@
     </Compile>
     <Compile Include="UserControls\UCRegister.xaml.cs">
       <DependentUpon>UCRegister.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UserControls\UCReservations.xaml.cs">
+      <DependentUpon>UCReservations.xaml</DependentUpon>
     </Compile>
     <Compile Include="UserControls\UCVehicleCatalog.xaml.cs">
       <DependentUpon>UCVehicleCatalog.xaml</DependentUpon>
@@ -147,6 +156,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="UserControls\UCAddReservation.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="UserControls\UCAddVehicle.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -172,6 +185,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="UserControls\UCEditCompanyUser.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UserControls\UCEditReservation.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -204,6 +221,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="UserControls\UCRegister.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UserControls\UCReservations.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

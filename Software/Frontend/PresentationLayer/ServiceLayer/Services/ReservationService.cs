@@ -7,7 +7,7 @@ using System.Text;
 using System.Text.Json;
 using System.Threading.Tasks;
 using CarchiveAPI.Dto;
-using Newtonsoft.Json;
+using ServiceLayer.Network.Dto;
 
 namespace ServiceLayer.Services
 {
@@ -35,7 +35,68 @@ namespace ServiceLayer.Services
                 throw new Exception("Failed to fetch reservations data.");
 
             string json = await response.Content.ReadAsStringAsync();
-            return System.Text.Json.JsonSerializer.Deserialize<List<ReservationDto>>(json, new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
+            return JsonSerializer.Deserialize<List<ReservationDto>>(json, new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
+        }
+
+        public async Task PostReservationsAsync(ReservationDto newReservation)
+        {
+            string token = _tokenManager.GetToken();
+            if (string.IsNullOrEmpty(token))
+                throw new Exception("User is not logged in.");
+
+            _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
+
+            string url = $"Reservation?contactid={newReservation.ContactId}&vehicleId={newReservation.VehicleId}";
+
+            string jsonContent = JsonSerializer.Serialize(newReservation);
+            HttpContent content = new StringContent(jsonContent, Encoding.UTF8, "application/json");
+
+            HttpResponseMessage response = await _httpClient.PostAsync(url, content);
+
+            if (!response.IsSuccessStatusCode)
+            {
+                Console.WriteLine(response.StatusCode);
+                throw new Exception("Failed to add new reservation.");
+            }
+        }
+
+        public async Task PutReservationsAsync(ReservationDto newReservationInfo)
+        {
+            string token = _tokenManager.GetToken();
+            if (string.IsNullOrEmpty(token))
+                throw new Exception("User is not logged in.");
+
+            _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
+
+            string url = $"Reservation/{newReservationInfo.Id}?vehicleId={newReservationInfo.VehicleId}";
+
+            string jsonContent = JsonSerializer.Serialize(newReservationInfo);
+            HttpContent content = new StringContent(jsonContent, Encoding.UTF8, "application/json");
+
+            HttpResponseMessage response = await _httpClient.PutAsync(url, content);
+
+            if (!response.IsSuccessStatusCode)
+            {
+                Console.WriteLine(response.StatusCode);
+                throw new Exception("Failed to add new reservation.");
+            }
+        }
+
+        public async Task DeleteReservationsAsync(int id)
+        {
+            string token = _tokenManager.GetToken();
+            if (string.IsNullOrEmpty(token))
+                throw new Exception("User is not logged in.");
+
+            _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
+
+            HttpResponseMessage response = await _httpClient.DeleteAsync($"Reservation/{id}");
+
+            if (!response.IsSuccessStatusCode)
+            {
+                Console.WriteLine(response.StatusCode);
+                throw new Exception("Failed to delete reservation.");
+            }
         }
     }
 }
