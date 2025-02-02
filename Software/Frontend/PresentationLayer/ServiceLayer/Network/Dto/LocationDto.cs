@@ -12,4 +12,16 @@ namespace ServiceLayer.Network.Dto
         public double Latitude { get; set; }
         public double Longitude { get; set; }
     }
+
+
+    public class Coord
+    {
+        public double Latitude { get; set; }
+        public double Longitude { get; set; }
+    }
+
+    public class RouteData
+    {
+        public List<Coord> Coordinates { get; set; } = new List<Coord>();
+    }
 }

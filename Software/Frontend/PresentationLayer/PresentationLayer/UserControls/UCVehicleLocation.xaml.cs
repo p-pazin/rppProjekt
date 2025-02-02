@@ -12,12 +12,23 @@ using Mapsui.Styles;
 using System.Diagnostics;
 using ServiceLayer.Network.Dto;
 using ServiceLayer.Services;
+using NetTopologySuite.Geometries;
+using System.Globalization;
+using System.Threading.Tasks;
+using System.Xml.Linq;
+using System.IO;
+using System.Windows.Threading;
+using System;
 
 namespace PresentationLayer.UserControls
 {
     public partial class UCVehicleLocation : UserControl
     {
         private readonly LocationService _locationService = new LocationService();
+        private DispatcherTimer _timer;
+        private List<Coord> _routeCoordinates;
+        private int _currentRouteIndex;
+        private ILayer _markerLayer;
 
         public UCVehicleLocation()
         {
@@ -29,38 +40,62 @@ namespace PresentationLayer.UserControls
         {
             MyMap.Map.Layers.Add(new TileLayer(KnownTileSources.Create()));
 
-            var locations = await _locationService.GetLocations();
-            Debug.WriteLine($"Locations Count: {locations?.Count}");
-            if (locations.Count > 0)
-            {
-                Debug.WriteLine($"First Location: {locations[0].Latitude}, {locations[0].Longitude}");
+            var routeData = await _locationService.LoadGpxRouteDataAsync("files/route.gpx");
+            _routeCoordinates = routeData.Coordinates;
 
-                LocationDto firstLocation = locations[0];
-                (double x, double y) sphericalMercator = SphericalMercator.FromLonLat(firstLocation.Longitude, firstLocation.Latitude);
+            if (_routeCoordinates.Count > 0)
+            {
+                var firstCoord = _routeCoordinates[0];
+                (double x, double y) sphericalMercator = SphericalMercator.FromLonLat(firstCoord.Longitude, firstCoord.Latitude);
                 var mapCenter = new MPoint(sphericalMercator.x, sphericalMercator.y);
                 MyMap.Map.Home = n => n.CenterOnAndZoomTo(mapCenter, 5000);
             }
 
-            var markerLayer = CreateMarkerLayer(locations);
-            MyMap.Map.Layers.Add(markerLayer);
+            _markerLayer = CreateMarkerLayer(_routeCoordinates[0]);
+            MyMap.Map.Layers.Add(_markerLayer);
+
+            StartAnimation();
         }
 
-        private ILayer CreateMarkerLayer(List<LocationDto> locations)
+        private void StartAnimation()
         {
-            var features = new List<IFeature>();
+            _timer = new DispatcherTimer();
+            _timer.Interval = TimeSpan.FromMilliseconds(2000);
+            _timer.Tick += OnTimerTick;
+            _timer.Start();
+        }
 
-            foreach (var location in locations)
+        private void OnTimerTick(object sender, EventArgs e)
+        {
+            if (_currentRouteIndex < _routeCoordinates.Count - 1)
             {
-                (double x, double y) sphericalMercator = SphericalMercator.FromLonLat(location.Longitude, location.Latitude);
-                var point = new MPoint(sphericalMercator.x, sphericalMercator.y);
+                _currentRouteIndex++;
+                UpdateMarkerPosition(_routeCoordinates[_currentRouteIndex]);
+            }
+            else
+            {
+                _timer.Stop();
+            }
+        }
 
-                string labelText = location.Id == 9
-                        ? "2" : location.Id == 10 ? "1"
-                        : $"ID: {location.Id}\nLat: {location.Latitude}\nLon: {location.Longitude}";
+        private void UpdateMarkerPosition(Coord coord)
+        {
+            MyMap.Map.Layers.Remove(_markerLayer);
 
-                var feature = new PointFeature(point)
-                {
-                    Styles = new List<IStyle>
+            _markerLayer = CreateMarkerLayer(coord);
+            MyMap.Map.Layers.Add(_markerLayer);
+
+            MyMap.Refresh();
+        }
+
+        private ILayer CreateMarkerLayer(Coord coord)
+        {
+            (double x, double y) sphericalMercator = SphericalMercator.FromLonLat(coord.Longitude, coord.Latitude);
+            var point = new MPoint(sphericalMercator.x, sphericalMercator.y);
+
+            var feature = new PointFeature(point)
+            {
+                Styles = new List<IStyle>
             {
                 new SymbolStyle
                 {
@@ -69,7 +104,7 @@ namespace PresentationLayer.UserControls
                 },
                 new LabelStyle
                 {
-                    Text = labelText,
+                    Text = $"Lat: {coord.Latitude}\nLon: {coord.Longitude}",
                     ForeColor = Color.Black,
                     BackColor = new Brush(Color.White),
                     Offset = new Offset(0, -20),
@@ -77,14 +112,10 @@ namespace PresentationLayer.UserControls
                     Halo = new Pen(Color.White, 2)
                 }
             }
-                };
+            };
 
-                features.Add(feature);
-            }
-
-            var memoryProvider = new MemoryProvider(features);
+            var memoryProvider = new MemoryProvider(new List<IFeature> { feature });
             return new Layer("Marker Layer") { DataSource = memoryProvider };
         }
-
     }
 }
