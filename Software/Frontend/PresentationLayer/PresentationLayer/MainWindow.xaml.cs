@@ -53,6 +53,9 @@ namespace PresentationLayer
                     case "Mapa vozila":
                         MainContentFrame.Navigate(new UCVehicleLocation());
                         break;
+                    case "Oglasi":
+                        MainContentFrame.Navigate(new UCAds());
+                        break;
                     case "Odjava":
                         var token = new TokenManager();
                         token.ClearToken();

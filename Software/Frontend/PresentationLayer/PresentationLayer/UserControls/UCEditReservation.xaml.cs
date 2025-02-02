@@ -94,8 +94,6 @@ namespace PresentationLayer.UserControls
 
                 await reservationService.PutReservationsAsync(updatedReservation);
 
-                MessageBox.Show("Rezervacija je uspješno ažurirana!", "Uspjeh", MessageBoxButton.OK, MessageBoxImage.Information);
-
                 if (Application.Current.MainWindow is MainWindow mw)
                 {
                     mw.LoadUC(new UCReservations());

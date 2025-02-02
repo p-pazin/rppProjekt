@@ -1,0 +1,168 @@
+﻿<UserControl x:Class="PresentationLayer.UserControls.UCEditAd"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:PresentationLayer.UserControls"
+             mc:Ignorable="d" 
+             d:DesignHeight="557.309" d:DesignWidth="800">
+
+    <UserControl.Resources>
+        <ControlTemplate x:Key="ComboBoxToggleButton" TargetType="ToggleButton">
+            <Grid>
+                <Border x:Name="Border" 
+                     Background="{TemplateBinding Background}"
+                     BorderBrush="{TemplateBinding BorderBrush}"
+                     BorderThickness="{TemplateBinding BorderThickness}"
+                     CornerRadius="5">
+                </Border>
+                <Path x:Name="Arrow"
+                   Fill="White"
+                   HorizontalAlignment="Right"
+                   VerticalAlignment="Center"
+                   Margin="5"
+                   Data="M0,0 L4,4 8,0 Z"/>
+            </Grid>
+            <ControlTemplate.Triggers>
+                <Trigger Property="ToggleButton.IsMouseOver" Value="true">
+                    <Setter TargetName="Border" Property="Background" Value="#FF555555"/>
+                </Trigger>
+                <Trigger Property="ToggleButton.IsChecked" Value="true">
+                    <Setter TargetName="Border" Property="Background" Value="#FF555555"/>
+                </Trigger>
+            </ControlTemplate.Triggers>
+        </ControlTemplate>
+
+        <ControlTemplate x:Key="ComboBoxTextBox" TargetType="TextBox">
+            <Border x:Name="Border"
+                 Background="{TemplateBinding Background}"
+                 BorderBrush="{TemplateBinding BorderBrush}"
+                 BorderThickness="{TemplateBinding BorderThickness}"
+                 CornerRadius="5">
+                <ScrollViewer x:Name="PART_ContentHost"/>
+            </Border>
+        </ControlTemplate>
+    </UserControl.Resources>
+
+    <Grid Margin="20" Background="Transparent">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <StackPanel>
+            <TextBlock Text="Dodavanje novog oglasa" FontSize="24" FontWeight="Bold" HorizontalAlignment="Center" Margin="0,0,0,20" Foreground="White"/>
+            <TextBlock x:Name="warning" Text="Greška kod dodavanja oglasa." Margin="0,0,0,0" Foreground="Red" FontWeight="SemiBold" FontSize="18" HorizontalAlignment="Center"/>
+            <TextBlock x:Name="infoWarning" Text="Popunite sve podatke o oglasu!" Margin="0,-24,0,10" Foreground="Red" FontWeight="SemiBold" FontSize="18" HorizontalAlignment="Center"/>
+        </StackPanel>
+
+        <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto">
+            <Grid Margin="10">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="250"/>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="250"/>
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+
+                <TextBlock Text="Naslov oglasa:" Grid.Row="0" Grid.Column="0" Margin="0,10,0,25" Foreground="White" FontSize="14"/>
+                <TextBox x:Name="txtTitle" Grid.Row="0" Grid.Column="1" Margin="10,0,0,20" Height="30" FontSize="14" Foreground="White" Background="#FF444444" BorderBrush="#FF555555"/>
+
+                <TextBlock Text="Opis:" Grid.Row="1" Grid.Column="0" Margin="0,10,0,25" Foreground="White" FontSize="14"/>
+                <TextBox x:Name="txtDescription" Grid.Row="1" Grid.Column="1" Margin="10,0,0,20" Height="80" FontSize="14" Foreground="White" Background="#FF444444" BorderBrush="#FF555555" AcceptsReturn="True" TextWrapping="Wrap" VerticalScrollBarVisibility="Auto"/>
+
+                <TextBlock Text="Metoda plaćanja:" Grid.Row="2" Grid.Column="0" Margin="0,10,0,25" Foreground="White" FontSize="14"/>
+                <ComboBox x:Name="cmbPaymentMethod" Grid.Row="2" Grid.Column="1" Margin="10,0,0,20" Height="30" FontSize="14" Foreground="White" Background="#FF444444" BorderBrush="#FF555555">
+                    <ComboBoxItem Content="Gotovina"/>
+                    <ComboBoxItem Content="Kartica"/>
+                    <ComboBoxItem Content="Kripto"/>
+                    <ComboBoxItem Content="Kredit"/>
+                    <ComboBoxItem Content="Uplata na računa"/>
+                    <ComboBox.Template>
+                        <ControlTemplate TargetType="ComboBox">
+                            <Grid>
+                                <ToggleButton Name="ToggleButton"
+          Template="{StaticResource ComboBoxToggleButton}"
+          Grid.Column="2"
+          IsChecked="{Binding Path=IsDropDownOpen, Mode=TwoWay, RelativeSource={RelativeSource TemplatedParent}}"
+          ClickMode="Press">
+                                </ToggleButton>
+                                <ContentPresenter Name="ContentSite"
+              IsHitTestVisible="False"
+              Content="{TemplateBinding SelectionBoxItem}"
+              ContentTemplate="{TemplateBinding SelectionBoxItemTemplate}"
+              ContentTemplateSelector="{TemplateBinding ItemTemplateSelector}"
+              Margin="3,3,23,3"
+              VerticalAlignment="Center"
+              HorizontalAlignment="Left" />
+                                <TextBox x:Name="PART_EditableTextBox"
+     Style="{x:Null}"
+     Template="{StaticResource ComboBoxTextBox}"
+     HorizontalAlignment="Left"
+     VerticalAlignment="Center"
+     Margin="3,3,23,3"
+     Focusable="True"
+     Background="Transparent"
+     Visibility="Hidden"
+     IsReadOnly="{TemplateBinding IsReadOnly}" />
+                                <Popup Name="Popup"
+   Placement="Bottom"
+   IsOpen="{TemplateBinding IsDropDownOpen}"
+   AllowsTransparency="True"
+   Focusable="False"
+   PopupAnimation="Slide">
+                                    <Border Name="DropDownBorder"
+        Background="{TemplateBinding Background}"
+        BorderBrush="#FF555555"
+        BorderThickness="1"
+        CornerRadius="5">
+                                        <ScrollViewer Margin="4">
+                                            <ItemsPresenter />
+                                        </ScrollViewer>
+                                    </Border>
+                                </Popup>
+                            </Grid>
+                        </ControlTemplate>
+                    </ComboBox.Template>
+                    <ComboBox.Resources>
+                        <Style TargetType="Border">
+                            <Setter Property="CornerRadius" Value="5"/>
+                        </Style>
+                    </ComboBox.Resources>
+                </ComboBox>
+
+                <TextBlock Text="Datum objave:" Grid.Row="3" Grid.Column="0" Margin="0,10,0,25" Foreground="White" FontSize="14"/>
+                <DatePicker x:Name="dtpDateOfPublishment" Grid.Row="3" Grid.Column="1" Margin="10,0,0,20" Height="30" FontSize="14" Foreground="Black" Background="#FF444444" BorderBrush="#FF555555"/>
+
+                <TextBlock Text="Vozilo:" Grid.Row="5" Grid.Column="0" Margin="0,10,0,25" Foreground="White" FontSize="14"/>
+                <TextBox x:Name="txtVehicle" Grid.Row="5" Grid.Column="1" Margin="10,0,0,20" Height="30" FontSize="14" Foreground="White"  Background="#FF444444" BorderBrush="#FF555555" IsReadOnly="True"/>
+            </Grid>
+        </ScrollViewer>
+
+        <Button x:Name="btnSaveAd" Click="btnSaveAd_Click" Grid.Row="2" Content="Spremi" HorizontalAlignment="Center" Margin="-100,20,0,0" Padding="20,10" FontSize="16" Foreground="White" Background="#FF444444" BorderBrush="#FF555555">
+            <Button.Resources>
+                <Style TargetType="Border">
+                    <Setter Property="CornerRadius" Value="5"/>
+                </Style>
+            </Button.Resources>
+        </Button>
+        <Button x:Name="btnExit" Click="btnExit_Click" Grid.Row="2" Content="Odustani" HorizontalAlignment="Center" Margin="150,20,0,0" Padding="20,10" FontSize="16" Foreground="White" Background="#FF444444" BorderBrush="#FF555555">
+            <Button.Resources>
+                <Style TargetType="Border">
+                    <Setter Property="CornerRadius" Value="5"/>
+                </Style>
+            </Button.Resources>
+        </Button>
+    </Grid>
+</UserControl>

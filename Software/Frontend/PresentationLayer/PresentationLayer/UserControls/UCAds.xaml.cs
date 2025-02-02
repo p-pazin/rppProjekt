@@ -10,50 +10,50 @@ using ServiceLayer.Network.Dto;
 namespace PresentationLayer.UserControls
 {
     /// <summary>
-    /// Interaction logic for UCReservations.xaml
+    /// Interaction logic for UCAds.xaml
     /// </summary>
-    public partial class UCReservations : UserControl
+    public partial class UCAds : UserControl
     {
-        private readonly ReservationService _reservationService;
+        private readonly AdService _adService;
 
-        public UCReservations()
+        public UCAds()
         {
             InitializeComponent();
-            _reservationService = new ReservationService();
-            LoadReservations();
+            _adService = new AdService();
+            LoadAds();
             selectedWarning.Visibility = Visibility.Hidden;
             deletionWarning.Visibility = Visibility.Hidden;
         }
 
-        private async void LoadReservations()
+        private async void LoadAds()
         {
             try
             {
-                List<ReservationDto> reservations = await _reservationService.GetReservationsAsync();
-                dgvReservations.ItemsSource = reservations;
+                List<AdDto> ads = await _adService.GetAdsAsync();
+                dgvAds.ItemsSource = ads;
             }
             catch (Exception ex)
             {
-                MessageBox.Show($"Greška prilikom učitavanja rezervacija: {ex.Message}", "Greška", MessageBoxButton.OK, MessageBoxImage.Error);
+                MessageBox.Show($"Greška prilikom učitavanja oglasa: {ex.Message}", "Greška", MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
 
-        private void btnAddReservation_Click(object sender, RoutedEventArgs e)
+        private void btnAddAd_Click(object sender, RoutedEventArgs e)
         {
-            if(Application.Current.MainWindow is MainWindow mw)
+            if (Application.Current.MainWindow is MainWindow mw)
             {
-                mw.LoadUC(new UCAddReservation());
+                mw.LoadUC(new UCAddAd());
                 mw.AdjustUserControlMargin();
             }
         }
 
-        private void btnEditReservation_Click(object sender, RoutedEventArgs e)
+        private void btnEditAd_Click(object sender, RoutedEventArgs e)
         {
-            if (dgvReservations.SelectedItem is ReservationDto selectedReservation)
+            if (dgvAds.SelectedItem is AdDto selectedAd)
             {
                 if (Application.Current.MainWindow is MainWindow mw)
                 {
-                    mw.LoadUC(new UCEditReservation(selectedReservation));
+                    mw.LoadUC(new UCEditAd(selectedAd));
                     mw.AdjustUserControlMargin();
                 }
             }
@@ -63,10 +63,9 @@ namespace PresentationLayer.UserControls
             }
         }
 
-
-        private async void btnDeleteReservation_Click(object sender, RoutedEventArgs e)
+        private async void btnDeleteAd_Click(object sender, RoutedEventArgs e)
         {
-            if (dgvReservations.SelectedItem == null)
+            if (dgvAds.SelectedItem == null)
             {
                 selectedWarning.Visibility = Visibility.Visible;
                 Task.Delay(3000).ContinueWith(_ =>
@@ -75,12 +74,12 @@ namespace PresentationLayer.UserControls
                 });
                 return;
             }
-            if (dgvReservations.SelectedItem is ReservationDto selectedReservation)
+            if (dgvAds.SelectedItem is AdDto selectedAd)
             {
                 try
                 {
-                    await _reservationService.DeleteReservationsAsync(selectedReservation.Id);
-                    LoadReservations();
+                    await _adService.DeleteAdAsync(selectedAd.Id);
+                    LoadAds();
                 }
                 catch (Exception)
                 {

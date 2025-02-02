@@ -86,6 +86,9 @@
     <Compile Include="LoginWindow.xaml.cs">
       <DependentUpon>LoginWindow.xaml</DependentUpon>
     </Compile>
+    <Compile Include="UserControls\UCAddAd.xaml.cs">
+      <DependentUpon>UCAddAd.xaml</DependentUpon>
+    </Compile>
     <Compile Include="UserControls\UCAddCompanyUser.xaml.cs">
       <DependentUpon>UCAddCompanyUser.xaml</DependentUpon>
     </Compile>
@@ -97,6 +100,9 @@
     </Compile>
     <Compile Include="UserControls\UCAddVehicle.xaml.cs">
       <DependentUpon>UCAddVehicle.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UserControls\UCAds.xaml.cs">
+      <DependentUpon>UCAds.xaml</DependentUpon>
     </Compile>
     <Compile Include="UserControls\UCCompanyUsers.xaml.cs">
       <DependentUpon>UCCompanyUsers.xaml</DependentUpon>
@@ -115,6 +121,9 @@
     </Compile>
     <Compile Include="UserControls\UCDashboard.xaml.cs">
       <DependentUpon>UCDashboard.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UserControls\UCEditAd.xaml.cs">
+      <DependentUpon>UCEditAd.xaml</DependentUpon>
     </Compile>
     <Compile Include="UserControls\UCEditCompanyUser.xaml.cs">
       <DependentUpon>UCEditCompanyUser.xaml</DependentUpon>
@@ -181,6 +190,10 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Page Include="UserControls\UCAddAd.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="UserControls\UCAddCompanyUser.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -194,6 +207,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="UserControls\UCAddVehicle.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UserControls\UCAds.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -214,6 +231,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="UserControls\UCContracts.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UserControls\UCEditAd.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

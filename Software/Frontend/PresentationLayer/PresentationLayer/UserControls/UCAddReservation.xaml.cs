@@ -61,7 +61,6 @@ namespace PresentationLayer.UserControls
             try
             {
                 await _reservationService.PostReservationsAsync(newReservation);
-                MessageBox.Show("Rezervacija uspešno dodata!", "Uspeh", MessageBoxButton.OK, MessageBoxImage.Information);
 
                 if (Application.Current.MainWindow is MainWindow mw)
                 {

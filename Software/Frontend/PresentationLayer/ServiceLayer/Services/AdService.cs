@@ -11,18 +11,18 @@ using ServiceLayer.Network.Dto;
 
 namespace ServiceLayer.Services
 {
-    public class ReservationService
+    public class AdService
     {
         private readonly HttpClient _httpClient;
         private readonly TokenManager _tokenManager;
 
-        public ReservationService()
+        public AdService()
         {
             _httpClient = new HttpClient { BaseAddress = new Uri(Environment.BASE_URL) };
             _tokenManager = new TokenManager();
         }
 
-        public async Task<List<ReservationDto>> GetReservationsAsync()
+        public async Task<List<AdDto>> GetAdsAsync()
         {
             string token = _tokenManager.GetToken();
             if (string.IsNullOrEmpty(token))
@@ -30,15 +30,15 @@ namespace ServiceLayer.Services
 
             _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
 
-            HttpResponseMessage response = await _httpClient.GetAsync("Reservation");
+            HttpResponseMessage response = await _httpClient.GetAsync("Ad");
             if (!response.IsSuccessStatusCode)
-                throw new Exception("Failed to fetch reservations data.");
+                throw new Exception("Failed to fetch ads.");
 
             string json = await response.Content.ReadAsStringAsync();
-            return JsonSerializer.Deserialize<List<ReservationDto>>(json, new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
+            return JsonSerializer.Deserialize<List<AdDto>>(json, new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
         }
 
-        public async Task PostReservationsAsync(ReservationDto newReservation)
+        public async Task PostAdAsync(AdDto newAd, int id)
         {
             string token = _tokenManager.GetToken();
             if (string.IsNullOrEmpty(token))
@@ -46,9 +46,9 @@ namespace ServiceLayer.Services
 
             _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
 
-            string url = $"Reservation?contactid={newReservation.ContactId}&vehicleId={newReservation.VehicleId}";
+            string url = $"Ad?id={id}";
 
-            string jsonContent = JsonSerializer.Serialize(newReservation);
+            string jsonContent = JsonSerializer.Serialize(newAd);
             HttpContent content = new StringContent(jsonContent, Encoding.UTF8, "application/json");
 
             HttpResponseMessage response = await _httpClient.PostAsync(url, content);
@@ -56,11 +56,11 @@ namespace ServiceLayer.Services
             if (!response.IsSuccessStatusCode)
             {
                 Console.WriteLine(response.StatusCode);
-                throw new Exception("Failed to add new reservation.");
+                throw new Exception("Failed to add new ad.");
             }
         }
 
-        public async Task PutReservationsAsync(ReservationDto newReservationInfo)
+        public async Task PutReservationsAsync(AdDto newAdInfo)
         {
             string token = _tokenManager.GetToken();
             if (string.IsNullOrEmpty(token))
@@ -68,9 +68,9 @@ namespace ServiceLayer.Services
 
             _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
 
-            string url = $"Reservation/{newReservationInfo.Id}?vehicleId={newReservationInfo.VehicleId}";
+            string url = "Ad";
 
-            string jsonContent = JsonSerializer.Serialize(newReservationInfo);
+            string jsonContent = JsonSerializer.Serialize(newAdInfo);
             HttpContent content = new StringContent(jsonContent, Encoding.UTF8, "application/json");
 
             HttpResponseMessage response = await _httpClient.PutAsync(url, content);
@@ -78,11 +78,11 @@ namespace ServiceLayer.Services
             if (!response.IsSuccessStatusCode)
             {
                 Console.WriteLine(response.StatusCode);
-                throw new Exception("Failed to update reservation.");
+                throw new Exception("Failed to update ad.");
             }
         }
 
-        public async Task DeleteReservationsAsync(int id)
+        public async Task DeleteAdAsync(int id)
         {
             string token = _tokenManager.GetToken();
             if (string.IsNullOrEmpty(token))
@@ -90,12 +90,12 @@ namespace ServiceLayer.Services
 
             _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
 
-            HttpResponseMessage response = await _httpClient.DeleteAsync($"Reservation/{id}");
+            HttpResponseMessage response = await _httpClient.DeleteAsync($"Ad?id={id}");
 
             if (!response.IsSuccessStatusCode)
             {
                 Console.WriteLine(response.StatusCode);
-                throw new Exception("Failed to delete reservation.");
+                throw new Exception("Failed to delete ad.");
             }
         }
     }

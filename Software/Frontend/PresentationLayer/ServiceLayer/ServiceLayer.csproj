@@ -135,6 +135,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Environment.cs" />
+    <Compile Include="Network\Dto\AdDto.cs" />
     <Compile Include="Network\Dto\CompanyDto.cs" />
     <Compile Include="Network\Dto\ContactDto.cs" />
     <Compile Include="Network\Dto\ContactStatusStatsDto.cs" />
@@ -152,6 +153,7 @@
     <Compile Include="Network\Dto\VehicleDto.cs" />
     <Compile Include="Network\Dto\YearlyInfoDto.cs" />
     <Compile Include="Network\NetworkService.cs" />
+    <Compile Include="Services\AdService.cs" />
     <Compile Include="Services\CompanyService.cs" />
     <Compile Include="Services\ContactService.cs" />
     <Compile Include="Services\ContractService.cs" />
