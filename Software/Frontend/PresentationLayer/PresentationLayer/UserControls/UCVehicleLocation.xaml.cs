@@ -40,6 +40,9 @@ namespace PresentationLayer.UserControls
         {
             MyMap.Map.Layers.Add(new TileLayer(KnownTileSources.Create()));
 
+            double varazdinLat = 46.3042;
+            double varazdinLon = 16.3378;
+
             var routeData = await _locationService.LoadGpxRouteDataAsync("files/route.gpx");
             _routeCoordinates = routeData.Coordinates;
 
@@ -48,7 +51,7 @@ namespace PresentationLayer.UserControls
                 var firstCoord = _routeCoordinates[0];
                 (double x, double y) sphericalMercator = SphericalMercator.FromLonLat(firstCoord.Longitude, firstCoord.Latitude);
                 var mapCenter = new MPoint(sphericalMercator.x, sphericalMercator.y);
-                MyMap.Map.Home = n => n.CenterOnAndZoomTo(mapCenter, 5000);
+                MyMap.Map.Home = n => n.CenterOnAndZoomTo(mapCenter, 2);
             }
 
             _markerLayer = CreateMarkerLayer(_routeCoordinates[0]);
