@@ -47,6 +47,12 @@
     <Reference Include="Esri.ArcGISRuntime.WPF, Version=200.6.0.0, Culture=neutral, PublicKeyToken=8fc3cc631e44ad86, processorArchitecture=MSIL">
       <HintPath>..\packages\Esri.ArcGISRuntime.WPF.200.6.0\lib\net472\Esri.ArcGISRuntime.WPF.dll</HintPath>
     </Reference>
+    <Reference Include="LiveCharts, Version=0.9.7.0, Culture=neutral, PublicKeyToken=0bc1f845d1ebb8df, processorArchitecture=MSIL">
+      <HintPath>..\packages\LiveCharts.0.9.7\lib\net45\LiveCharts.dll</HintPath>
+    </Reference>
+    <Reference Include="LiveCharts.Wpf, Version=0.9.7.0, Culture=neutral, PublicKeyToken=0bc1f845d1ebb8df, processorArchitecture=MSIL">
+      <HintPath>..\packages\LiveCharts.Wpf.0.9.7\lib\net45\LiveCharts.Wpf.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Device" />
@@ -86,6 +92,9 @@
     <Compile Include="UserControls\UCAddOffer.xaml.cs">
       <DependentUpon>UCAddOffer.xaml</DependentUpon>
     </Compile>
+    <Compile Include="UserControls\UCAddReservation.xaml.cs">
+      <DependentUpon>UCAddReservation.xaml</DependentUpon>
+    </Compile>
     <Compile Include="UserControls\UCAddVehicle.xaml.cs">
       <DependentUpon>UCAddVehicle.xaml</DependentUpon>
     </Compile>
@@ -116,6 +125,9 @@
     <Compile Include="UserControls\UCEditContractSale.xaml.cs">
       <DependentUpon>UCEditContractSale.xaml</DependentUpon>
     </Compile>
+    <Compile Include="UserControls\UCEditReservation.xaml.cs">
+      <DependentUpon>UCEditReservation.xaml</DependentUpon>
+    </Compile>
     <Compile Include="UserControls\UCInvoices.xaml.cs">
       <DependentUpon>UCInvoices.xaml</DependentUpon>
     </Compile>
@@ -136,6 +148,12 @@
     </Compile>
     <Compile Include="UserControls\UCRegister.xaml.cs">
       <DependentUpon>UCRegister.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UserControls\UCReservations.xaml.cs">
+      <DependentUpon>UCReservations.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UserControls\UCStats.xaml.cs">
+      <DependentUpon>UCStats.xaml</DependentUpon>
     </Compile>
     <Compile Include="UserControls\UCVehicleCatalog.xaml.cs">
       <DependentUpon>UCVehicleCatalog.xaml</DependentUpon>
@@ -168,6 +186,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="UserControls\UCAddOffer.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UserControls\UCAddReservation.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -207,6 +229,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="UserControls\UCEditReservation.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="UserControls\UCInvoices.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -236,6 +262,14 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="UserControls\UCRegister.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UserControls\UCReservations.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UserControls\UCStats.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

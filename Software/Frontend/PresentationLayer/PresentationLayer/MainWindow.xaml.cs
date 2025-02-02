@@ -38,11 +38,17 @@ namespace PresentationLayer
                     case "Popis kontakata":
                         MainContentFrame.Navigate(new UCContacts());
                         break;
+                    case "Statistika":
+                        MainContentFrame.Navigate(new UCStats());
+                        break;
                     case "Ugovori":
                         MainContentFrame.Navigate(new UCContracts());
                         break;
                     case "Računi":
                         MainContentFrame.Navigate(new UCInvoices());
+                        break;
+                    case "Rezervacije":
+                        MainContentFrame.Navigate(new UCReservations());
                         break;
                     case "Mapa vozila":
                         MainContentFrame.Navigate(new UCVehicleLocation());

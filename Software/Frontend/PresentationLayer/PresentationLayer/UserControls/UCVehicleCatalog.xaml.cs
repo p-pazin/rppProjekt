@@ -92,5 +92,6 @@ namespace PresentationLayer.UserControls
                 selectedWarning.Visibility = Visibility.Visible;
             }
         }
+
     }
 }

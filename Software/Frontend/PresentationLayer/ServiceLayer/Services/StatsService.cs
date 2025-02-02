@@ -1,25 +1,26 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Text;
 using System.Text.Json;
 using System.Threading.Tasks;
-using ServiceLayer.Network.Dto;
+using CarchiveAPI.Dto;
 
 namespace ServiceLayer.Services
 {
-    public class UserService
+    public class StatsService
     {
         private readonly HttpClient _httpClient;
         private readonly TokenManager _tokenManager;
 
-        public UserService()
+        public StatsService()
         {
             _httpClient = new HttpClient { BaseAddress = new Uri(Environment.BASE_URL) };
             _tokenManager = new TokenManager();
         }
-
-        public async Task<UserDto> GetCurrentUserAsync()
+        public async Task<ContactStatusStatsDto> GetContactStatusStatsAsync()
         {
             string token = _tokenManager.GetToken();
             if (string.IsNullOrEmpty(token))
@@ -27,15 +28,14 @@ namespace ServiceLayer.Services
 
             _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
 
-            HttpResponseMessage response = await _httpClient.GetAsync("User");
+            HttpResponseMessage response = await _httpClient.GetAsync("Stats/ContactStatus");
             if (!response.IsSuccessStatusCode)
-                throw new Exception("Failed to fetch user data.");
+                throw new Exception("Failed to fetch contact status stats data.");
 
             string json = await response.Content.ReadAsStringAsync();
-            return JsonSerializer.Deserialize<UserDto>(json, new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
+            return System.Text.Json.JsonSerializer.Deserialize<ContactStatusStatsDto>(json, new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
         }
-
-        public async Task PutCompanyUser(UserDto companyUserInfo)
+        public async Task<YearlyInfoDto> GetContactCreationStatsAsync()
         {
             string token = _tokenManager.GetToken();
             if (string.IsNullOrEmpty(token))
@@ -43,21 +43,14 @@ namespace ServiceLayer.Services
 
             _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
 
-            var url = "User/update";
-
-            string jsonContent = JsonSerializer.Serialize(companyUserInfo);
-            HttpContent content = new StringContent(jsonContent, Encoding.UTF8, "application/json");
-
-            HttpResponseMessage response = await _httpClient.PutAsync(url, content);
-
+            HttpResponseMessage response = await _httpClient.GetAsync("Stats/ContactCreation");
             if (!response.IsSuccessStatusCode)
-            {
-                Console.WriteLine(response.StatusCode);
-                throw new Exception("Failed to add new company user.");
-            }
-        }
+                throw new Exception("Failed to fetch contact creation stats data.");
 
-        public async Task DeleteCompanyUser(int userId)
+            string json = await response.Content.ReadAsStringAsync();
+            return System.Text.Json.JsonSerializer.Deserialize<YearlyInfoDto>(json, new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
+        }
+        public async Task<YearlyInfoDto> GetInvoiceCreationStatsAsync()
         {
             string token = _tokenManager.GetToken();
             if (string.IsNullOrEmpty(token))
@@ -65,13 +58,12 @@ namespace ServiceLayer.Services
 
             _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
 
-            HttpResponseMessage response = await _httpClient.DeleteAsync($"User/delete/{userId}");
-
+            HttpResponseMessage response = await _httpClient.GetAsync("Stats/InvoiceCreation");
             if (!response.IsSuccessStatusCode)
-            {
-                Console.WriteLine(response.StatusCode);
-                throw new Exception("Failed to add new company user.");
-            }
+                throw new Exception("Failed to fetch invoice creation stats data.");
+
+            string json = await response.Content.ReadAsStringAsync();
+            return System.Text.Json.JsonSerializer.Deserialize<YearlyInfoDto>(json, new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
         }
     }
 }
