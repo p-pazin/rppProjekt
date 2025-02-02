@@ -38,6 +38,9 @@ namespace PresentationLayer
                     case "Popis kontakata":
                         MainContentFrame.Navigate(new UCContacts());
                         break;
+                    case "Statistika":
+                        MainContentFrame.Navigate(new UCStats());
+                        break;
                     case "Ugovori":
                         MainContentFrame.Navigate(new UCContracts());
                         break;
