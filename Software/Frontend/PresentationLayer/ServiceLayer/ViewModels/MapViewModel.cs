@@ -21,10 +21,7 @@ namespace ServiceLayer.ViewModels
         protected void OnPropertyChanged([CallerMemberName] string propertyName = "")
         {
             var handler = PropertyChanged;
-            if (handler != null)
-            {
-                handler.Invoke(this, new PropertyChangedEventArgs(propertyName));
-            }
+            handler?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
 
         private Map _map;
@@ -34,11 +31,7 @@ namespace ServiceLayer.ViewModels
             get { return _map; }
             set
             {
-                if (value == null)
-                {
-                    throw new ArgumentNullException(nameof(value), "Map cannot be set to null.");
-                }
-                _map = value;
+                _map = value ?? throw new ArgumentNullException(nameof(value), "Map cannot be set to null.");
                 OnPropertyChanged();
             }
         }
