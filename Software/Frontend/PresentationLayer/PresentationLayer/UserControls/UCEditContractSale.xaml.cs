@@ -131,14 +131,16 @@ namespace PresentationLayer.UserControls
 
             if (inputsValid)
             {
+                DateTime currentDate = DateTime.Now;
                 var newContract = new ContractDto
                 {
+                    Id = _contractId,
                     Title = txtTitleSale.Text,
                     Place = txtLocationSale.Text,
                     Type = 1,
                     Content = txtContentSale.Text,
                     Signed = cmbSigned.SelectedValue?.ToString() == "Potpisan" ? 1 : 0,
-                    Id = _contractId,
+                    DateOfCreation = currentDate.ToString("yyyy-MM-dd")
                 };
 
                 try

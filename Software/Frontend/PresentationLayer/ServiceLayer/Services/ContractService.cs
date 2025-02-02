@@ -112,11 +112,18 @@ namespace ServiceLayer.Services
             _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
 
             string jsonContent = JsonConvert.SerializeObject(newContract);
+            Console.WriteLine(jsonContent);
             HttpContent content = new StringContent(jsonContent, Encoding.UTF8, "application/json");
+            Console.WriteLine(content);
+
 
             string url = $"Contract/sell?contactId={contactId}&vehicleId={vehicleId}&offerId={offerId}";
+            Console.WriteLine(url);
+
 
             HttpResponseMessage response = await _httpClient.PutAsync(url, content);
+            Console.WriteLine(response);
+
 
             if (!response.IsSuccessStatusCode)
                 throw new Exception("Failed to update contract.");
