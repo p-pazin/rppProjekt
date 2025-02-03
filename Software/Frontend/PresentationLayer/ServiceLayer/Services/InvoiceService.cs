@@ -45,7 +45,7 @@ namespace ServiceLayer.Services
 
             _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
 
-            string url = $"Invoice?contractId={newInvoice.ContractId}";
+            string url = $"Invoice/sell?contractId={newInvoice.ContractId}";
 
             string jsonContent = JsonSerializer.Serialize(newInvoice);
             HttpContent content = new StringContent(jsonContent, Encoding.UTF8, "application/json");
@@ -67,7 +67,7 @@ namespace ServiceLayer.Services
 
             _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
 
-            string url = $"Invoice?contractId={newInvoice.ContractId}";
+            string url = $"Invoice/rent/start?contractId={newInvoice.ContractId}";
 
             string jsonContent = JsonSerializer.Serialize(newInvoice);
             HttpContent content = new StringContent(jsonContent, Encoding.UTF8, "application/json");

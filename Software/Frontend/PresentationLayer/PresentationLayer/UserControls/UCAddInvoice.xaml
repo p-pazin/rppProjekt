@@ -6,6 +6,114 @@
              xmlns:local="clr-namespace:PresentationLayer.UserControls"
              mc:Ignorable="d" 
              d:DesignHeight="507.548" Width="978">
+    <UserControl.Resources>
+        <ControlTemplate x:Key="ComboBoxToggleButton" TargetType="ToggleButton">
+            <Grid>
+                <Border x:Name="Border" 
+                Background="{TemplateBinding Background}"
+                BorderBrush="{TemplateBinding BorderBrush}"
+                BorderThickness="{TemplateBinding BorderThickness}"
+                CornerRadius="5">
+                </Border>
+                <Path x:Name="Arrow"
+              Fill="White"
+              HorizontalAlignment="Right"
+              VerticalAlignment="Center"
+              Margin="5"
+              Data="M0,0 L4,4 8,0 Z"/>
+            </Grid>
+            <ControlTemplate.Triggers>
+                <Trigger Property="ToggleButton.IsMouseOver" Value="true">
+                    <Setter TargetName="Border" Property="Background" Value="#FF888888"/>
+                </Trigger>
+                <Trigger Property="ToggleButton.IsChecked" Value="true">
+                    <Setter TargetName="Border" Property="Background" Value="#FF888888"/>
+                </Trigger>
+            </ControlTemplate.Triggers>
+        </ControlTemplate>
+
+        <ControlTemplate x:Key="ComboBoxTextBox" TargetType="TextBox">
+            <Border x:Name="Border"
+            Background="{TemplateBinding Background}"
+            BorderBrush="{TemplateBinding BorderBrush}"
+            BorderThickness="{TemplateBinding BorderThickness}"
+            CornerRadius="5">
+                <ScrollViewer x:Name="PART_ContentHost"/>
+            </Border>
+        </ControlTemplate>
+
+        <Style x:Key="ModernComboBoxStyle" TargetType="ComboBox">
+            <Setter Property="Background" Value="#FFD3D3D3"/>
+            <Setter Property="Foreground" Value="#FF222222"/>
+            <Setter Property="BorderBrush" Value="#FF888888"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="Padding" Value="5"/>
+            <Setter Property="VerticalContentAlignment" Value="Center"/>
+            <Setter Property="HorizontalContentAlignment" Value="Left"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="ComboBox">
+                        <Grid>
+                            <ToggleButton Name="ToggleButton"
+                           Template="{StaticResource ComboBoxToggleButton}"
+                           Grid.Column="2"
+                           IsChecked="{Binding Path=IsDropDownOpen, Mode=TwoWay, RelativeSource={RelativeSource TemplatedParent}}"
+                           ClickMode="Press">
+                            </ToggleButton>
+                            <ContentPresenter Name="ContentSite"
+                               IsHitTestVisible="False"
+                               Content="{TemplateBinding SelectionBoxItem}"
+                               ContentTemplate="{TemplateBinding SelectionBoxItemTemplate}"
+                               ContentTemplateSelector="{TemplateBinding ItemTemplateSelector}"
+                               Margin="3,3,23,3"
+                               VerticalAlignment="Center"
+                               HorizontalAlignment="Left" />
+                            <TextBox x:Name="PART_EditableTextBox"
+                      Style="{x:Null}"
+                      Template="{StaticResource ComboBoxTextBox}"
+                      HorizontalAlignment="Left"
+                      VerticalAlignment="Center"
+                      Margin="3,3,23,3"
+                      Focusable="True"
+                      Background="Transparent"
+                      Visibility="Hidden"
+                      IsReadOnly="{TemplateBinding IsReadOnly}" />
+                            <Popup Name="Popup"
+                    Placement="Bottom"
+                    IsOpen="{TemplateBinding IsDropDownOpen}"
+                    AllowsTransparency="True"
+                    Focusable="False"
+                    PopupAnimation="Slide">
+                                <Border Name="DropDownBorder"
+                         Background="{TemplateBinding Background}"
+                         BorderBrush="#FF888888"
+                         BorderThickness="1"
+                         CornerRadius="5">
+                                    <ScrollViewer Margin="4">
+                                        <ItemsPresenter />
+                                    </ScrollViewer>
+                                </Border>
+                            </Popup>
+                        </Grid>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter Property="Background" Value="#FFC0C0C0"/>
+                                <Setter Property="BorderBrush" Value="#FF999999"/>
+                            </Trigger>
+                            <Trigger Property="IsDropDownOpen" Value="True">
+                                <Setter Property="Background" Value="#FFC0C0C0"/>
+                                <Setter Property="BorderBrush" Value="#FF999999"/>
+                            </Trigger>
+                            <Trigger Property="IsEnabled" Value="False">
+                                <Setter Property="Opacity" Value="0.5"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+    </UserControl.Resources>
+
     <Grid Margin="20" Background="Transparent">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
@@ -54,20 +162,29 @@
                     </Grid.RowDefinitions>
 
                     <TextBlock Text="Ugovor:" Grid.Row="0" Grid.Column="0" Margin="0,10,0,25" Foreground="White" FontSize="14"/>
-                    <ComboBox x:Name="cmbContractSale" Grid.Row="0" Grid.Column="1" Height="30" FontSize="14" Foreground="Black" Background="#FF444444" BorderBrush="#FF555555" Margin="10,0,0,20">
+                    <ComboBox x:Name="cmbContractSale" Grid.Row="0" Grid.Column="1" Margin="10,0,0,20" Height="30" FontSize="14" Style="{StaticResource ModernComboBoxStyle}">
                         <ComboBox.DisplayMemberPath>DisplayText</ComboBox.DisplayMemberPath>
                         <ComboBox.SelectedValuePath>ContractSale</ComboBox.SelectedValuePath>
+                        <ComboBox.Resources>
+                            <Style TargetType="Border">
+                                <Setter Property="CornerRadius" Value="5"/>
+                            </Style>
+                        </ComboBox.Resources>
                     </ComboBox>
 
                     <TextBlock Text="Način plaćanja:" Grid.Row="1" Grid.Column="0" Margin="0,10,0,25" Foreground="White" FontSize="14"/>
-                    <ComboBox x:Name="cmbPaymenthSale" Grid.Row="1" Grid.Column="1" Height="30" FontSize="14" Foreground="Black" Background="#FF444444" BorderBrush="#FF555555" Margin="10,0,0,20">
+                    <ComboBox x:Name="cmbPaymenthSale" Grid.Row="1" Grid.Column="1" Margin="10,0,0,20" Height="30" FontSize="14" Style="{StaticResource ModernComboBoxStyle}">
                         <ComboBoxItem Content="Gotovina"/>
                         <ComboBoxItem Content="Kartica"/>
                         <ComboBoxItem Content="Kripto"/>
                         <ComboBoxItem Content="Kredit"/>
                         <ComboBoxItem Content="Uplata na računa"/>
+                        <ComboBox.Resources>
+                            <Style TargetType="Border">
+                                <Setter Property="CornerRadius" Value="5"/>
+                            </Style>
+                        </ComboBox.Resources>
                     </ComboBox>
-
 
                     <TextBlock Text="PDV:" Grid.Row="3" Grid.Column="0" Margin="0,10,0,25" Foreground="White" FontSize="14"/>
                     <TextBox x:Name="txtVAT" Grid.Row="3" Grid.Column="1" Height="30" FontSize="14" Foreground="White" Background="#FF444444" BorderBrush="#FF555555" Margin="10,0,0,20"/>
@@ -88,18 +205,28 @@
                     </Grid.RowDefinitions>
 
                     <TextBlock Text="Ugovor:" Grid.Row="0" Grid.Column="0" Margin="0,10,0,25" Foreground="White" FontSize="14"/>
-                    <ComboBox x:Name="cmbContractStart" SelectionChanged="cmbContractStart_SelectionChanged" Grid.Row="0" Grid.Column="1" Height="30" FontSize="14" Foreground="Black" Background="#FF444444" BorderBrush="#FF555555" Margin="10,0,0,20">
+                    <ComboBox x:Name="cmbContractStart" SelectionChanged="cmbContractStart_SelectionChanged" Grid.Row="0" Grid.Column="1" Margin="10,0,0,20" Height="30" FontSize="14" Style="{StaticResource ModernComboBoxStyle}">
                         <ComboBox.DisplayMemberPath>DisplayText</ComboBox.DisplayMemberPath>
                         <ComboBox.SelectedValuePath>ContractStart</ComboBox.SelectedValuePath>
+                        <ComboBox.Resources>
+                            <Style TargetType="Border">
+                                <Setter Property="CornerRadius" Value="5"/>
+                            </Style>
+                        </ComboBox.Resources>
                     </ComboBox>
 
                     <TextBlock Text="Način plaćanja:" Grid.Row="1" Grid.Column="0" Margin="0,10,0,25" Foreground="White" FontSize="14"/>
-                    <ComboBox x:Name="cmbPaymenthStart" Grid.Row="1" Grid.Column="1" Height="30" FontSize="14" Foreground="Black" Background="#FF444444" BorderBrush="#FF555555" Margin="10,0,0,20">
+                    <ComboBox x:Name="cmbPaymenthStart" Grid.Row="1" Grid.Column="1" Margin="10,0,0,20" Height="30" FontSize="14" Style="{StaticResource ModernComboBoxStyle}">
                         <ComboBoxItem Content="Gotovina"/>
                         <ComboBoxItem Content="Kartica"/>
                         <ComboBoxItem Content="Kripto"/>
                         <ComboBoxItem Content="Kredit"/>
                         <ComboBoxItem Content="Uplata na računa"/>
+                        <ComboBox.Resources>
+                            <Style TargetType="Border">
+                                <Setter Property="CornerRadius" Value="5"/>
+                            </Style>
+                        </ComboBox.Resources>
                     </ComboBox>
 
                     <TextBlock Text="PDV:" Grid.Row="2" Grid.Column="0" Margin="0,10,0,25" Foreground="White" FontSize="14"/>
@@ -124,18 +251,28 @@
                     </Grid.RowDefinitions>
 
                     <TextBlock Text="Ugovor:" Grid.Row="0" Grid.Column="0" Margin="0,10,0,25" Foreground="White" FontSize="14"/>
-                    <ComboBox x:Name="cmbContractEnd" Grid.Row="0" Grid.Column="1" Height="30" FontSize="14" Foreground="Black" Background="#FF444444" BorderBrush="#FF555555" Margin="10,0,0,20">
+                    <ComboBox x:Name="cmbContractEnd" Grid.Row="0" Grid.Column="1" Margin="10,0,0,20" Height="30" FontSize="14" Style="{StaticResource ModernComboBoxStyle}">
                         <ComboBox.DisplayMemberPath>DisplayText</ComboBox.DisplayMemberPath>
                         <ComboBox.SelectedValuePath>ContractEnd</ComboBox.SelectedValuePath>
+                        <ComboBox.Resources>
+                            <Style TargetType="Border">
+                                <Setter Property="CornerRadius" Value="5"/>
+                            </Style>
+                        </ComboBox.Resources>
                     </ComboBox>
 
                     <TextBlock Text="Način plaćanja:" Grid.Row="1" Grid.Column="0" Margin="0,10,0,25" Foreground="White" FontSize="14"/>
-                    <ComboBox x:Name="cmbPaymenthEnd" Grid.Row="1" Grid.Column="1" Height="30" FontSize="14" Foreground="Black" Background="#FF444444" BorderBrush="#FF555555" Margin="10,0,0,20">
+                    <ComboBox x:Name="cmbPaymenthEnd" Grid.Row="1" Grid.Column="1" Margin="10,0,0,20" Height="30" FontSize="14" Style="{StaticResource ModernComboBoxStyle}">
                         <ComboBoxItem Content="Gotovina"/>
                         <ComboBoxItem Content="Kartica"/>
                         <ComboBoxItem Content="Kripto"/>
                         <ComboBoxItem Content="Kredit"/>
                         <ComboBoxItem Content="Uplata na računa"/>
+                        <ComboBox.Resources>
+                            <Style TargetType="Border">
+                                <Setter Property="CornerRadius" Value="5"/>
+                            </Style>
+                        </ComboBox.Resources>
                     </ComboBox>
 
                     <TextBlock Text="PDV:" Grid.Row="2" Grid.Column="0" Margin="0,10,0,25" Foreground="White" FontSize="14"/>
@@ -145,7 +282,13 @@
                     <TextBox x:Name="txtMilageEnd" Grid.Row="3" Grid.Column="1" Height="30" FontSize="14" Foreground="White" Background="#FF444444" BorderBrush="#FF555555" Margin="10,0,0,20"/>
 
                     <TextBlock Text="Penali:" Grid.Row="4" Grid.Column="0" Margin="0,10,0,25" Foreground="White" FontSize="14"/>
-                    <ComboBox x:Name="cmbPenalties" Grid.Row="4" Grid.Column="1" Height="30" DisplayMemberPath="DisplayText" FontSize="14" Foreground="Black" Background="#FF444444" BorderBrush="#FF555555" Margin="10,0,0,20"/>
+                    <ComboBox x:Name="cmbPenalties" Grid.Row="4" Grid.Column="1" DisplayMemberPath="DisplayText" Margin="10,0,0,20" Height="30" FontSize="14" Style="{StaticResource ModernComboBoxStyle}">
+                        <ComboBox.Resources>
+                            <Style TargetType="Border">
+                                <Setter Property="CornerRadius" Value="5"/>
+                            </Style>
+                        </ComboBox.Resources>
+                    </ComboBox>
 
                     <Button x:Name="btnAddPenalty" Click="btnAddPenalty_Click" Grid.Row="4" Grid.Column="3" Padding="5,5,5,5" Content="Dodaj penal" Margin="10,0,0,20" Height="30" FontSize="14" Foreground="White" Background="#FF444444" BorderBrush="#FF555555">
                         <Button.Resources>
