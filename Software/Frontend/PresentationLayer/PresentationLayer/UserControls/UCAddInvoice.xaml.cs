@@ -159,20 +159,23 @@ namespace PresentationLayer.UserControls
                     grdContractSaleForm.Visibility = Visibility.Collapsed;
                 }
             }
+            ResetForm();
         }
 
         private void cmbContractEnd_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            if (cmbContractEnd.SelectedItem != null)
+            dynamic selectecContract = cmbContractEnd.SelectedItem;
+            if (selectecContract != null)
             {
-                var contract = cmbContractEnd.SelectedItem as ContractDto;
-                if (contract.Signed == 1)
+                if (selectecContract.Contract.Signed == 0)
                 {
-                    grdContractRentStartForm.Visibility = Visibility.Collapsed;
-                    grdContractRentEndForm.Visibility = Visibility.Visible;
+                    grdContractRentStartForm.Visibility = Visibility.Visible;
+                    grdContractRentEndForm.Visibility = Visibility.Collapsed;
                     grdContractSaleForm.Visibility = Visibility.Collapsed;
                 }
             }
+            ResetForm();
+
         }
 
         private async void btnSave_Click(object sender, RoutedEventArgs e)
@@ -267,12 +270,6 @@ namespace PresentationLayer.UserControls
             penalties.Clear();
             lstSelectedPenalties.ItemsSource = null;
 
-            grdContractSaleForm.Visibility = Visibility.Visible;
-            grdContractRentStartForm.Visibility = Visibility.Collapsed;
-            grdContractRentEndForm.Visibility = Visibility.Collapsed;
-
-            infoWarning.Visibility = Visibility.Hidden;
-            penaltyWarning.Visibility = Visibility.Hidden;
         }
 
         private void btnExit_Click(object sender, RoutedEventArgs e)
