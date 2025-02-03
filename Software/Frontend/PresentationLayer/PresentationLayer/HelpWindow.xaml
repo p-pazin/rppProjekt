@@ -11,15 +11,6 @@
     <Grid>
         <Border Background="#FF333333" Padding="10">
             <StackPanel Orientation="Horizontal">
-                <Button x:Name="BackButton" Content="← Povratak" Padding="10" FontSize="14" 
-                        Click="BackButton_Click" Visibility="Collapsed"
-                        Background="Transparent" Foreground="White" BorderThickness="0">
-                    <Button.Resources>
-                        <Style TargetType="Border">
-                            <Setter Property="CornerRadius" Value="5"/>
-                        </Style>
-                    </Button.Resources>
-                </Button>
                 <TextBlock Text="Pomoć" Foreground="White" FontSize="18" FontWeight="Bold" 
                            VerticalAlignment="Center" Margin="10,0,0,0"/>
             </StackPanel>
