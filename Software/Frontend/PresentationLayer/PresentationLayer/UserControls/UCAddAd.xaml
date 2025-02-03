@@ -10,37 +10,108 @@
         <ControlTemplate x:Key="ComboBoxToggleButton" TargetType="ToggleButton">
             <Grid>
                 <Border x:Name="Border" 
-                     Background="{TemplateBinding Background}"
-                     BorderBrush="{TemplateBinding BorderBrush}"
-                     BorderThickness="{TemplateBinding BorderThickness}"
-                     CornerRadius="5">
+                Background="{TemplateBinding Background}"
+                BorderBrush="{TemplateBinding BorderBrush}"
+                BorderThickness="{TemplateBinding BorderThickness}"
+                CornerRadius="5">
                 </Border>
                 <Path x:Name="Arrow"
-                   Fill="White"
-                   HorizontalAlignment="Right"
-                   VerticalAlignment="Center"
-                   Margin="5"
-                   Data="M0,0 L4,4 8,0 Z"/>
+              Fill="White"
+              HorizontalAlignment="Right"
+              VerticalAlignment="Center"
+              Margin="5"
+              Data="M0,0 L4,4 8,0 Z"/>
             </Grid>
             <ControlTemplate.Triggers>
                 <Trigger Property="ToggleButton.IsMouseOver" Value="true">
-                    <Setter TargetName="Border" Property="Background" Value="#FF555555"/>
+                    <Setter TargetName="Border" Property="Background" Value="#FF888888"/>
                 </Trigger>
                 <Trigger Property="ToggleButton.IsChecked" Value="true">
-                    <Setter TargetName="Border" Property="Background" Value="#FF555555"/>
+                    <Setter TargetName="Border" Property="Background" Value="#FF888888"/>
                 </Trigger>
             </ControlTemplate.Triggers>
         </ControlTemplate>
 
         <ControlTemplate x:Key="ComboBoxTextBox" TargetType="TextBox">
             <Border x:Name="Border"
-                 Background="{TemplateBinding Background}"
-                 BorderBrush="{TemplateBinding BorderBrush}"
-                 BorderThickness="{TemplateBinding BorderThickness}"
-                 CornerRadius="5">
+            Background="{TemplateBinding Background}"
+            BorderBrush="{TemplateBinding BorderBrush}"
+            BorderThickness="{TemplateBinding BorderThickness}"
+            CornerRadius="5">
                 <ScrollViewer x:Name="PART_ContentHost"/>
             </Border>
         </ControlTemplate>
+
+        <Style x:Key="ModernComboBoxStyle" TargetType="ComboBox">
+            <Setter Property="Background" Value="#FFD3D3D3"/>
+            <Setter Property="Foreground" Value="#FF222222"/>
+            <Setter Property="BorderBrush" Value="#FF888888"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="Padding" Value="5"/>
+            <Setter Property="VerticalContentAlignment" Value="Center"/>
+            <Setter Property="HorizontalContentAlignment" Value="Left"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="ComboBox">
+                        <Grid>
+                            <ToggleButton Name="ToggleButton"
+                           Template="{StaticResource ComboBoxToggleButton}"
+                           Grid.Column="2"
+                           IsChecked="{Binding Path=IsDropDownOpen, Mode=TwoWay, RelativeSource={RelativeSource TemplatedParent}}"
+                           ClickMode="Press">
+                            </ToggleButton>
+                            <ContentPresenter Name="ContentSite"
+                               IsHitTestVisible="False"
+                               Content="{TemplateBinding SelectionBoxItem}"
+                               ContentTemplate="{TemplateBinding SelectionBoxItemTemplate}"
+                               ContentTemplateSelector="{TemplateBinding ItemTemplateSelector}"
+                               Margin="3,3,23,3"
+                               VerticalAlignment="Center"
+                               HorizontalAlignment="Left" />
+                            <TextBox x:Name="PART_EditableTextBox"
+                      Style="{x:Null}"
+                      Template="{StaticResource ComboBoxTextBox}"
+                      HorizontalAlignment="Left"
+                      VerticalAlignment="Center"
+                      Margin="3,3,23,3"
+                      Focusable="True"
+                      Background="Transparent"
+                      Visibility="Hidden"
+                      IsReadOnly="{TemplateBinding IsReadOnly}" />
+                            <Popup Name="Popup"
+                    Placement="Bottom"
+                    IsOpen="{TemplateBinding IsDropDownOpen}"
+                    AllowsTransparency="True"
+                    Focusable="False"
+                    PopupAnimation="Slide">
+                                <Border Name="DropDownBorder"
+                         Background="{TemplateBinding Background}"
+                         BorderBrush="#FF888888"
+                         BorderThickness="1"
+                         CornerRadius="5">
+                                    <ScrollViewer Margin="4">
+                                        <ItemsPresenter />
+                                    </ScrollViewer>
+                                </Border>
+                            </Popup>
+                        </Grid>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter Property="Background" Value="#FFC0C0C0"/>
+                                <Setter Property="BorderBrush" Value="#FF999999"/>
+                            </Trigger>
+                            <Trigger Property="IsDropDownOpen" Value="True">
+                                <Setter Property="Background" Value="#FFC0C0C0"/>
+                                <Setter Property="BorderBrush" Value="#FF999999"/>
+                            </Trigger>
+                            <Trigger Property="IsEnabled" Value="False">
+                                <Setter Property="Opacity" Value="0.5"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
     </UserControl.Resources>
 
     <Grid Margin="20" Background="Transparent">
@@ -76,122 +147,40 @@
                 </Grid.RowDefinitions>
 
                 <TextBlock Text="Naslov oglasa:" Grid.Row="0" Grid.Column="0" Margin="0,10,0,25" Foreground="White" FontSize="14"/>
-                <TextBox x:Name="txtTitle" Grid.Row="0" Grid.Column="1" Margin="10,0,0,20" Height="30" FontSize="14" Foreground="White" Background="#FF444444" BorderBrush="#FF555555"/>
-
+                <TextBox x:Name="txtTitle" Grid.Row="0" Grid.Column="1" Margin="10,0,0,20" Height="30" FontSize="14" Foreground="White" Background="#FF444444" BorderBrush="#F65B43">
+                    <TextBox.Resources>
+                        <Style TargetType="Border">
+                            <Setter Property="CornerRadius" Value="5"/>
+                        </Style>
+                    </TextBox.Resources>
+                </TextBox>
                 <TextBlock Text="Opis:" Grid.Row="1" Grid.Column="0" Margin="0,10,0,25" Foreground="White" FontSize="14"/>
-                <TextBox x:Name="txtDescription" Grid.Row="1" Grid.Column="1" Margin="10,0,0,20" Height="80" FontSize="14" Foreground="White" Background="#FF444444" BorderBrush="#FF555555" AcceptsReturn="True" TextWrapping="Wrap" VerticalScrollBarVisibility="Auto"/>
-
+                <TextBox x:Name="txtDescription" Grid.Row="1" Grid.Column="1" Margin="10,0,0,20" Height="60" FontSize="14" Foreground="White" Background="#FF444444" BorderBrush="#F65B43">
+                    <TextBox.Resources>
+                        <Style TargetType="Border">
+                            <Setter Property="CornerRadius" Value="5"/>
+                        </Style>
+                    </TextBox.Resources>
+                </TextBox>
                 <TextBlock Text="Metoda plaćanja:" Grid.Row="2" Grid.Column="0" Margin="0,10,0,25" Foreground="White" FontSize="14"/>
-                <ComboBox x:Name="cmbPaymentMethod" Grid.Row="2" Grid.Column="1" Margin="10,0,0,20" Height="30" FontSize="14" Foreground="White" Background="#FF444444" BorderBrush="#FF555555">
-                    <ComboBoxItem Content="Gotovina"/>
-                    <ComboBoxItem Content="Kartica"/>
-                    <ComboBoxItem Content="Kripto"/>
-                    <ComboBoxItem Content="Kredit"/>
-                    <ComboBoxItem Content="Uplata na računa"/>
-                    <ComboBox.Template>
-                        <ControlTemplate TargetType="ComboBox">
-                            <Grid>
-                                <ToggleButton Name="ToggleButton"
-          Template="{StaticResource ComboBoxToggleButton}"
-          Grid.Column="2"
-          IsChecked="{Binding Path=IsDropDownOpen, Mode=TwoWay, RelativeSource={RelativeSource TemplatedParent}}"
-          ClickMode="Press">
-                                </ToggleButton>
-                                <ContentPresenter Name="ContentSite"
-              IsHitTestVisible="False"
-              Content="{TemplateBinding SelectionBoxItem}"
-              ContentTemplate="{TemplateBinding SelectionBoxItemTemplate}"
-              ContentTemplateSelector="{TemplateBinding ItemTemplateSelector}"
-              Margin="3,3,23,3"
-              VerticalAlignment="Center"
-              HorizontalAlignment="Left" />
-                                <TextBox x:Name="PART_EditableTextBox"
-     Style="{x:Null}"
-     Template="{StaticResource ComboBoxTextBox}"
-     HorizontalAlignment="Left"
-     VerticalAlignment="Center"
-     Margin="3,3,23,3"
-     Focusable="True"
-     Background="Transparent"
-     Visibility="Hidden"
-     IsReadOnly="{TemplateBinding IsReadOnly}" />
-                                <Popup Name="Popup"
-   Placement="Bottom"
-   IsOpen="{TemplateBinding IsDropDownOpen}"
-   AllowsTransparency="True"
-   Focusable="False"
-   PopupAnimation="Slide">
-                                    <Border Name="DropDownBorder"
-        Background="{TemplateBinding Background}"
-        BorderBrush="#FF555555"
-        BorderThickness="1"
-        CornerRadius="5">
-                                        <ScrollViewer Margin="4">
-                                            <ItemsPresenter />
-                                        </ScrollViewer>
-                                    </Border>
-                                </Popup>
-                            </Grid>
-                        </ControlTemplate>
-                    </ComboBox.Template>
+                <ComboBox x:Name="cmbPaymentMethod" Grid.Row="2" Grid.Column="1" Margin="10,0,0,20" Height="30" FontSize="14" Style="{StaticResource ModernComboBoxStyle}">
                     <ComboBox.Resources>
                         <Style TargetType="Border">
                             <Setter Property="CornerRadius" Value="5"/>
                         </Style>
                     </ComboBox.Resources>
+                    <ComboBoxItem Content="Gotovina"/>
+                    <ComboBoxItem Content="Kartica"/>
+                    <ComboBoxItem Content="Kripto"/>
+                    <ComboBoxItem Content="Kredit"/>
+                    <ComboBoxItem Content="Uplata na računa"/>
                 </ComboBox>
 
                 <TextBlock Text="Datum objave:" Grid.Row="3" Grid.Column="0" Margin="0,10,0,25" Foreground="White" FontSize="14"/>
                 <DatePicker x:Name="dtpDateOfPublishment" Grid.Row="3" Grid.Column="1" Margin="10,0,0,20" Height="30" FontSize="14" Foreground="White" Background="#FF444444" BorderBrush="#FF555555"/>
 
                 <TextBlock Text="Vozilo:" Grid.Row="5" Grid.Column="0" Margin="0,10,0,25" Foreground="White" FontSize="14"/>
-                <ComboBox x:Name="cmbVehicles" Grid.Row="5" DisplayMemberPath="DisplayText" SelectedValuePath="Id" Grid.Column="1" Margin="10,0,0,20" Height="30" FontSize="14" Foreground="White" Background="#FF444444" BorderBrush="#FF555555">
-                    <ComboBox.Template>
-                        <ControlTemplate TargetType="ComboBox">
-                            <Grid>
-                                <ToggleButton Name="ToggleButton"
-                              Template="{StaticResource ComboBoxToggleButton}"
-                              Grid.Column="2"
-                              IsChecked="{Binding Path=IsDropDownOpen, Mode=TwoWay, RelativeSource={RelativeSource TemplatedParent}}"
-                              ClickMode="Press">
-                                </ToggleButton>
-                                <ContentPresenter Name="ContentSite"
-                                  IsHitTestVisible="False"
-                                  Content="{TemplateBinding SelectionBoxItem}"
-                                  ContentTemplate="{TemplateBinding SelectionBoxItemTemplate}"
-                                  ContentTemplateSelector="{TemplateBinding ItemTemplateSelector}"
-                                  Margin="3,3,23,3"
-                                  VerticalAlignment="Center"
-                                  HorizontalAlignment="Left" />
-                                <TextBox x:Name="PART_EditableTextBox"
-                         Style="{x:Null}"
-                         Template="{StaticResource ComboBoxTextBox}"
-                         HorizontalAlignment="Left"
-                         VerticalAlignment="Center"
-                         Margin="3,3,23,3"
-                         Focusable="True"
-                         Background="Transparent"
-                         Visibility="Hidden"
-                         IsReadOnly="{TemplateBinding IsReadOnly}" />
-                                <Popup Name="Popup"
-                       Placement="Bottom"
-                       IsOpen="{TemplateBinding IsDropDownOpen}"
-                       AllowsTransparency="True"
-                       Focusable="False"
-                       PopupAnimation="Slide">
-                                    <Border Name="DropDownBorder"
-                            Background="{TemplateBinding Background}"
-                            BorderBrush="#FF555555"
-                            BorderThickness="1"
-                            CornerRadius="5">
-                                        <ScrollViewer Margin="4">
-                                            <ItemsPresenter />
-                                        </ScrollViewer>
-                                    </Border>
-                                </Popup>
-                            </Grid>
-                        </ControlTemplate>
-                    </ComboBox.Template>
+                <ComboBox x:Name="cmbVehicles" Grid.Row="5" DisplayMemberPath="DisplayText" SelectedValuePath="Id" Grid.Column="1" Margin="10,0,0,20" Height="30" FontSize="14" Style="{StaticResource ModernComboBoxStyle}">
                     <ComboBox.Resources>
                         <Style TargetType="Border">
                             <Setter Property="CornerRadius" Value="5"/>

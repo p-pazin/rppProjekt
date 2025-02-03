@@ -148,6 +148,8 @@
                 <DataGridTextColumn Header="Registracija" Binding="{Binding Registration}" />
                 <DataGridTextColumn Header="Marka" Binding="{Binding Brand}" />
                 <DataGridTextColumn Header="Model" Binding="{Binding Model}" />
+                <DataGridTextColumn Header="Tip" Binding="{Binding Type}" />
+                <DataGridTextColumn Header="Stanje vozila" Binding="{Binding Condition}" />
                 <DataGridTextColumn Header="Kilometraža" Binding="{Binding Mileage}" />
                 <DataGridTextColumn Header="Godina proizvodnje" Binding="{Binding ProductionYear}" />
                 <DataGridTextColumn Header="Motor" Binding="{Binding Engine}" />
@@ -155,10 +157,10 @@
                 <DataGridTextColumn Header="Snaga motora" Binding="{Binding EnginePower}" />
                 <DataGridTextColumn Header="Registriran do" Binding="{Binding RegisteredTo, StringFormat='dd/MM/yyyy'}" />
                 <DataGridTextColumn Header="Boja" Binding="{Binding Color}" />
-                <DataGridTextColumn Header="Tip" Binding="{Binding DriveType}" />
+                <DataGridTextColumn Header="Pogon" Binding="{Binding DriveType}" />
                 <DataGridTextColumn Header="Cijena" Binding="{Binding Price}" />
                 <DataGridTextColumn Header="Mijenjač" Binding="{Binding TransmissionType}" />
-                <DataGridTextColumn Header="Stanje" Binding="{Binding StateDisplay}"/>
+                <DataGridTextColumn Header="Stanje" Binding="{Binding StateDisplay}" />
                 <DataGridTextColumn Header="Upotreba" Binding="{Binding UsageDisplay}" />
             </DataGrid.Columns>
         </DataGrid>

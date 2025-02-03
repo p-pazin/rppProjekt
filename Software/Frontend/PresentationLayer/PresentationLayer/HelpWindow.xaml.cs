@@ -35,15 +35,6 @@ namespace PresentationLayer
         {
             LoadingIndicator.Visibility = Visibility.Collapsed;
 
-            BackButton.Visibility = HelpBrowser.CanGoBack ? Visibility.Visible : Visibility.Collapsed;
-        }
-
-        private void BackButton_Click(object sender, RoutedEventArgs e)
-        {
-            if (HelpBrowser.CanGoBack)
-            {
-                HelpBrowser.GoBack();
-            }
         }
     }
 }

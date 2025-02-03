@@ -145,9 +145,9 @@
                   RowStyle="{StaticResource ModernDataGridRowStyle}"
                   Margin="10,20,10,10">
             <DataGrid.Columns>
-                <DataGridTextColumn Header="Title" Binding="{Binding Title}" />
-                <DataGridTextColumn Header="Price" Binding="{Binding Price}" />
-                <DataGridTextColumn Header="Date of Creation" Binding="{Binding DateOfCreation, StringFormat='dd/MM/yyyy'}" />
+                <DataGridTextColumn Header="Naslov ponude" Binding="{Binding Title}" />
+                <DataGridTextColumn Header="Cijena" Binding="{Binding Price}" />
+                <DataGridTextColumn Header="Datum stvaranja" Binding="{Binding DateOfCreation, StringFormat='dd/MM/yyyy'}" />
             </DataGrid.Columns>
         </DataGrid>
 
