@@ -157,9 +157,10 @@ namespace PresentationLayer.UserControls
                     grdContractRentStartForm.Visibility = Visibility.Collapsed;
                     grdContractRentEndForm.Visibility = Visibility.Visible;
                     grdContractSaleForm.Visibility = Visibility.Collapsed;
+                    cmbContractEnd.SelectedItem = null;
+
                 }
             }
-            ResetForm();
         }
 
         private void cmbContractEnd_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -172,9 +173,9 @@ namespace PresentationLayer.UserControls
                     grdContractRentStartForm.Visibility = Visibility.Visible;
                     grdContractRentEndForm.Visibility = Visibility.Collapsed;
                     grdContractSaleForm.Visibility = Visibility.Collapsed;
+                    cmbContractStart.SelectedItem = null;
                 }
             }
-            ResetForm();
 
         }
 
@@ -221,6 +222,11 @@ namespace PresentationLayer.UserControls
                     newInvoice.TotalCost = double.Parse(txtPriceSale.Text);
 
                     await invoiceService.PostInvoicesSellAsync(newInvoice);
+
+                    if (Application.Current.MainWindow is MainWindow mainWindow)
+                    {
+                        mainWindow.LoadUC(new UCInvoices());
+                    }
                 }
                 else if (grdContractRentStartForm.Visibility == Visibility.Visible)
                 {
@@ -230,6 +236,11 @@ namespace PresentationLayer.UserControls
                     newInvoice.Vat = double.Parse(txtVATStart.Text);
 
                     await invoiceService.PostInvoicesRentStartAsync(newInvoice);
+
+                    if (Application.Current.MainWindow is MainWindow mainWindow)
+                    {
+                        mainWindow.LoadUC(new UCInvoices());
+                    }
                 }
                 else if (grdContractRentEndForm.Visibility == Visibility.Visible)
                 {
@@ -238,9 +249,16 @@ namespace PresentationLayer.UserControls
                     newInvoice.PaymentMethod = cmbPaymenthEnd.Text.ToString();
                     newInvoice.TotalCost = double.Parse(txtVATEnd.Text);
                     newInvoice.Mileage = int.Parse(txtMilageEnd.Text);
+                    newInvoice.Vat = double.Parse(txtVATStart.Text);
 
                     var penaltyIds = penalties.Select(p => p.Id).ToList();
                     await invoiceService.PostInvoicesRentEndAsync(newInvoice, penaltyIds);
+
+                    if (Application.Current.MainWindow is MainWindow mainWindow)
+                    {
+                        mainWindow.LoadUC(new UCInvoices());
+                    }
+
                 }
 
                 ResetForm();
@@ -269,6 +287,8 @@ namespace PresentationLayer.UserControls
 
             penalties.Clear();
             lstSelectedPenalties.ItemsSource = null;
+
+
 
         }
 

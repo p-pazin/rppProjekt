@@ -251,7 +251,7 @@
                     </Grid.RowDefinitions>
 
                     <TextBlock Text="Ugovor:" Grid.Row="0" Grid.Column="0" Margin="0,10,0,25" Foreground="White" FontSize="14"/>
-                    <ComboBox x:Name="cmbContractEnd" Grid.Row="0" Grid.Column="1" Margin="10,0,0,20" Height="30" FontSize="14" Style="{StaticResource ModernComboBoxStyle}">
+                    <ComboBox x:Name="cmbContractEnd" SelectionChanged="cmbContractEnd_SelectionChanged" Grid.Row="0" Grid.Column="1" Margin="10,0,0,20" Height="30" FontSize="14" Style="{StaticResource ModernComboBoxStyle}">
                         <ComboBox.DisplayMemberPath>DisplayText</ComboBox.DisplayMemberPath>
                         <ComboBox.SelectedValuePath>ContractEnd</ComboBox.SelectedValuePath>
                         <ComboBox.Resources>
