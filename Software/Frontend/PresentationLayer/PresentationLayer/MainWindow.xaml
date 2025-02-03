@@ -60,7 +60,6 @@
                         <ListBoxItem Content="Oglasi"/>
                         <ListBoxItem Content="Rezervacije"/>
                         <ListBoxItem Content="Pomoć"/>
-                        <ListBoxItem Content="Postavke"/>
                         <ListBoxItem Content="Odjava"/>
                     </ListBox>
 
