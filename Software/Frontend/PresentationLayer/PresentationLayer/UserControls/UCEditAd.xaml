@@ -53,7 +53,7 @@
         </Grid.RowDefinitions>
 
         <StackPanel>
-            <TextBlock Text="Dodavanje novog oglasa" FontSize="24" FontWeight="Bold" HorizontalAlignment="Center" Margin="0,0,0,20" Foreground="White"/>
+            <TextBlock Text="Uređivanje oglasa" FontSize="24" FontWeight="Bold" HorizontalAlignment="Center" Margin="0,0,0,20" Foreground="White"/>
             <TextBlock x:Name="warning" Text="Greška kod dodavanja oglasa." Margin="0,0,0,0" Foreground="Red" FontWeight="SemiBold" FontSize="18" HorizontalAlignment="Center"/>
             <TextBlock x:Name="infoWarning" Text="Popunite sve podatke o oglasu!" Margin="0,-24,0,10" Foreground="Red" FontWeight="SemiBold" FontSize="18" HorizontalAlignment="Center"/>
         </StackPanel>
