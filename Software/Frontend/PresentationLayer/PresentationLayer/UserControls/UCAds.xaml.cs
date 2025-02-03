@@ -76,14 +76,18 @@ namespace PresentationLayer.UserControls
             }
             if (dgvAds.SelectedItem is AdDto selectedAd)
             {
-                try
+                var messageBox = new DeletionWarningWindow("oglas");
+                if (messageBox.ShowDialog() == true)
                 {
-                    await _adService.DeleteAdAsync(selectedAd.Id);
-                    LoadAds();
-                }
-                catch (Exception)
-                {
-                    deletionWarning.Visibility = Visibility.Visible;
+                    try
+                    {
+                        await _adService.DeleteAdAsync(selectedAd.Id);
+                        LoadAds();
+                    }
+                    catch (Exception)
+                    {
+                        deletionWarning.Visibility = Visibility.Visible;
+                    }
                 }
             }
         }

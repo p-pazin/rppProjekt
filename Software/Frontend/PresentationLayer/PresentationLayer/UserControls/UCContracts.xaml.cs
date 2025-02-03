@@ -91,8 +91,8 @@ namespace PresentationLayer.UserControls
 
             if (selectedContract != null)
             {
-                var result = MessageBox.Show("Jeste li sigurni da želite obrisati ugovor?", "Confirmation", MessageBoxButton.YesNo, MessageBoxImage.Question);
-                if (result == MessageBoxResult.Yes)
+                var messageBox = new DeletionWarningWindow("ugovor");
+                if (messageBox.ShowDialog() == true)
                 {
                     try
                     {

@@ -77,14 +77,18 @@ namespace PresentationLayer.UserControls
             }
             if (dgvReservations.SelectedItem is ReservationDto selectedReservation)
             {
-                try
+                var messageBox = new DeletionWarningWindow("rezervaciju");
+                if (messageBox.ShowDialog() == true)
                 {
-                    await _reservationService.DeleteReservationsAsync(selectedReservation.Id);
-                    LoadReservations();
-                }
-                catch (Exception)
-                {
-                    deletionWarning.Visibility = Visibility.Visible;
+                    try
+                    {
+                        await _reservationService.DeleteReservationsAsync(selectedReservation.Id);
+                        LoadReservations();
+                    }
+                    catch (Exception)
+                    {
+                        deletionWarning.Visibility = Visibility.Visible;
+                    }
                 }
             }
         }

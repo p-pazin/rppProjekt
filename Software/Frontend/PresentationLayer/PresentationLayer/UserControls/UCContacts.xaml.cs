@@ -85,8 +85,8 @@ namespace PresentationLayer.UserControls
 
             if(selectedContact != null)
             {
-                var result = MessageBox.Show("Jeste li sigurni da želite obrisati kontakt?", "Confirmation", MessageBoxButton.YesNo, MessageBoxImage.Question);
-                if(result == MessageBoxResult.Yes)
+                var messageBox = new DeletionWarningWindow("kontakt");
+                if (messageBox.ShowDialog() == true)
                 {
                     try
                     {
