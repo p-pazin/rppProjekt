@@ -34,7 +34,75 @@ namespace ServiceLayer.Services
                 throw new Exception("Failed to fetch invoices data.");
 
             string json = await response.Content.ReadAsStringAsync();
-            return System.Text.Json.JsonSerializer.Deserialize<List<InvoiceDto>>(json, new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
+            return JsonSerializer.Deserialize<List<InvoiceDto>>(json, new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
         }
+
+        public async Task PostInvoicesSellAsync(InvoiceDto newInvoice)
+        {
+            string token = _tokenManager.GetToken();
+            if (string.IsNullOrEmpty(token))
+                throw new Exception("User is not logged in.");
+
+            _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
+
+            string url = $"Invoice?contractId={newInvoice.ContractId}";
+
+            string jsonContent = JsonSerializer.Serialize(newInvoice);
+            HttpContent content = new StringContent(jsonContent, Encoding.UTF8, "application/json");
+
+            HttpResponseMessage response = await _httpClient.PostAsync(url, content);
+
+            if (!response.IsSuccessStatusCode)
+            {
+                Console.WriteLine(response.StatusCode);
+                throw new Exception("Failed to add new invoice.");
+            }
+        }
+
+        public async Task PostInvoicesRentStartAsync(InvoiceDto newInvoice)
+        {
+            string token = _tokenManager.GetToken();
+            if (string.IsNullOrEmpty(token))
+                throw new Exception("User is not logged in.");
+
+            _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
+
+            string url = $"Invoice?contractId={newInvoice.ContractId}";
+
+            string jsonContent = JsonSerializer.Serialize(newInvoice);
+            HttpContent content = new StringContent(jsonContent, Encoding.UTF8, "application/json");
+
+            HttpResponseMessage response = await _httpClient.PostAsync(url, content);
+
+            if (!response.IsSuccessStatusCode)
+            {
+                Console.WriteLine(response.StatusCode);
+                throw new Exception("Failed to add new invoice.");
+            }
+        }
+
+        public async Task PostInvoicesRentEndAsync(InvoiceDto newInvoice, List<int> penaltyIds)
+        {
+            string token = _tokenManager.GetToken();
+            if (string.IsNullOrEmpty(token))
+                throw new Exception("User is not logged in.");
+
+            _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
+
+            string penaltyQuery = string.Join("&penaltyIds=", penaltyIds);
+            string url = $"Invoice/rent/final?contractId={newInvoice.ContractId}&penaltyIds={penaltyQuery}";
+
+            string jsonContent = JsonSerializer.Serialize(newInvoice);
+            HttpContent content = new StringContent(jsonContent, Encoding.UTF8, "application/json");
+
+            HttpResponseMessage response = await _httpClient.PostAsync(url, content);
+
+            if (!response.IsSuccessStatusCode)
+            {
+                Console.WriteLine(response.StatusCode);
+                throw new Exception("Failed to add new invoice.");
+            }
+        }
+
     }
 }

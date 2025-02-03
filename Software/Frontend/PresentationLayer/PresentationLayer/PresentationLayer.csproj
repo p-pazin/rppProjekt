@@ -254,6 +254,9 @@
     <Compile Include="UserControls\UCAddCompanyUser.xaml.cs">
       <DependentUpon>UCAddCompanyUser.xaml</DependentUpon>
     </Compile>
+    <Compile Include="UserControls\UCAddInvoice.xaml.cs">
+      <DependentUpon>UCAddInvoice.xaml</DependentUpon>
+    </Compile>
     <Compile Include="UserControls\UCAddOffer.xaml.cs">
       <DependentUpon>UCAddOffer.xaml</DependentUpon>
     </Compile>
@@ -364,6 +367,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="UserControls\UCAddCompanyUser.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UserControls\UCAddInvoice.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
