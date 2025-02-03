@@ -97,17 +97,20 @@ namespace PresentationLayer.UserControls
             }
             if (dgvUsers.SelectedItem is UserDto user)
             {
-                try
+                var messageBox = new DeletionWarningWindow("zaposlenika");
+                if (messageBox.ShowDialog() == true)
                 {
-                    await userService.DeleteCompanyUser(user.Id);
-                    LoadUsersAsync();
-                }
-                catch (Exception)
-                {
-                    deletionWarning.Visibility = Visibility.Visible;
+                    try
+                    {
+                        await userService.DeleteCompanyUser(user.Id);
+                        LoadUsersAsync();
+                    }
+                    catch (Exception)
+                    {
+                        deletionWarning.Visibility = Visibility.Visible;
+                    }
                 }
             }
-            
         }
 
         private void btnExit_Click(object sender, RoutedEventArgs e)
