@@ -39,7 +39,10 @@ namespace PresentationLayer.UserControls
 
         private void btnAddInvoice_Click(object sender, RoutedEventArgs e)
         {
-
+            if (Application.Current.MainWindow is MainWindow mw)
+            {
+                mw.LoadUC(new UCAddInvoice());
+            }
         }
 
         private async void btnPrintInvoice_Click(object sender, RoutedEventArgs e)
